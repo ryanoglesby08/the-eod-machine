@@ -1,0 +1,18 @@
+= form_for :eod_update, url: eod_updates_path, method: :post do |f|
+  .form-group
+    = f.label :author
+    = f.text_field :author, class: 'form-control'
+
+  - @categories.each do |category|
+    = f.fields_for :content do |content_fields|
+      %h2= category.name
+
+      %ul
+        - category.undelivered_entries.each do |entry|
+          %li
+            = entry_with_author(entry)
+      .form-group
+        = content_fields.label category.id, 'Content'
+        = content_fields.text_area category.id, class: 'form-control'
+
+  = f.submit 'Submit', class: 'btn btn-primary'

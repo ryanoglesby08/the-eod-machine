@@ -1,0 +1,37 @@
+== README
+
+
+To set up the environment:
+---------------------------
+bundle install --path=vendor/bundle                             # Installs all the gem dependencies
+RAILS_ENV=production bundle exec rake db:create db:migrate      # Creates the database
+
+
+To start the server:
+-------------------------
+RAILS_ENV=production bundle exec rails server                   # Starts the server
+
+
+To start the cron jobs:
+-------------------------
+# Jobs are defined in config/schedule.rb
+
+crontab -l                  # Lists the current cron jobs
+bundle exec whenever        # Lists the new cron jobs for the eod machine app
+bundle exec whenever -w     # Adds new cron jobs to crontab
+crontab -l                  # Should see the new cron jobs there
+
+To test email:
+------------------------
+bundle exec rake deliver_eod[<team_name>]
+
+
+
+TODO
+- Deploy to Rackspace
+- Inject SMTP user/pass
+- Use BC SMTP instead of gmail
+- Show error for author if left empty on submit
+- Preserve content if submit fails
+- Use the scheduled jobs
+- Allow multiple content entries for each category in a single submit

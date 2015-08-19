@@ -1,0 +1,26 @@
+!!!
+%html
+%head
+  %title EOD Machine
+
+  = stylesheet_link_tag 'https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css'
+  = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+  = javascript_include_tag 'application', 'data-turbolinks-track' => true
+
+  = csrf_meta_tags
+
+%body
+  .container
+    %h1 EOD Machine
+    %p
+      Enter your EOD update below. It will included in the next scheduled EOD update delivery.
+
+    - if flash[:error]
+      %p.bg-danger.text-danger.info
+        = flash[:error]
+
+    - if flash[:info]
+      %p.bg-success.text-success.info
+        = flash[:info]
+
+    = yield

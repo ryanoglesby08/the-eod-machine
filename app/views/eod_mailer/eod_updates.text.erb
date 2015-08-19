@@ -1,0 +1,12 @@
+EOD Updates from <%= @from_team.location %> for <%= today_long(@from_team.time_zone) %>
+
+<% @categories.each do |category| %>
+    ---------------------------------------------------------------------
+    <%= category.name %>
+
+    <% category.undelivered_entries.each do |entry| %>
+      * <%= entry_with_author(entry) %>
+    <% end %>
+<% end %>
+
+- Delivered by The EOD Machine
