@@ -19,11 +19,13 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every :day, at: '8:00 pm' do
+# EOD for Wilmington: 8:00 PM EST == 5:30 AM EST the next day
+every :day, at: '12:00 am' do       # Assuming GMT
   rake 'deliver_eod[cs_wilmington]'
 end
 
-every :day, at: '8:00 am' do
+# EOD for Pune: 8:00 AM EST == 5:30 PM IST the same day
+every :day, at: '12:00 pm' do       # Assuming GMT
   rake 'deliver_eod[cs_pune]'
 end
 
