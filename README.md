@@ -12,7 +12,7 @@ RAILS_ENV=production bundle exec rake db:create db:migrate      # Creates the da
 To start the server:
 -------------------------
 <pre>
-SECRET_KEY_BASE=<secret_key> RAILS_ENV=production bundle exec rails server           # Starts the server
+SECRET_KEY_BASE=&lt;secret_key&gt; RAILS_ENV=production bundle exec rails server           # Starts the server
 </pre>
 
 
@@ -30,7 +30,7 @@ crontab -l                  # Should see the new cron jobs there
 To test email:
 ------------------------
 <pre>
-bundle exec rake deliver_eod[<team_name>]
+bundle exec rake deliver_eod[&lt;team_name&gt;]
 </pre>
 
 
