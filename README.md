@@ -12,7 +12,7 @@ RAILS_ENV=production bundle exec rake db:create db:migrate      # Creates the da
 To start the server:
 -------------------------
 <pre>
-SECRET_KEY_BASE=&lt;secret_key&gt; RAILS_ENV=production bundle exec rails server -b &lt;bind_to_ip_address&gt;
+SECRET_KEY_BASE=&lt;secret_key&gt; RAILS_ENV=production bundle exec rails server -b &lt;bind_to_ip_address&gt; -d
 </pre>
 
 
@@ -36,12 +36,9 @@ bundle exec rake deliver_eod[&lt;team_name&gt;]
 
 
 TODO
-X Deploy to Rackspace
-- Use the scheduled jobs
-- Use public IP
-- Inject SMTP user/pass
-- Use BC SMTP instead of gmail
 - Show error for author if left empty on submit
-- Preserve content if submit fails
+- Preserve contents and author if submit fails
 - Allow multiple content entries for each category in a single submit
-- Better automation of Rackspace deploy
+- Better automation of deployment
+- Support multiple/customizable teams
+- Support customizable categories
