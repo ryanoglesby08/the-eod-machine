@@ -1,5 +1,4 @@
-== README
-
+# The EOD Machine
 
 To set up the environment:
 ---------------------------
