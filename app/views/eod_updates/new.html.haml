@@ -1,7 +1,7 @@
 = form_for :eod_update, url: eod_updates_path, method: :post do |f|
   .form-group
     = f.label :author
-    = f.text_field :author, class: 'form-control'
+    = f.text_field :author, class: 'form-control', value: @eod_update.author
 
   - @categories.each do |category|
     = f.fields_for :content do |content_fields|
@@ -13,6 +13,6 @@
             = entry_with_author(entry)
       .form-group
         = content_fields.label category.id, 'Content'
-        = content_fields.text_area category.id, class: 'form-control'
+        = content_fields.text_area category.id, value: @eod_update.content_for(category.id), class: 'form-control'
 
   = f.submit 'Submit', class: 'btn btn-primary'
