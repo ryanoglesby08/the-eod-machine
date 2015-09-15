@@ -35,8 +35,8 @@ bundle exec rake deliver_eod[&lt;team_name&gt;]
 
 
 TODO
-X Show error for author if left empty on submit
-X Preserve contents and author if submit fails
+- ~~Show error for author if left empty on submit~~
+- ~~Preserve contents and author if submit fails~~
 - Testing
 - Allow multiple content entries for each category in a single submit
 - Better automation of deployment
