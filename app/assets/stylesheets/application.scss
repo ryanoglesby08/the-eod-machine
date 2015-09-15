@@ -16,5 +16,22 @@
 @import "bootstrap";
 
 .info {
-    padding: 1em;
+  padding: 1em;
+
+  ul {
+    margin: 0;
+  }
+}
+
+form {
+  .field_with_errors {
+    label {
+      @extend .text-danger;
+    }
+
+    input {
+      @extend .text-danger;
+      @extend .bg-danger;
+    }
+  }
 }

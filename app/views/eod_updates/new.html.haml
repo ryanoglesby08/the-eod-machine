@@ -1,18 +1,28 @@
-= form_for :eod_update, url: eod_updates_path, method: :post do |f|
+= form_for @eod_update, url: eod_updates_path, method: :post do |f|
+  - if @eod_update.errors.present?
+    .bg-danger.text-danger.info.form-group
+      %p
+        Oops! You made some mistakes. Please fix them and try again.
+
+      %ul
+        - @eod_update.errors.full_messages.each do |error|
+          %li= error
+
   .form-group
     = f.label :author
-    = f.text_field :author, class: 'form-control', value: @eod_update.author
+    = f.text_field :author, class: 'form-control'
 
   - @categories.each do |category|
-    = f.fields_for :content do |content_fields|
+    = f.fields_for "entries[#{category.id}]", @eod_update.entry_for(category.id) do |content_fields|
       %h2= category.name
 
       %ul
         - category.undelivered_entries.each do |entry|
           %li
             = entry_with_author(entry)
+
       .form-group
-        = content_fields.label category.id, 'Content'
-        = content_fields.text_area category.id, value: @eod_update.content_for(category.id), class: 'form-control'
+        = content_fields.label :content
+        = content_fields.text_area :content, class: 'form-control'
 
   = f.submit 'Submit', class: 'btn btn-primary'
