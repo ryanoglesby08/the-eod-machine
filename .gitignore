@@ -19,3 +19,5 @@
 .idea
 
 vendor/bundle
+
+public
