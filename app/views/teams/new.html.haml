@@ -1,0 +1,28 @@
+= form_for @team do |f|
+  = render partial: 'common/form_errors', locals: {model: @team}
+
+  .form-group
+    = f.label :name
+    = f.text_field :name, class: 'form-control'
+
+  .form-group
+    = f.label :mailing_list
+    = f.text_field :mailing_list, class: 'form-control'
+
+  %h2 Locations
+
+  = f.fields_for :team_locations do |location_fields|
+    .form-inline.form-group
+      .form-group
+        = location_fields.label :name
+        = location_fields.text_field :name, class: 'form-control'
+
+      .form-group
+        = location_fields.label :time_zone
+        = location_fields.time_zone_select :time_zone
+
+      .form-group
+        = location_fields.label :eod_time
+        = location_fields.text_field :eod_time
+
+  = f.submit 'Submit', class: 'btn btn-primary'

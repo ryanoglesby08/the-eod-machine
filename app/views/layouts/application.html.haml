@@ -11,15 +11,13 @@
   %body
     .container
       %h1 EOD Machine
-      %p
-        Enter your EOD update below. It will included in the next scheduled EOD update delivery.
 
       - if flash[:error]
-        %p.bg-danger.text-danger.info
+        %p.alert.alert-danger
           = flash[:error]
 
       - if flash[:info]
-        %p.bg-success.text-success.info
+        %p.alert.alert-success
           = flash[:info]
 
       = yield

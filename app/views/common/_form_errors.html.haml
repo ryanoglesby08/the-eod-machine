@@ -1,0 +1,8 @@
+- if model.errors.present?
+  .alert.alert-danger
+    %p
+      Oops! You made some mistakes. Please fix them and try again.
+
+    %ul
+      - model.errors.full_messages.each do |error|
+        %li= error

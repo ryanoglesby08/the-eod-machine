@@ -1,12 +1,9 @@
-= form_for @eod_update, url: eod_updates_path, method: :post do |f|
-  - if @eod_update.errors.present?
-    .bg-danger.text-danger.info.form-group
-      %p
-        Oops! You made some mistakes. Please fix them and try again.
+%p
+  Enter your EOD update below. It will included in the next scheduled EOD update delivery.
 
-      %ul
-        - @eod_update.errors.full_messages.each do |error|
-          %li= error
+= form_for @eod_update, url: eod_updates_path, method: :post do |f|
+
+  = render partial: 'common/form_errors', locals: {model: @eod_update}
 
   .form-group
     = f.label :author
