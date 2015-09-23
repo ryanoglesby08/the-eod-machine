@@ -1,10 +1,9 @@
 class EodUpdatesController < ApplicationController
-  def new
-    redirect_to teams_path and return unless team_selected?
+  before_filter :ensure_team_selected
 
+  def new
     @categories = Category.includes(:entries)
     @eod_update = EodUpdate.new
-    @team = Team.find(current_team)
   end
 
   def create
@@ -21,5 +20,11 @@ class EodUpdatesController < ApplicationController
 
     flash[:info] = 'Thanks! Go home in peace.'
     redirect_to root_path
+  end
+
+  private
+
+  def ensure_team_selected
+    redirect_to teams_path unless team_selected?
   end
 end

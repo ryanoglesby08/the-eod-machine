@@ -9,9 +9,16 @@
     = csrf_meta_tags
 
   %body
-    .container
-      %h1 EOD Machine
+    %nav.navbar.navbar-inverse
+      .container-fluid
+        .navbar-header
+          = link_to brand_for(@current_team), root_path, class: 'navbar-brand'
 
+        %ul.nav.navbar-nav.navbar-right
+          %li
+            = link_to 'Switch Teams', teams_path
+
+    .container
       - if flash[:error]
         %p.alert.alert-danger
           = flash[:error]

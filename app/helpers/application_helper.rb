@@ -1,4 +1,8 @@
 module ApplicationHelper
+  def brand_for(current_team)
+    current_team.present? ? "EOD Machine | #{@current_team.name}" : 'EOD Machine'
+  end
+
   def entry_with_author(entry)
     "#{entry.content} (#{entry.author})"
   end

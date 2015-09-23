@@ -1,5 +1,5 @@
-%p
-  = "Enter your EOD update below. It will included in the next scheduled EOD update delivery for #{@team.name}."
+%h3
+  = "Enter your EOD update below. It will included in the next scheduled EOD update delivery for #{@current_team.name}."
 
 = form_for @eod_update, url: eod_updates_path, method: :post do |f|
 

@@ -20,7 +20,7 @@ class TeamsController < ApplicationController
   end
 
   def select
-    self.current_team = params[:team][:id]
+    self.current_team_id = params[:team][:id]
     redirect_to root_path
   end
 
