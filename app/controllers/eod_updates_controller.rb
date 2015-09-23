@@ -1,7 +1,10 @@
 class EodUpdatesController < ApplicationController
   def new
+    redirect_to teams_path and return unless team_selected?
+
     @categories = Category.includes(:entries)
     @eod_update = EodUpdate.new
+    @team = Team.find(current_team)
   end
 
   def create

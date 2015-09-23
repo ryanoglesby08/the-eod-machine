@@ -1,4 +1,8 @@
 class TeamsController < ApplicationController
+  def index
+    @teams = Team.all
+  end
+
   def new
     @team = Team.new
     2.times { @team.team_locations.build }
@@ -12,6 +16,11 @@ class TeamsController < ApplicationController
       render :new and return
     end
 
+    redirect_to root_path
+  end
+
+  def select
+    self.current_team = params[:team][:id]
     redirect_to root_path
   end
 

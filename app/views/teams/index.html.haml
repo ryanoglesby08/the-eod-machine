@@ -1,0 +1,6 @@
+%h2 Select your team
+= form_for :team, url: select_teams_path do |f|
+  .form-group
+    = f.select :id, options_from_collection_for_select(@teams, :id, :name), class: 'form-control'
+
+  = f.submit 'Submit', class: 'btn btn-primary'

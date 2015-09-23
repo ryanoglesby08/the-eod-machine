@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   root 'eod_updates#new'
 
-  resources :teams, only: [:new, :create]
+  resources :teams, only: [:index, :new, :create] do
+    post :select, on: :collection
+  end
   resources :eod_updates, only: [:new, :create]
 
   # The priority is based upon order of creation: first created -> highest priority.
