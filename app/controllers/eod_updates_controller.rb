@@ -9,7 +9,7 @@ class EodUpdatesController < ApplicationController
   def create
     eod_update_params = params[:eod_update]
 
-    @eod_update = EodUpdate.build(eod_update_params[:author], eod_update_params[:entries])
+    @eod_update = EodUpdate.build(eod_update_params[:author], eod_update_params[:entries], eod_update_params[:team_id])
 
     unless @eod_update.valid?
       @categories = Category.includes(:entries)

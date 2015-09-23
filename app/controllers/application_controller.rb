@@ -4,7 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   before_filter do
-    @current_team = Team.find(current_team_id) if team_selected?
+    @current_team = Team.find_by_id(current_team_id) if team_selected?
   end
 
   def current_team_id=(team_id)

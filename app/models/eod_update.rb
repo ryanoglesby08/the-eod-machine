@@ -18,10 +18,11 @@ class EodUpdate
     Entry.save_all(entries_by_category.values)
   end
 
-  def self.build(author, content_by_category = {})
+  def self.build(author, content_by_category, team_id)
     entries_by_category = Hash[
       content_by_category
-        .map {|category_id, attrs| [category_id, Entry.new(author: author, content: attrs[:content], category_id: category_id)] }
+        .map {|category_id, attrs| [category_id, Entry.new(author: author, content: attrs[:content],
+                                                           category_id: category_id, team_id: team_id)] }
         .select { |_category_id, entry| entry.has_content? }
     ]
 
