@@ -38,8 +38,10 @@ bundle exec rake deliver_eod[&lt;team_name&gt;]
 TODO
 - ~~Show error for author if left empty on submit~~
 - ~~Preserve contents and author if submit fails~~
-- Testing
+- Acceptance Testing
 - Allow multiple content entries for each category in a single submit
 - Better automation of deployment
-- Support multiple/customizable teams
+- Support multiple/customizable teams and locations _(IN PROGRESS)_
 - Support customizable categories
+- Show time to next EOD delivery for the current team in the header
+- Put an Add Team link in the header and/or on the Select Team page
