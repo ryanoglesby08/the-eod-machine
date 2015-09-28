@@ -12,7 +12,7 @@ To start the server:
 -------------------------
 <pre>
 RAILS_ENV=production bundle exec rake assets:precompile
-SECRET_KEY_BASE=&lt;secret_key&gt; RAILS_ENV=production RAILS_SERVE_STATIC_ASSETS=true bundle exec rails server -b &lt;bind_to_ip_address&gt; -d
+SECRET_KEY_BASE=&lt;secret_key&gt; RAILS_ENV=production RAILS_SERVE_STATIC_FILES=true bundle exec rails server -b &lt;bind_to_ip_address&gt; -d
 </pre>
 
 
