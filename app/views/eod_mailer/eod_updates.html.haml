@@ -1,10 +1,10 @@
-%h1= "EOD Updates from #{@from_team.location} for #{today_long(@from_team.time_zone)}"
+%h1= "EOD Updates from #{@from_team_location.name} for #{today_long(ActiveSupport::TimeZone.new(@from_team_location.time_zone))}"
 
 - @categories.each do |category|
   %h2= category.name
 
   %ul
-    - category.undelivered_entries.each do |entry|
+    - category.entries.each do |entry|
       %li= entry_with_author(entry)
 
 %div

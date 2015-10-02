@@ -2,7 +2,7 @@ class EodUpdatesController < ApplicationController
   before_filter :ensure_team_selected
 
   def new
-    @categories = Category.includes(:entries)
+    @categories = Category.all
     @eod_update = EodUpdate.new
   end
 
@@ -12,7 +12,7 @@ class EodUpdatesController < ApplicationController
     @eod_update = EodUpdate.build(eod_update_params[:author], eod_update_params[:entries], eod_update_params[:team_id])
 
     unless @eod_update.valid?
-      @categories = Category.includes(:entries)
+      @categories = Category.all
       render :new and return
     end
 

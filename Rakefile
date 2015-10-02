@@ -5,12 +5,8 @@ require File.expand_path('../config/application', __FILE__)
 
 Rails.application.load_tasks
 
-task :deliver_eod, [:from_team] => :environment do |_task, args|
-  from_team = TEAMS[args[:from_team].to_sym]
-  categories = Category.with_undelivered_entries
+require 'tasks/eod_delivery'
 
-  unless categories.empty?
-    EodMailer.eod_updates(from_team, categories).deliver_now
-    Entry.where(delivered: false).update_all(delivered: true)
-  end
+task :deliver_eod => :environment do
+  EodDelivery.go(Time.now.utc)
 end

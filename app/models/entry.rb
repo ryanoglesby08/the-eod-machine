@@ -12,4 +12,8 @@ class Entry < ActiveRecord::Base
       entries.each { |entry| entry.save }
     end
   end
+
+  def self.mark_as_delivered(entries)
+    Entry.where(id: entries.map(&:id)).update_all(delivered:true)
+  end
 end

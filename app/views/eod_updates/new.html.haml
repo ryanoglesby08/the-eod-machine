@@ -1,5 +1,6 @@
-%h3
-  = "Enter your EOD update below. It will included in the next scheduled EOD update delivery for #{@current_team.name}."
+.well
+  %h4
+    = "Enter your EOD update below. It will included in the next scheduled EOD update delivery for #{@current_team.name}."
 
 = form_for @eod_update, url: eod_updates_path, method: :post do |f|
 
@@ -14,7 +15,7 @@
       %h2= category.name
 
       %ul
-        - category.undelivered_entries.each do |entry|
+        - category.undelivered_entries_for_team(@current_team.id).each do |entry|
           %li
             = entry_with_author(entry)
 

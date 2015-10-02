@@ -1,11 +1,13 @@
 class Category < ActiveRecord::Base
   has_many :entries
 
-  def undelivered_entries
-    self.entries.undelivered
+  def undelivered_entries_for_team(team_id)
+    self.entries.undelivered.where(team_id: team_id)
   end
 
-  def self.with_undelivered_entries
-    Category.includes(:entries).where('entries.delivered = ?', false).references(:entries)
+  scope :with_undelivered_entries_for_team, -> (team_id) do
+    includes(:entries)
+      .where('entries.delivered = ?', false).where('entries.team_id = ?', team_id)
+      .references(:entries)
   end
 end
