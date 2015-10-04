@@ -30,7 +30,7 @@ describe EodDelivery do
     end
 
     context 'for the 8:00 PM team location' do
-      let(:now_utc) { Time.parse('8:00 PM').utc }
+      let(:now_utc) { Time.parse('8:00 PM EDT').utc }
 
       it 'delivers an eod email to the team' do
         EodDelivery.go(now_utc)

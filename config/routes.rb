@@ -2,7 +2,7 @@ Rails.application.routes.draw do
   root 'eod_updates#new'
 
   resources :teams, only: [:index, :new, :create, :edit, :update] do
-    post :select, on: :collection
+    get :select, on: :member
   end
   resources :eod_updates, only: [:new, :create]
 

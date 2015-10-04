@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   def index
-    @teams = Team.all
+    @teams = Team.includes(:team_locations)
   end
 
   def new
@@ -35,7 +35,7 @@ class TeamsController < ApplicationController
   end
 
   def select
-    self.current_team_id = params[:team][:id]
+    self.current_team_id = params[:id]
     redirect_to root_path
   end
 
