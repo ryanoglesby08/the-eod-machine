@@ -25,6 +25,6 @@ class EodUpdatesController < ApplicationController
   private
 
   def ensure_team_selected
-    redirect_to teams_path unless team_selected?
+    redirect_to(teams_path, alert: 'You must select a team first.') unless team_selected?
   end
 end

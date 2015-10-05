@@ -19,12 +19,12 @@
             = link_to 'Switch Teams', teams_path
 
     .container
-      - if flash[:error]
+      - if flash[:alert]
         %p.alert.alert-danger
-          = flash[:error]
+          = flash[:alert]
 
-      - if flash[:info]
+      - if flash[:notice]
         %p.alert.alert-success
-          = flash[:info]
+          = flash[:notice]
 
       = yield
