@@ -40,9 +40,11 @@ TODO
 - ~~Preserve contents and author if submit fails~~
 - Acceptance Testing
 - Allow multiple content entries for each category in a single submit
-- Better automation of deployment
+- Better automation of deployment _IN PROGRESS_
 - ~~Support multiple/customizable teams and locations~~
-- Support customizable categories
+- Support customizable categories per team
 - Show time to next EOD delivery for the current team in the header
 - Show timeline of eod deliveries on create team page
 - Use FactoryGirl
+- Better validation/input for EOD time
+- Allow an arbitrary number of Team Locations
