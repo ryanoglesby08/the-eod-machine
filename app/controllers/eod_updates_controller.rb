@@ -18,7 +18,7 @@ class EodUpdatesController < ApplicationController
 
     @eod_update.save
 
-    flash[:info] = 'Thanks! Go home in peace.'
+    flash[:notice] = 'Thanks! Go home in peace.'
     redirect_to root_path
   end
 
