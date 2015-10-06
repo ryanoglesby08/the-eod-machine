@@ -2,21 +2,18 @@ require 'rails_helper'
 
 describe Entry do
   describe '.mark_as_delivered' do
-    let!(:entries) do
-      [
-        Entry.create(author: 'Freddy', content: 'Undelivered entry 1'),
-        Entry.create(author: 'Freddy', content: 'Undelivered entry 2')
-      ]
-    end
+    let!(:deliver_these) { [FactoryGirl.create(:entry), FactoryGirl.create(:entry)] }
+    let!(:do_not_deliver) { FactoryGirl.create(:entry) }
 
     before do
-      Entry.create(author: 'Freddy', content: 'Undelivered entry 3')
+
     end
 
     it 'marks only the given entries as delivered' do
-      Entry.mark_as_delivered(entries)
+      Entry.mark_as_delivered(deliver_these)
 
-      expect(Entry.where(delivered: true)).to contain_exactly(*entries)
+      expect(Entry.where(delivered: true)).to contain_exactly(*deliver_these)
+      expect(Entry.where(delivered: false)).to contain_exactly(*do_not_deliver)
     end
   end
 end

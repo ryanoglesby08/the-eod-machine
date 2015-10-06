@@ -11,11 +11,12 @@ describe Category do
     before do
       Category.create(name: 'Empty Category')
 
-      category.entries.create(author: 'Brad', content: 'Stuff happened', team_id: team_id_one)
-      another_category.entries.create(author: 'Angela', content: 'Something else is going on', team_id: team_id_one)
+      category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team_id_one))
+      category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team_id_one))
+      another_category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team_id_one))
 
-      category.entries.create(author: 'Amanda', content: 'I did this today', team_id: team_id_two)
-      category.entries.create(author: 'Kevin', content: 'Yesterdays update', team_id: team_id_two, delivered: true)
+      category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team_id_two))
+      category.entries.create(FactoryGirl.attributes_for(:delivered_entry, team_id: team_id_two))
     end
 
     it 'scopes categories with entries by team' do
@@ -35,13 +36,13 @@ describe Category do
 
   describe '#undelivered_entries_for_team' do
     let(:category) { Category.create(name: 'The Category') }
-    let(:team) { Team.create(name: 'The Team', mailing_list: 'eod@theteam.text') }
+    let(:team) { FactoryGirl.create(:team) }
 
-    let(:undelivered_entry) { category.entries.create(author: 'Sarah', content: '#22 is ready for testing', team_id: team.id) }
+    let(:undelivered_entry) { category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team.id)) }
 
     before do
-      category.entries.create(author: 'Jim',   content: '#11 still needs more analysis', team_id: team.id, delivered: true)
-      Entry.create(author: 'Greg',   content: 'Some other story', team_id: 99)
+      category.entries.create( FactoryGirl.attributes_for(:delivered_entry, team_id: team.id))
+      FactoryGirl.create(:entry, team_id: 99)
     end
 
     it 'fetches undelivered entries for a team' do
