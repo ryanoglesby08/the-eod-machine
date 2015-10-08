@@ -3,7 +3,7 @@ require 'rails_helper'
 describe TeamHelper do
   describe '.locations_summary_for' do
     let(:team) do
-      Team.new(name: 'The Team').tap do |team|
+      FactoryGirl.build(:team).tap do |team|
         team.team_locations = [
           TeamLocation.new(name: 'NYC', time_zone: 'Eastern Time (US & Canada)', eod_time: '8:00 PM'),
           TeamLocation.new(name: 'Pune', time_zone: 'Mumbai', eod_time: '7:00 PM'),

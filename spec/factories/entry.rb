@@ -1,10 +1,10 @@
 FactoryGirl.define do
   factory :entry do
-    author Faker::Name.first_name
-    content Faker::Lorem.sentence
+    author { Faker::Name.first_name }
+    content { Faker::Lorem.sentence }
     delivered false
 
-    team_id 0
+    team nil
     category_id 0
   end
 

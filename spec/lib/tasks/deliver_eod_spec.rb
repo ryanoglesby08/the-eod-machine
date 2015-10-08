@@ -7,26 +7,26 @@ describe EodDelivery do
   end
 
   describe '#go' do
-    let(:team) { Team.create(name: 'The Team', mailing_list: 'eod_list@theteam.test') }
-    let(:other_team) { Team.create(name: 'The Other Team', mailing_list: 'eod_list@theotherteam.test') }
+    let(:team) { FactoryGirl.create(:team, mailing_list: 'eod_list@theteam.test') }
+    let(:other_team) { FactoryGirl.create(:team) }
 
     before do
       story_updates = Category.create(name: 'Story Updates')
 
       ######## Create other team and entries ##############
 
-      other_team.team_locations.create(name: 'Other East Coast', time_zone: 'Eastern Time (US & Canada)', eod_time: '9:00 PM')
+      FactoryGirl.create(:team_location, team: other_team, eod_time: '9:00 PM')
 
-      story_updates.entries.create(author: 'Sarah', content: '#22 is ready for testing',      team_id: other_team.id)
-      story_updates.entries.create(author: 'Jim',   content: '#11 still needs more analysis', team_id: other_team.id, delivered: true)
+      story_updates.entries.create(FactoryGirl.attributes_for(:entry,           team: other_team))
+      story_updates.entries.create(FactoryGirl.attributes_for(:delivered_entry, team: other_team))
 
       ######## Create team and entries for eod update ##############
 
-      team.team_locations.create(name: 'East Coast', time_zone: 'Eastern Time (US & Canada)', eod_time: '8:00 PM')
+      FactoryGirl.create(:new_york, team: team, eod_time: '8:00 PM')
 
-      story_updates.entries.create(author: 'Jack',  content: 'Story 123 is ready for testing',  team_id: team.id)
-      story_updates.entries.create(author: 'Jill',  content: 'Story 456 is blocked',            team_id: team.id)
-      story_updates.entries.create(author: 'Amy',   content: 'Story 123 is ready for dev',      team_id: team.id, delivered: true)
+      story_updates.entries.create(FactoryGirl.attributes_for(:entry,           team: team))
+      story_updates.entries.create(FactoryGirl.attributes_for(:entry,           team: team))
+      story_updates.entries.create(FactoryGirl.attributes_for(:delivered_entry, team: team))
     end
 
     context 'for the 8:00 PM team location' do

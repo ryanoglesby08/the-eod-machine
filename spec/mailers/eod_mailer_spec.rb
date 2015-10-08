@@ -5,8 +5,8 @@ describe EodMailer do
     ActionMailer::Base.deliveries.clear
   end
 
-  let(:team) { Team.new(name: 'My Team', mailing_list: 'eod@myteam.test') }
-  let(:team_location) { TeamLocation.new(name: 'New York', time_zone: 'Eastern Time (US & Canada)', eod_time: '9:00 PM', team: team) }
+  let(:team) { FactoryGirl.create(:team, mailing_list: 'eod@myteam.test') }
+  let(:team_location) { FactoryGirl.create(:new_york, eod_time: '9:00 PM', team: team) }
 
   let(:categories) do
     story_updates = Category.new(name: 'Stories')

@@ -1,4 +1,6 @@
 class Entry < ActiveRecord::Base
+  belongs_to :team
+
   validates :author, presence: true
 
   scope :undelivered, -> { where(delivered: false) }

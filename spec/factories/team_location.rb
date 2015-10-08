@@ -3,9 +3,10 @@ FactoryGirl.define do
     name 'New York'
     time_zone 'Eastern Time (US & Canada)'
     eod_time '8:00 PM'
+    team nil
   end
 
-  factory :hawaii, class: TeamLocation do
+  factory :hawaii, parent: :team_location do
     name 'Hawaii'
     time_zone 'Pacific/Honolulu'
     eod_time '6:00 PM'
