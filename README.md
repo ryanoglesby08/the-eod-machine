@@ -45,6 +45,6 @@ TODO
 - Support customizable categories per team
 - Show time to next EOD delivery for the current team in the header
 - Show timeline of eod deliveries on create team page
-- Use FactoryGirl
+- ~~Use FactoryGirl~~
 - Better validation/input for EOD time
 - Allow an arbitrary number of Team Locations
