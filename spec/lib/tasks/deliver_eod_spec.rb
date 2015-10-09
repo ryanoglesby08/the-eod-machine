@@ -11,12 +11,11 @@ describe EodDelivery do
     let(:other_team) { FactoryGirl.create(:team) }
 
     before do
-      story_updates = Category.create(name: 'Story Updates')
-
       ######## Create other team and entries ##############
 
       FactoryGirl.create(:team_location, team: other_team, eod_time: '9:00 PM')
 
+      story_updates = Category.create(name: 'Story Updates', team_id: other_team.id)
       story_updates.entries.create(FactoryGirl.attributes_for(:entry,           team: other_team))
       story_updates.entries.create(FactoryGirl.attributes_for(:delivered_entry, team: other_team))
 
@@ -24,9 +23,10 @@ describe EodDelivery do
 
       FactoryGirl.create(:new_york, team: team, eod_time: '8:00 PM')
 
-      story_updates.entries.create(FactoryGirl.attributes_for(:entry,           team: team))
-      story_updates.entries.create(FactoryGirl.attributes_for(:entry,           team: team))
-      story_updates.entries.create(FactoryGirl.attributes_for(:delivered_entry, team: team))
+      normal_business = Category.create(name: 'Normal Business', team_id: team.id)
+      normal_business.entries.create(FactoryGirl.attributes_for(:entry,           team: team))
+      normal_business.entries.create(FactoryGirl.attributes_for(:entry,           team: team))
+      normal_business.entries.create(FactoryGirl.attributes_for(:delivered_entry, team: team))
     end
 
     context 'for the 8:00 PM team location' do

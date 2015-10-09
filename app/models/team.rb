@@ -1,6 +1,7 @@
 class Team < ActiveRecord::Base
   has_many :team_locations
   has_many :entries
+  has_many :categories
 
   accepts_nested_attributes_for :team_locations
 

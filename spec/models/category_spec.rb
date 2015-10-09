@@ -5,11 +5,11 @@ describe Category do
     let(:team_id_one) { 1 }
     let(:team_id_two) { 2 }
 
-    let(:category) { Category.create(name: 'Business Stuff') }
-    let(:another_category) { Category.create(name: 'More Things') }
+    let(:category) { Category.create(name: 'Business Stuff', team_id: team_id_one) }
+    let(:another_category) { Category.create(name: 'More Things', team_id: team_id_one) }
 
     before do
-      Category.create(name: 'Empty Category')
+      Category.create(name: 'Empty Category', team_id: team_id_two)
 
       category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team_id_one))
       category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team_id_one))
@@ -35,8 +35,8 @@ describe Category do
   end
 
   describe '#undelivered_entries_for_team' do
-    let(:category) { Category.create(name: 'The Category') }
     let(:team) { FactoryGirl.create(:team) }
+    let(:category) { Category.create(name: 'The Category', team_id: team.id) }
 
     let(:undelivered_entry) { category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team.id)) }
 

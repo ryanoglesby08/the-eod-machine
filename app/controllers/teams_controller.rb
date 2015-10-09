@@ -16,6 +16,11 @@ class TeamsController < ApplicationController
       render :new and return
     end
 
+    # Temporary until categories are customizable
+    ['Business as Usual', 'Story Movements', 'Open Questions', 'Blockers', 'Action Items', 'Other'].each do |category_name|
+      team.categories.create(name: category_name)
+    end
+
     redirect_to root_path
   end
 
