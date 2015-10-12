@@ -7,9 +7,12 @@ module EodDelivery
     locations_at_eod.each do |team_location|
       categories = Category.with_undelivered_entries_for_team(team_location.team_id)
 
-      EodMailer.eod_updates(team_location, categories).deliver_now
+      unless categories.empty?
+        EodMailer.eod_updates(team_location, categories).deliver_now
 
-      entries += categories.flat_map(&:entries)
+        entries += categories.flat_map(&:entries)
+      end
+
     end
 
     Entry.mark_as_delivered(entries)

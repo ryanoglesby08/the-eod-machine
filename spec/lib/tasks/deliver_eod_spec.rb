@@ -46,6 +46,19 @@ describe EodDelivery do
         expect(other_team.entries.undelivered).to have(1).entry
       end
 
+      context 'when there are no undelivered entries' do
+        before do
+          Entry.mark_as_delivered(team.entries)
+        end
+
+        it 'does not deliver an eod email' do
+          EodDelivery.go(now_utc)
+
+          expect(ActionMailer::Base.deliveries).to be_empty
+        end
+
+      end
+
     end
 
   end
