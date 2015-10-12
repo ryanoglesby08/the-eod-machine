@@ -40,7 +40,7 @@ TODO
 - ~~Preserve contents and author if submit fails~~
 - Acceptance Testing
 - Allow multiple content entries for each category in a single submit
-- Better automation of deployment _IN PROGRESS_
+- ~~Better automation of deployment~~
 - ~~Support multiple/customizable teams and locations~~
 - Support customizable categories per team _IN PROGRESS_
 - Show time to next EOD delivery for the current team in the header
@@ -48,3 +48,4 @@ TODO
 - ~~Use FactoryGirl~~
 - Better validation/input for EOD time
 - Allow an arbitrary number of Team Locations
+- Don't install test dependencies with bundler for deployments
