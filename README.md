@@ -49,3 +49,4 @@ TODO
 - Better validation/input for EOD time
 - Allow an arbitrary number of Team Locations
 - Don't install test dependencies with bundler for deployments
+- Support multiple emails for a mailing list
