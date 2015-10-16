@@ -4,8 +4,7 @@ class TeamsController < ApplicationController
   end
 
   def new
-    @team = Team.new
-    2.times { @team.team_locations.build }
+    @team = Team.build_with_defaults(2, Category::DEFAULTS)
   end
 
   def create
@@ -14,11 +13,6 @@ class TeamsController < ApplicationController
     unless team.save
       @team = team
       render :new and return
-    end
-
-    # Temporary until categories are customizable
-    ['Business as Usual', 'Story Movements', 'Open Questions', 'Blockers', 'Action Items', 'Other'].each do |category_name|
-      team.categories.create(name: category_name)
     end
 
     redirect_to root_path
@@ -48,6 +42,9 @@ class TeamsController < ApplicationController
 
   def team_params
     params.require(:team)
-          .permit(:name, :mailing_list, team_locations_attributes: [:id, :name, :time_zone, :eod_time])
+          .permit(:name, :mailing_list,
+                  team_locations_attributes: [:id, :name, :time_zone, :eod_time],
+                  categories_attributes: [:id, :name]
+          )
   end
 end

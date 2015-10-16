@@ -25,4 +25,10 @@
         = location_fields.label :eod_time
         = location_fields.text_field :eod_time
 
+  %h2 Categories
+
+  = f.fields_for :categories do |category_fields|
+    .form-group
+      = category_fields.text_field :name, class: 'form-control'
+
   = f.submit 'Submit', class: 'btn btn-primary'
