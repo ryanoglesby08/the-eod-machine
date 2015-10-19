@@ -24,7 +24,7 @@ echo "Getting new code..."
 git pull
 
 echo "Installing gem dependencies..."
-bundle install --path=vendor/bundle
+bundle install --path=vendor/bundle --without test development
 bundle clean
 
 echo "Migrating the DB..."

@@ -42,11 +42,10 @@ TODO
 - Allow multiple content entries for each category in a single submit
 - ~~Better automation of deployment~~
 - ~~Support multiple/customizable teams and locations~~
-- Support customizable categories per team _IN PROGRESS_
+- ~~Support customizable categories per team~~
 - Show time to next EOD delivery for the current team in the header
 - Show timeline of eod deliveries on create team page
 - ~~Use FactoryGirl~~
 - Better validation/input for EOD time
 - Allow an arbitrary number of Team Locations
-- Don't install test dependencies with bundler for deployments
-- Support multiple emails for a mailing list
+- ~~Don't install test dependencies with bundler for deployments~~
