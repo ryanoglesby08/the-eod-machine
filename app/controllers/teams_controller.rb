@@ -30,12 +30,12 @@ class TeamsController < ApplicationController
       render :edit and return
     end
 
-    redirect_to root_path
+    redirect_to root_path, notice: "#{team.name} team updated"
   end
 
   def select
     self.current_team_id = params[:id]
-    redirect_to root_path
+    redirect_to root_path, notice: 'Great! Now using a new team for your EOD updates'
   end
 
   private
@@ -44,7 +44,7 @@ class TeamsController < ApplicationController
     params.require(:team)
           .permit(:name, :mailing_list,
                   team_locations_attributes: [:id, :name, :time_zone, :eod_time],
-                  categories_attributes: [:id, :name]
+                  categories_attributes: [:id, :name, :_destroy]
           )
   end
 end

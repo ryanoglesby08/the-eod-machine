@@ -27,8 +27,31 @@
 
   %h2 Categories
 
-  = f.fields_for :categories do |category_fields|
-    .form-group
-      = category_fields.text_field :name, class: 'form-control'
+  <!-- ko foreach: categories -->
+  .form-group{'data-bind' => 'visible: !destroyMe()'}
+    .input-group
+      %input{type: 'text', class: 'form-control', 'data-bind' => 'value: name, attr: {name: inputName($index(), "name")}'}
+      %span.input-group-btn
+        = button_tag(type: 'button', class: 'btn btn-danger', 'aria-label' => 'Remove',
+                     'data-bind' => 'click: $parent.removeCategory') do
+          %span.glyphicon.glyphicon-trash{'aria-hidden' => true}
 
-  = f.submit 'Submit', class: 'btn btn-primary'
+    <!-- ko if: !isNew() -->
+    %input{type: 'hidden', 'data-bind' => 'value: id, attr: {name: inputName($index(), "id")}'}
+    <!-- /ko -->
+    <!-- ko if: destroyMe -->
+    %input{type: 'hidden', 'data-bind' => 'value: destroyMe, attr: {name: inputName($index(), "_destroy")}'}
+    <!-- /ko -->
+  <!-- /ko -->
+
+  .form-group
+    = button_tag(type: 'button', class: 'btn btn-default btn-block add-category', 'aria-label' => 'Add',
+                 'data-bind' => 'click: addCategory') do
+      %span.glyphicon.glyphicon-plus{'aria-hidden' => true}
+
+  .form-group
+    = f.submit 'Submit', class: 'btn btn-primary'
+
+:javascript
+  var rawCategories = #{@team.categories.to_json};
+  ko.applyBindings(new ViewModel(rawCategories));

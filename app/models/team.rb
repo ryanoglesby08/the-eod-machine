@@ -3,7 +3,8 @@ class Team < ActiveRecord::Base
   has_many :entries
   has_many :categories
 
-  accepts_nested_attributes_for :team_locations, :categories
+  accepts_nested_attributes_for :team_locations
+  accepts_nested_attributes_for :categories, allow_destroy: true
 
   validates :name, presence: true, uniqueness: true
   validates :mailing_list, presence: true
