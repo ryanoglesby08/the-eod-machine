@@ -35,8 +35,8 @@ describe Category do
   end
 
   describe '#undelivered_entries_for_team' do
-    let(:team) { FactoryGirl.create(:team) }
-    let(:category) { Category.create(name: 'The Category', team_id: team.id) }
+    let(:team) { FactoryGirl.create(:team, category_names: 'The Category') }
+    let(:category) { team.categories.where(name: 'The Category').first }
 
     let(:undelivered_entry) { category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team.id)) }
 
@@ -49,6 +49,17 @@ describe Category do
       entries = category.undelivered_entries_for_team(team.id)
 
       expect(entries).to contain_exactly(undelivered_entry)
+    end
+  end
+
+  describe 'team' do
+    it 'is not valid when it does not have any categories' do
+      team = Team.new
+
+      is_valid = team.valid?
+
+      expect(is_valid).to be_falsey
+      expect(team.errors.messages[:categories]).to include("can't be blank")
     end
   end
 end

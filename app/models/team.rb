@@ -8,6 +8,7 @@ class Team < ActiveRecord::Base
 
   validates :name, presence: true, uniqueness: true
   validates :mailing_list, presence: true
+  validates :categories, presence: true
 
   def self.build_with_defaults(number_of_locations, category_names)
     Team.new.tap do |team|

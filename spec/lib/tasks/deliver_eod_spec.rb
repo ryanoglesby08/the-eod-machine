@@ -7,15 +7,15 @@ describe EodDelivery do
   end
 
   describe '#go' do
-    let(:team) { FactoryGirl.create(:team, mailing_list: 'eod_list@theteam.test') }
-    let(:other_team) { FactoryGirl.create(:team) }
+    let(:team) { FactoryGirl.create(:team, mailing_list: 'eod_list@theteam.test', category_names: 'Normal Business') }
+    let(:other_team) { FactoryGirl.create(:team, category_names: 'Story Updates') }
 
     before do
       ######## Create other team and entries ##############
 
       FactoryGirl.create(:team_location, team: other_team, eod_time: '9:00 PM')
 
-      story_updates = Category.create(name: 'Story Updates', team_id: other_team.id)
+      story_updates = other_team.categories.where(name: 'Story Updates').first
       story_updates.entries.create(FactoryGirl.attributes_for(:entry,           team: other_team))
       story_updates.entries.create(FactoryGirl.attributes_for(:delivered_entry, team: other_team))
 
@@ -23,7 +23,7 @@ describe EodDelivery do
 
       FactoryGirl.create(:new_york, team: team, eod_time: '8:00 PM')
 
-      normal_business = Category.create(name: 'Normal Business', team_id: team.id)
+      normal_business = team.categories.where(name: 'Normal Business').first
       normal_business.entries.create(FactoryGirl.attributes_for(:entry,           team: team))
       normal_business.entries.create(FactoryGirl.attributes_for(:entry,           team: team))
       normal_business.entries.create(FactoryGirl.attributes_for(:delivered_entry, team: team))

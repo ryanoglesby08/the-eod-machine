@@ -5,14 +5,14 @@ describe EodMailer do
     ActionMailer::Base.deliveries.clear
   end
 
-  let(:team) { FactoryGirl.create(:team, mailing_list: 'eod@myteam.test') }
-  let(:team_location) { FactoryGirl.create(:new_york, eod_time: '9:00 PM', team: team) }
+  let(:team) { FactoryGirl.build(:team, mailing_list: 'eod@myteam.test', category_names: %w(Stories Other)) }
+  let(:team_location) { FactoryGirl.build(:new_york, eod_time: '9:00 PM', team: team) }
 
   let(:categories) do
-    story_updates = Category.new(name: 'Stories')
+    story_updates = team.categories.find { |category| category.name == 'Stories' }
     story_updates.entries.build(author: 'Sarah',  content: '#22 is ready for testing',      team_id: team.id)
     story_updates.entries.build(author: 'Jim',    content: '#11 still needs more analysis', team_id: team.id)
-    other = Category.new(name: 'Other')
+    other = team.categories.find { |category| category.name == 'Other' }
     other.entries.build(author: 'Max',            content: 'Spoke with Bob',                team_id: team.id)
 
     [story_updates, other]

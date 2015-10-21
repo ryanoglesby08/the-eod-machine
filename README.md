@@ -49,5 +49,8 @@ TODO
 - Better validation/input for EOD time
 - Allow an arbitrary number of Team Locations
 - ~~Don't install test dependencies with bundler for deployments~~
-- Fix error styling when invalid categories happens. And filter out blank category names.
+- ~~Don't allow a team to be created/edited with no categories~~
+- Fix error styling when invalid categories happens.
+- Filter out blank category names.
+- Fix validations for Category names to be scoped by team.
 - Move hardcoded config things to be injected/configured (like the FROM address for the mailer)
