@@ -29,7 +29,7 @@
 
   <!-- ko foreach: categories -->
   .form-group{'data-bind' => 'visible: !destroyMe()'}
-    .input-group
+    .input-group{'data-bind' => 'css: classNameFor("name")'}
       %input{type: 'text', class: 'form-control', 'data-bind' => 'value: name, attr: {name: inputName($index(), "name")}'}
       %span.input-group-btn
         = button_tag(type: 'button', class: 'btn btn-danger', 'aria-label' => 'Remove',
@@ -53,5 +53,5 @@
     = f.submit 'Submit', class: 'btn btn-primary'
 
 :javascript
-  var rawCategories = #{@team.categories.to_json};
+  var rawCategories = #{render partial: 'teams/categories.json', locals: {categories: @team.categories} };
   ko.applyBindings(new ViewModel(rawCategories));
