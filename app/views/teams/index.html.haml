@@ -9,13 +9,18 @@
   %tbody
     - @teams.each do |team|
       %tr{class: @current_team == team ? 'info' : ''}
-        %td= link_to team.name, edit_team_path(team.id)
+        %td
+          = team.name
+          - if @current_team == team
+            %span.badge{title: 'Your team'}
+              %span.glyphicon.glyphicon-ok{'aria-hidden' => true}
         %td= locations_summary_for(team)
         %td
           .pull-right
-            - if @current_team == team
-              Your team
-            - else
+            - unless @current_team == team
               = link_to 'Use this team', select_team_path(team.id), class: 'btn btn-default btn-sm'
+            = link_to edit_team_path(team.id), class: 'btn btn-default btn-sm' do
+              %span.glyphicon.glyphicon-edit{'aria-hidden' => true}
+              Edit
 
-= link_to 'Create New Team', new_team_path, class: 'btn btn-default'
+= link_to 'Create New Team', new_team_path, class: 'btn btn-primary'

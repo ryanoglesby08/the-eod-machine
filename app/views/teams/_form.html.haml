@@ -51,6 +51,7 @@
 
   .form-group
     = f.submit 'Submit', class: 'btn btn-primary'
+    = link_to 'Cancel', teams_path, class: 'btn btn-danger'
 
 :javascript
   var rawCategories = #{render partial: 'teams/categories.json', locals: {categories: @team.categories} };
