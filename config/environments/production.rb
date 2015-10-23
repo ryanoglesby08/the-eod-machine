@@ -14,7 +14,16 @@ Rails.application.configure do
   config.consider_all_requests_local       = false
   config.action_controller.perform_caching = true
 
-  config.action_mailer.delivery_method = :sendmail
+  config.action_mailer.delivery_method = Settings.mailer.delivery_method.to_sym
+  config.action_mailer.smtp_settings = {
+    address:              Settings.mailer.smtp_settings.address,
+    port:                 Settings.mailer.smtp_settings.port,
+    domain:               Settings.mailer.smtp_settings.domain,
+    user_name:            Settings.mailer.smtp_settings.user_name,
+    password:             Settings.mailer.smtp_settings.password,
+    authentication:       Settings.mailer.smtp_settings.authentication,
+    enable_starttls_auto: Settings.mailer.smtp_settings.enable_starttls_auto
+  }
 
   # Enable Rack::Cache to put a simple HTTP cache in front of your application
   # Add `rack-cache` to your Gemfile before enabling this.

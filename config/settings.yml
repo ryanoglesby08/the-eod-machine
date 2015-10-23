@@ -1,0 +1,3 @@
+mailer:
+  delivery_method: :smtp
+  from: '"EOD Machine" <eod-machine@theeodmachine.local>'

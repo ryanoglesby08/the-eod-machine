@@ -27,7 +27,7 @@ describe EodMailer do
 
     expect(ActionMailer::Base.deliveries).to have(1).email
 
-    expect(email.from).to eq(['eod_machine@barclaycardus.com'])
+    expect(email.from).to eq(['eod-machine@theeodmachine.test'])
     expect(email.to).to eq(['eod@myteam.test'])
     expect(email.reply_to).to eq(['eod@myteam.test'])
     expect(email.subject).to eq('[EOD] New York | Oct 01')

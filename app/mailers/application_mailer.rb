@@ -1,4 +1,4 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: '"EOD Machine" <eod_machine@barclaycardus.com>'
+  default from: Settings.mailer.from
   layout 'mailer'
 end
