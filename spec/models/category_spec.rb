@@ -53,13 +53,28 @@ describe Category do
   end
 
   describe 'team' do
+    let(:team) { FactoryGirl.build(:team) }
+
     it 'is not valid when it does not have any categories' do
-      team = Team.new
+      team.categories = []
 
       is_valid = team.valid?
 
       expect(is_valid).to be_falsey
       expect(team.errors.messages[:categories]).to include("can't be blank")
+    end
+
+    it 'is not valid when multiple categories for the same team have the same name' do
+      2.times { team.categories.build(name: 'Some Name') }
+
+      is_valid = team.valid?
+
+      expect(is_valid).to be_falsey
+      expect(team.errors.messages[:'categories.name']).to include('has already been taken')
+      team.categories.each do |category|
+        expect(category.errors.messages[:name]).to include('has already been taken')
+      end
+
     end
   end
 end

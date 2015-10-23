@@ -51,5 +51,6 @@ TODO
 - ~~Don't install test dependencies with bundler for deployments~~
 - ~~Don't allow a team to be created/edited with no categories~~
 - ~~Fix error styling when invalid categories happens.~~
-- Fix validations for Category names to be scoped by team.
+- ~~Fix validations for Category names to be scoped by team.~~
 - ~~Move hardcoded config things to be injected/configured (like the FROM address for the mailer)~~
+- Allow editing/removal of eod entries
