@@ -52,4 +52,6 @@ group :development, :test do
 
   gem 'factory_girl_rails', '~> 4.0'
   gem 'faker', '~> 1.0'
+  gem 'konacha', '~> 3.7'
+  gem 'selenium-webdriver', '~> 2.4'
 end

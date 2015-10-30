@@ -3,11 +3,11 @@ function Category(data) {
 
   self.id = data.id;
   self.name = ko.observable(data.name);
-  self.errors = data.errors;
+  self.errors = data.errors || {};
   self.destroyMe = ko.observable(false);
 
   self.isNew = function() {
-    return self.id == undefined;
+    return self.id === undefined;
   };
 
   self.inputName = function(index, attribute) {

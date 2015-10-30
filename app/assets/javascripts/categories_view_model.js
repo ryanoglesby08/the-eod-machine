@@ -1,4 +1,4 @@
-function ViewModel(rawCategories) {
+function CategoriesViewModel(rawCategories) {
   var self = this;
 
   self.categories = ko.observableArray(categoriesFrom(rawCategories));
@@ -8,7 +8,7 @@ function ViewModel(rawCategories) {
   };
 
   self.removeCategory = function(category) {
-    if( category.id == undefined ) {
+    if( category.isNew() ) {
       self.categories.remove(category);
     }
     else {

@@ -10,3 +10,5 @@ require 'tasks/eod_delivery'
 task :deliver_eod => :environment do
   EodDelivery.go(Time.now.utc)
 end
+
+task :test => %w(spec konacha:run)

@@ -2,6 +2,7 @@ class Entry < ActiveRecord::Base
   belongs_to :team
 
   validates :author, presence: true
+  validates :content, presence: true
 
   scope :undelivered, -> { where(delivered: false) }
 
@@ -11,7 +12,7 @@ class Entry < ActiveRecord::Base
 
   def self.save_all(entries)
     Entry.transaction do
-      entries.each { |entry| entry.save }
+      entries.each { |entry| entry.save! }
     end
   end
 

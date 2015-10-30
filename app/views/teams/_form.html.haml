@@ -54,5 +54,5 @@
     = link_to 'Cancel', teams_path, class: 'btn btn-danger'
 
 :javascript
-  var rawCategories = #{render partial: 'teams/categories.json', locals: {categories: @team.categories} };
-  ko.applyBindings(new ViewModel(rawCategories));
+  var rawCategories = #{render partial: 'categories.json', locals: {categories: @team.categories} };
+  ko.applyBindings(new CategoriesViewModel(rawCategories));
