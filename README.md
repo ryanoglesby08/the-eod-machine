@@ -39,7 +39,7 @@ TODO
 - ~~Show error for author if left empty on submit~~
 - ~~Preserve contents and author if submit fails~~
 - Acceptance Testing
-- Allow multiple content entries for each category in a single submit
+- ~~Allow multiple content entries for each category in a single submit~~
 - ~~Better automation of deployment~~
 - ~~Support multiple/customizable teams and locations~~
 - ~~Support customizable categories per team~~
