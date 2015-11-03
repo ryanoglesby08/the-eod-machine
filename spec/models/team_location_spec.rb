@@ -43,6 +43,20 @@ describe TeamLocation do
 
     end
 
+    it 'must be at the 30 minute or hour' do
+      team_location = FactoryGirl.build(:team_location, eod_time: '7:23 PM')
+
+      expect(team_location).not_to be_valid
+      expect(team_location.errors.messages[:eod_time]).to be_present
+
+      ['7:30 AM', '12:00 PM'].each do |eod_time|
+        team_location = FactoryGirl.build(:team_location, eod_time: eod_time)
+
+        expect(team_location).to be_valid
+      end
+
+    end
+
     it 'converts to utc time' do
       team_location = FactoryGirl.build(:team_location, eod_time: '5:00 PM')
 

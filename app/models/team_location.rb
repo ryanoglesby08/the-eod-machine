@@ -3,7 +3,7 @@ class TeamLocation < ActiveRecord::Base
 
   validates :name, presence: true
   validates :time_zone, presence: true
-  validate :eod_time_must_be_valid_time
+  validate :eod_time_must_be_valid_time, :eod_time_must_be_at_valid_minute
 
   # TODO: Remove this behavior
   before_save :expand_eod_time
@@ -24,6 +24,15 @@ class TeamLocation < ActiveRecord::Base
       Time.parse(eod_time.to_s)
     rescue ArgumentError
       errors.add(:eod_time, 'must be a valid time')
+    end
+
+    def eod_time_must_be_at_valid_minute
+      time = Time.parse(eod_time.to_s)
+      unless time.round_to(30.minutes) == time
+        errors.add(:eod_time, 'must be at the 30 minute or hour mark')
+      end
+    rescue ArgumentError
+      # ignore, eod_time_must_be_valid_time validation will catch this
     end
 
     # TODO: Remove this behavior

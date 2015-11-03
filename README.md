@@ -46,7 +46,7 @@ TODO
 - Show time to next EOD delivery for the current team in the header
 - Show timeline of eod deliveries on create team page
 - ~~Use FactoryGirl~~
-- Better validation/input for EOD time
+- ~~Better validation/input for EOD time~~
 - Allow an arbitrary number of Team Locations
 - ~~Don't install test dependencies with bundler for deployments~~
 - ~~Don't allow a team to be created/edited with no categories~~
