@@ -14,7 +14,7 @@ describe TeamHelper do
     it 'summarizes team locations info' do
       locations_summary = locations_summary_for(team)
 
-      expect(locations_summary).to eq('NYC: 8:00 PM EDT | Pune: 7:00 PM IST')
+      expect(locations_summary).to be_one_of('NYC: 8:00 PM EDT | Pune: 7:00 PM IST', 'NYC: 8:00 PM EST | Pune: 7:00 PM IST')
     end
   end
 end

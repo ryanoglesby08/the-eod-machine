@@ -1,7 +1,10 @@
 require 'rails_helper'
 require 'tasks/eod_delivery'
+require 'support/time_helpers'
 
 describe EodDelivery do
+  include TimeHelpers
+
   before do
     ActionMailer::Base.deliveries.clear
   end
@@ -13,7 +16,8 @@ describe EodDelivery do
     before do
       ######## Create other team and entries ##############
 
-      FactoryGirl.create(:team_location, team: other_team, eod_time: '9:00 PM')
+      team_location = FactoryGirl.create(:team_location, team: other_team, eod_time: '9:00 PM')
+      allow(team_location).to receive(:eod_time_utc).and_return(utc_time_for('9:00 PM PDT'))
 
       story_updates = other_team.categories.where(name: 'Story Updates').first
       story_updates.entries.create(FactoryGirl.attributes_for(:entry,           team: other_team))
@@ -21,16 +25,19 @@ describe EodDelivery do
 
       ######## Create team and entries for eod update ##############
 
-      FactoryGirl.create(:new_york, team: team, eod_time: '8:00 PM')
+      nyc_team = FactoryGirl.create(:new_york, team: team, eod_time: '8:00 PM')
+      allow(nyc_team).to receive(:eod_time_utc).and_return(utc_time_for('8:00 PM EDT'))
 
       normal_business = team.categories.where(name: 'Normal Business').first
       normal_business.entries.create(FactoryGirl.attributes_for(:entry,           team: team))
       normal_business.entries.create(FactoryGirl.attributes_for(:entry,           team: team))
       normal_business.entries.create(FactoryGirl.attributes_for(:delivered_entry, team: team))
+
+      allow(TeamLocation).to receive(:includes).with(:team).and_return([team_location, nyc_team])
     end
 
     context 'for the 8:00 PM team location' do
-      let(:now_utc) { Time.parse('8:00 PM EDT').utc }
+      let(:now_utc) { utc_time_for('8:00 PM EDT') }
 
       it 'delivers an eod email to the team' do
         EodDelivery.go(now_utc)

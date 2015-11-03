@@ -5,13 +5,17 @@ class TeamLocation < ActiveRecord::Base
   validates :time_zone, presence: true
   validate :eod_time_must_be_valid_time
 
+  # TODO: Remove this behavior
   before_save :expand_eod_time
 
-  scope :with_eod_time_near, -> (utc_time) do
-    # Can probably do better rounding here with a time rounding gem
-    minute_rounded_to_nearest_half_hour = ((utc_time.min.to_f / 30.to_f).round * 30) % 60
+  def self.with_eod_time_near(team_locations, utc_time)
+    team_locations.select do |team_location|
+      team_location.eod_time_utc == utc_time.round_to(30.minutes)
+    end
+  end
 
-    where(eod_time_hour_utc: utc_time.hour, eod_time_minute_utc: minute_rounded_to_nearest_half_hour).includes(:team)
+  def eod_time_utc
+    ActiveSupport::TimeZone.new(time_zone).parse(eod_time).utc
   end
 
   private
@@ -22,6 +26,7 @@ class TeamLocation < ActiveRecord::Base
       errors.add(:eod_time, 'must be a valid time')
     end
 
+    # TODO: Remove this behavior
     def expand_eod_time
       utc_time = ActiveSupport::TimeZone.new(time_zone).parse(eod_time).utc
 

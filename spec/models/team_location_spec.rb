@@ -1,21 +1,26 @@
 require 'rails_helper'
+require 'support/time_helpers'
 
 describe TeamLocation do
+  include TimeHelpers
+
   describe '.with_eod_time_near' do
-    let(:nyc_team) { FactoryGirl.create(:new_york, eod_time: '8:00 PM') }
+    let(:nyc_team) { FactoryGirl.build(:new_york, eod_time: '8:00 PM') }
+    let(:hawaii_team) { FactoryGirl.build(:hawaii, eod_time: '6:00 PM') }
 
     before do
-      FactoryGirl.create(:hawaii, eod_time: '6:00 PM')
+      allow(nyc_team).to receive(:eod_time_utc).and_return(utc_time_for('8:00 PM EDT'))
+      allow(hawaii_team).to receive(:eod_time_utc).and_return(utc_time_for('6:00 PM PDT'))
     end
 
     it 'finds teams with a team location eod time at the specified time' do
-      team_locations = TeamLocation.with_eod_time_near(Time.parse('8:00 PM EDT').utc)
+      team_locations = TeamLocation.with_eod_time_near([nyc_team, hawaii_team], utc_time_for('8:00 PM EDT'))
 
       expect(team_locations).to contain_exactly(nyc_team)
     end
 
     it 'finds teams with an eod time near (to the nearest half hour) the specified time' do
-      team_locations = TeamLocation.with_eod_time_near(Time.parse('8:03 PM EDT').utc)
+      team_locations = TeamLocation.with_eod_time_near([nyc_team, hawaii_team], utc_time_for('8:03 PM EDT'))
 
       expect(team_locations).to contain_exactly(nyc_team)
     end
@@ -38,7 +43,14 @@ describe TeamLocation do
 
     end
 
-    it 'expands eod_time into multiple columns and converts to UTC upon saving' do
+    it 'converts to utc time' do
+      team_location = FactoryGirl.build(:team_location, eod_time: '5:00 PM')
+
+      expect(team_location.eod_time_utc).to be_one_of(utc_time_for('5:00 PM EST'), utc_time_for('5:00 PM EDT'))
+    end
+
+    # TODO: Remove this behavior
+    xit 'expands eod_time into multiple columns and converts to UTC upon saving' do
       team_location = FactoryGirl.create(:new_york, eod_time: '8:30 PM')
 
       expect(team_location.eod_time).to eq('8:30 PM')

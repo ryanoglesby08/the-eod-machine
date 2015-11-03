@@ -1,6 +1,6 @@
 module EodDelivery
   def self.go(now_utc)
-    locations_at_eod = TeamLocation.with_eod_time_near(now_utc)
+    locations_at_eod = TeamLocation.with_eod_time_near(TeamLocation.includes(:team), now_utc)
 
     entries = []
 
