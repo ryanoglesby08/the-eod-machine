@@ -54,4 +54,4 @@ TODO
 - ~~Fix validations for Category names to be scoped by team.~~
 - ~~Move hardcoded config things to be injected/configured (like the FROM address for the mailer)~~
 - Allow editing/removal of eod entries
-- Add team name to email subject line
+- ~~Add team name to email subject line~~

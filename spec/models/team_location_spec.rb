@@ -63,23 +63,6 @@ describe TeamLocation do
       expect(team_location.eod_time_utc).to be_one_of(utc_time_for('5:00 PM EST'), utc_time_for('5:00 PM EDT'))
     end
 
-    # TODO: Remove this behavior
-    xit 'expands eod_time into multiple columns and converts to UTC upon saving' do
-      team_location = FactoryGirl.create(:new_york, eod_time: '8:30 PM')
-
-      expect(team_location.eod_time).to eq('8:30 PM')
-      expect(team_location.eod_time_hour_utc).to eq(0)
-      expect(team_location.eod_time_minute_utc).to eq(30)
-
-      team_location.time_zone = 'Mumbai'
-      team_location.eod_time = '5:30 PM'
-      team_location.save
-
-      expect(team_location.eod_time).to eq('5:30 PM')
-      expect(team_location.eod_time_hour_utc).to eq(12)
-      expect(team_location.eod_time_minute_utc).to eq(0)
-    end
-
   end
 
 end

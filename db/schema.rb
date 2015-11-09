@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151009174929) do
+ActiveRecord::Schema.define(version: 20151109032029) do
 
   create_table "categories", force: :cascade do |t|
     t.string   "name"
@@ -35,8 +35,6 @@ ActiveRecord::Schema.define(version: 20151009174929) do
     t.string  "time_zone"
     t.string  "eod_time"
     t.integer "team_id"
-    t.integer "eod_time_hour_utc"
-    t.integer "eod_time_minute_utc"
   end
 
   create_table "teams", force: :cascade do |t|
