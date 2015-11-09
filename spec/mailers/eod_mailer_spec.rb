@@ -5,7 +5,7 @@ describe EodMailer do
     ActionMailer::Base.deliveries.clear
   end
 
-  let(:team) { FactoryGirl.build(:team, mailing_list: 'eod@myteam.test', category_names: %w(Stories Other)) }
+  let(:team) { FactoryGirl.build(:team, name: 'The Team', mailing_list: 'eod@myteam.test', category_names: %w(Stories Other)) }
   let(:team_location) { FactoryGirl.build(:new_york, eod_time: '9:00 PM', team: team) }
 
   let(:categories) do
@@ -30,7 +30,7 @@ describe EodMailer do
     expect(email.from).to eq(['eod-machine@theeodmachine.test'])
     expect(email.to).to eq(['eod@myteam.test'])
     expect(email.reply_to).to eq(['eod@myteam.test'])
-    expect(email.subject).to eq('[EOD] New York | Oct 01')
+    expect(email.subject).to eq('[EOD] The Team | New York | Oct 01')
 
     text_body = email.body.parts.first.body.to_s
     expect(text_body).to eq(File.read('spec/fixtures/eod_updates.txt'))
