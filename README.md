@@ -1,22 +1,11 @@
 # The EOD Machine
 
-To set up the environment:
----------------------------
-<pre>
-bundle install --path=vendor/bundle                             # Installs all the gem dependencies<br/>
-RAILS_ENV=production bundle exec rake db:create db:migrate      # Creates the database
-</pre>
+Deployment
+==========================
+Right now the deployment model is based on git. Check out the code on whatever server you want to run The EOD Machine on.
+Then just run `./deploy.sh`. This script will pull new code, set up the environment, and start the server using Rails.
 
-
-To start the server:
--------------------------
-<pre>
-RAILS_ENV=production bundle exec rake assets:precompile
-SECRET_KEY_BASE=&lt;secret_key&gt; RAILS_ENV=production RAILS_SERVE_STATIC_FILES=true bundle exec rails server -b &lt;bind_to_ip_address&gt; -d
-</pre>
-
-
-To start the cron jobs:
+Useful commands with the cron job scheduler:
 -------------------------
 <pre>
 # Jobs are defined in config/schedule.rb
@@ -25,12 +14,6 @@ crontab -l                  # Lists the current cron jobs
 bundle exec whenever        # Lists the new cron jobs for the eod machine app
 bundle exec whenever -w     # Adds new cron jobs to crontab
 crontab -l                  # Should see the new cron jobs there
-</pre>
-
-To test email:
-------------------------
-<pre>
-bundle exec rake deliver_eod[&lt;team_name&gt;]
 </pre>
 
 
