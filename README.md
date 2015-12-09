@@ -52,4 +52,4 @@ TODO
 - ~~Move hardcoded config things to be injected/configured (like the FROM address for the mailer)~~
 - Allow editing/removal of eod entries
 - ~~Add team name to email subject line~~
-- Allow uploading images to the EOd update
+- Allow uploading images to the EOD update
