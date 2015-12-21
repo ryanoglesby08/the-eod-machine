@@ -14,7 +14,7 @@
 
 @import "bootstrap-sprockets";
 @import "bootstrap";
-
+@import "bootstrap-slider.min";
 
 form {
   .field_with_errors {
@@ -36,4 +36,21 @@ form {
 .add-category {
   border-style: dashed;
   color: grey;
+}
+
+
+
+.slider.slider-horizontal {
+  width: 100%;
+  margin-bottom: 2em !important;
+}
+
+$tick_rotation: 45.0deg;
+.slider-tick-label {
+  font-size: 0.75em;
+
+  -moz-transform: rotate($tick_rotation);
+  -o-transform: rotate($tick_rotation);
+  -webkit-transform: rotate($tick_rotation);
+  transform: rotate($tick_rotation);
 }

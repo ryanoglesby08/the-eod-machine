@@ -9,50 +9,65 @@
     = f.label :mailing_list
     = f.text_field :mailing_list, class: 'form-control'
 
-  %h2 Locations
+  #ko_locations
+    %h2 Locations
 
-  = f.fields_for :team_locations do |location_fields|
-    .form-inline.form-group
-      .form-group
-        = location_fields.label :name
-        = location_fields.text_field :name, class: 'form-control'
+    = f.fields_for :team_locations do |location_fields|
+      %div{'data-bind' => "with: teamLocations[#{location_fields.index}]"}
+        .form-inline.form-group
+          .form-group
+            = location_fields.label :name
+            = location_fields.text_field :name, class: 'form-control'
 
-      .form-group
-        = location_fields.label :time_zone
-        = location_fields.time_zone_select :time_zone
+          .form-group
+            = location_fields.label :time_zone
+            = location_fields.time_zone_select :time_zone, nil, {}, 'data-bind' => 'value: timeZone, event: {change: $parent.timeZoneChanged}'
 
-      .form-group
-        = location_fields.label :eod_time
-        = location_fields.select :eod_time, eod_times
+        .form-group
+          = location_fields.hidden_field :eod_time, 'data-bind' => 'value: eodTime'
+          %input.time-zone-slider{id: "eod_time_slider-#{location_fields.index}",
+                                  'data-bind' => 'value: eodTime24Hour'}
 
-  %h2 Categories
+  #ko_categories
+    %h2 Categories
 
-  <!-- ko foreach: categories -->
-  .form-group{'data-bind' => 'visible: !destroyMe()'}
-    .input-group{'data-bind' => 'css: classNameFor("name")'}
-      %input{type: 'text', class: 'form-control', 'data-bind' => 'value: name, attr: {name: inputName($index(), "name")}'}
-      %span.input-group-btn
-        = button_tag(type: 'button', class: 'btn btn-danger', 'aria-label' => 'Remove',
-                     'data-bind' => 'click: $parent.removeCategory') do
-          %span.glyphicon.glyphicon-trash{'aria-hidden' => true}
+    <!-- ko foreach: categories -->
+    .form-group{'data-bind' => 'visible: !destroyMe()'}
+      .input-group{'data-bind' => 'css: classNameFor("name")'}
+        %input{type: 'text', class: 'form-control', 'data-bind' => 'value: name, attr: {name: inputName($index(), "name")}'}
+        %span.input-group-btn
+          = button_tag(type: 'button', class: 'btn btn-danger', 'aria-label' => 'Remove',
+                       'data-bind' => 'click: $parent.removeCategory') do
+            %span.glyphicon.glyphicon-trash{'aria-hidden' => true}
 
-    <!-- ko if: !isNew() -->
-    %input{type: 'hidden', 'data-bind' => 'value: id, attr: {name: inputName($index(), "id")}'}
+      <!-- ko if: !isNew() -->
+      %input{type: 'hidden', 'data-bind' => 'value: id, attr: {name: inputName($index(), "id")}'}
+      <!-- /ko -->
+      <!-- ko if: destroyMe -->
+      %input{type: 'hidden', 'data-bind' => 'value: destroyMe, attr: {name: inputName($index(), "_destroy")}'}
+      <!-- /ko -->
     <!-- /ko -->
-    <!-- ko if: destroyMe -->
-    %input{type: 'hidden', 'data-bind' => 'value: destroyMe, attr: {name: inputName($index(), "_destroy")}'}
-    <!-- /ko -->
-  <!-- /ko -->
 
-  .form-group
-    = button_tag(type: 'button', class: 'btn btn-default btn-block add-category', 'aria-label' => 'Add',
-                 'data-bind' => 'click: addCategory') do
-      %span.glyphicon.glyphicon-plus{'aria-hidden' => true}
+    .form-group
+      = button_tag(type: 'button', class: 'btn btn-default btn-block add-category', 'aria-label' => 'Add',
+                   'data-bind' => 'click: addCategory') do
+        %span.glyphicon.glyphicon-plus{'aria-hidden' => true}
 
-  .form-group
-    = f.submit 'Submit', class: 'btn btn-primary'
-    = link_to 'Cancel', teams_path, class: 'btn btn-danger'
+    .form-group
+      = f.submit 'Submit', class: 'btn btn-primary'
+      = link_to 'Cancel', teams_path, class: 'btn btn-danger'
 
 :javascript
-  var rawCategories = #{render partial: 'categories.json', locals: {categories: @team.categories} };
-  ko.applyBindings(new CategoriesViewModel(rawCategories));
+  $(function() {
+    var ticks = #{eod_times_ticks.to_json};
+    var timeZones = #{ActiveSupport::TimeZone::MAPPING.to_json};
+
+    var rawTeamLocations = #{render partial: 'team_locations.json', locals: {team_locations: @team.team_locations} };
+
+    var teamLocationsViewModel = new TeamLocationsViewModel(rawTeamLocations, timeZones, ticks)
+    ko.applyBindings(teamLocationsViewModel, document.getElementById('ko_locations'));
+    teamLocationsViewModel.timeZoneChanged();
+
+    var rawCategories = #{render partial: 'categories.json', locals: {categories: @team.categories} };
+    ko.applyBindings(new CategoriesViewModel(rawCategories), document.getElementById('ko_categories'));
+  });

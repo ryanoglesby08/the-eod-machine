@@ -13,7 +13,7 @@ class Team < ActiveRecord::Base
 
   def self.build_with_defaults(number_of_locations, category_names)
     Team.new.tap do |team|
-      number_of_locations.times { team.team_locations.build }
+      number_of_locations.times { team.team_locations.build(eod_time: '6:00 PM') }
       team.categories = category_names.map { |name| Category.new(name: name) }
     end
   end

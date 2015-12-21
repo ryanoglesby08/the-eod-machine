@@ -14,4 +14,7 @@
 //= require jquery_ujs
 //= require turbolinks
 //= require knockout
+//= require bootstrap-slider.min
+//= require moment
+//= require moment-timezone-with-data.min
 //= require_tree .
