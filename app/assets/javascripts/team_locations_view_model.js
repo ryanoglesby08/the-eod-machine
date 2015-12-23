@@ -1,20 +1,17 @@
-function TeamLocationsViewModel(rawTeamLocations, timeZones, ticks) {
+function TeamLocationsViewModel(rawTeamLocations, time, sliderBuilder) {
   var self = this;
 
   self.teamLocations = initializeTeamLocationsFrom(rawTeamLocations);
 
   self.timeZoneChanged = function () {
-    var firstFriendlyTimeZone = self.teamLocations[0].timeZone();
-    var firstMomentTimeZone = timeZones[firstFriendlyTimeZone];
-
-    var firstOffset = moment.tz.zone(firstMomentTimeZone).offset(new Date());
+    var firstTeamLocationFriendlyTimeZone = self.teamLocations[0].timeZone();
 
     self.teamLocations.forEach(function(teamLocation) {
-      teamLocation.layoutSlider(firstOffset, timeZones, ticks);
+      teamLocation.layoutSlider(sliderBuilder, firstTeamLocationFriendlyTimeZone);
     });
   };
 
   function initializeTeamLocationsFrom(rawTeamLocations) {
-    return rawTeamLocations.map(function (teamLocation, index) { return new TeamLocation(teamLocation, index, ticks); });
+    return rawTeamLocations.map(function (teamLocation) { return new TeamLocation(teamLocation, time); });
   }
 }

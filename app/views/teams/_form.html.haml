@@ -21,12 +21,14 @@
 
           .form-group
             = location_fields.label :time_zone
-            = location_fields.time_zone_select :time_zone, nil, {}, 'data-bind' => 'value: timeZone, event: {change: $parent.timeZoneChanged}'
+            = location_fields.time_zone_select :time_zone, nil, {}, class: 'form-control', 'data-bind' => 'value: timeZone, event: {change: $parent.timeZoneChanged}'
+
+          .form-group
+            = location_fields.label :eod_time
+            = location_fields.text_field :eod_time, readonly: true, class: 'form-control', 'data-bind' => 'value: eodTime'
 
         .form-group
-          = location_fields.hidden_field :eod_time, 'data-bind' => 'value: eodTime'
-          %input.time-zone-slider{id: "eod_time_slider-#{location_fields.index}",
-                                  'data-bind' => 'value: eodTime24Hour'}
+          %input.time-zone-slider{'data-bind' => 'value: eodTime24Hour, attr: {id: eodTimeSliderElementId}'}
 
   #ko_categories
     %h2 Categories
@@ -60,14 +62,20 @@
 :javascript
   $(function() {
     var ticks = #{eod_times_ticks.to_json};
-    var timeZones = #{ActiveSupport::TimeZone::MAPPING.to_json};
-
+    var friendlyToRealTimeZoneMap = #{ActiveSupport::TimeZone::MAPPING.to_json};
     var rawTeamLocations = #{render partial: 'team_locations.json', locals: {team_locations: @team.team_locations} };
 
-    var teamLocationsViewModel = new TeamLocationsViewModel(rawTeamLocations, timeZones, ticks)
-    ko.applyBindings(teamLocationsViewModel, document.getElementById('ko_locations'));
-    teamLocationsViewModel.timeZoneChanged();
+    var time = timeFunctions(friendlyToRealTimeZoneMap);
+    var sliderBuilder = new SliderBuilder(time, ticks);
+    var teamLocationsViewModel = new TeamLocationsViewModel(rawTeamLocations, time, sliderBuilder)
 
+    ko.applyBindings(teamLocationsViewModel, document.getElementById('ko_locations'));
+
+    teamLocationsViewModel.timeZoneChanged();
+  });
+
+:javascript
+  $(function() {
     var rawCategories = #{render partial: 'categories.json', locals: {categories: @team.categories} };
     ko.applyBindings(new CategoriesViewModel(rawCategories), document.getElementById('ko_categories'));
   });
