@@ -36,12 +36,12 @@ TODO
 -------------------------
 - ~~Show error for author if left empty on submit~~
 - ~~Preserve contents and author if submit fails~~
-- Acceptance Testing
+- Acceptance/functional UI Testing?
 - ~~Allow multiple content entries for each category in a single submit~~
 - ~~Better automation of deployment~~
 - ~~Support multiple/customizable teams and locations~~
 - ~~Support customizable categories per team~~
-- Show timeline of eod delivery times on create/edit team page
+- ~~Show timeline of eod delivery times on create/edit team page~~
 - ~~Use FactoryGirl~~
 - ~~Better validation/input for EOD time~~
 - Allow an arbitrary number of Team Locations
@@ -53,3 +53,6 @@ TODO
 - Allow editing/removal of eod entries
 - ~~Add team name to email subject line~~
 - Allow uploading images to the EOD update
+- Preserve formatting of EOD entries (line breaks, etc)
+- Rich text for EOD entries?
+- Responsive behavior for EOD time slider
