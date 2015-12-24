@@ -1,0 +1,24 @@
+{
+  "name": "the_eod_machine",
+  "homepage": "https://github.com/ryanoglesby08/the-eod-machine",
+  "authors": [
+    "Ryan Oglesby <ryan.oglesby08@gmail.com>"
+  ],
+  "description": "",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "knockout": "~3.3.0",
+    "seiyria-bootstrap-slider": "~5.2.6",
+    "moment-timezone": "~0.4.1"
+  }
+}

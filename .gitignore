@@ -19,8 +19,9 @@
 .idea
 
 vendor/bundle
-
 public
+node_modules
+bower_components
 
 config/settings.local.yml
 config/settings/*.local.yml
