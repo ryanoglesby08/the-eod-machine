@@ -4,18 +4,28 @@ function SliderBuilder(time, ticks) {
       return time.momentTime(time12HourFormatted).minute() === 0 ? time12HourFormatted : "";
     };
 
+    var buildLabels = function (time12HourFormatted) {
+      if (time12HourFormatted === "") {
+        return time12HourFormatted;
+      }
+
+      var momentTime = time.momentTime(time12HourFormatted);
+      return momentTime.format('h') + "<br />" + momentTime.format('A');
+    };
+
     return ticks
       .map(time.to12HourTime)
-      .map(replace30MinutesWithBlanks);
+      .map(replace30MinutesWithBlanks)
+      .map(buildLabels);
   };
 
-  var shiftTicks = function (hoursShift) {
+  var shiftTicksBy = function (hoursShift) {
     return ticks.map(function (tick) { return tick + hoursShift; });
   };
 
 
   function build(hoursShift, elementSelector, value) {
-    var shiftedTicks = shiftTicks(hoursShift);
+    var shiftedTicks = shiftTicksBy(hoursShift);
 
     return new Slider(elementSelector, {
       value: parseFloat(value),

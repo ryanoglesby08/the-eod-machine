@@ -18,7 +18,7 @@ describe('Slider Builder', function () {
 
     expect(slider.getValue()).to.equal(17);
     expect(slider.getAttribute('ticks')).to.eql([15, 15.5, 16, 16.5, 17]);
-    expect(slider.getAttribute('ticks_labels')).to.eql(['3:00 PM', '', '4:00 PM', '', '5:00 PM']);
+    expect(slider.getAttribute('ticks_labels')).to.eql(['3<br />PM', '', '4<br />PM', '', '5<br />PM']);
   });
 
   it('wraps ticks labels', function() {
@@ -28,6 +28,6 @@ describe('Slider Builder', function () {
 
     expect(slider.getValue()).to.equal(27.5);
     expect(slider.getAttribute('ticks')).to.eql([27.5, 28, 28.5]);
-    expect(slider.getAttribute('ticks_labels')).to.eql(['', '4:00 AM', '']);
+    expect(slider.getAttribute('ticks_labels')).to.eql(['', '4<br />AM', '']);
   });
 });

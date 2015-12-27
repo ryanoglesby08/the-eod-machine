@@ -38,19 +38,11 @@ form {
   color: grey;
 }
 
-
-
 .slider.slider-horizontal {
   width: 100%;
-  margin-bottom: 2em !important;
-}
+  margin-bottom: 3em !important;
 
-$tick_rotation: 45.0deg;
-.slider-tick-label {
-  font-size: 0.75em;
-
-  -moz-transform: rotate($tick_rotation);
-  -o-transform: rotate($tick_rotation);
-  -webkit-transform: rotate($tick_rotation);
-  transform: rotate($tick_rotation);
+  .slider-tick-label {
+    font-size: 0.8em;
+  }
 }
