@@ -25,9 +25,10 @@
 
           .form-group
             = location_fields.label :eod_time
-            = location_fields.text_field :eod_time, readonly: true, class: 'form-control', 'data-bind' => 'value: eodTime'
+            = location_fields.text_field :eod_time, readonly: true, class: 'form-control visible-lg-inline', 'data-bind' => 'value: eodTime'
+            = location_fields.select :eod_time, eod_times, {}, class: 'form-control hidden-lg', 'data-bind' => 'value: eodTime'
 
-        .form-group
+        .form-group.visible-lg-block
           %input.time-zone-slider{'data-bind' => 'value: eodTime24Hour, attr: {id: eodTimeSliderElementId}'}
 
   #ko_categories

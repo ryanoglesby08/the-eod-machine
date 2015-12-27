@@ -55,4 +55,4 @@ TODO
 - Allow uploading images to the EOD update
 - Preserve formatting of EOD entries (line breaks, etc)
 - Rich text for EOD entries?
-- Responsive behavior for EOD time slider
+- ~~Responsive behavior for EOD time slider~~
