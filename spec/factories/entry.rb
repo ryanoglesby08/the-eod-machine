@@ -4,8 +4,11 @@ FactoryGirl.define do
     content { Faker::Lorem.sentence }
     delivered false
 
-    team nil
     category_id 0
+
+    before(:create) do |entry|
+      entry.team = FactoryGirl.create(:team) if entry.team.nil?
+    end
   end
 
   factory :delivered_entry, parent: :entry do

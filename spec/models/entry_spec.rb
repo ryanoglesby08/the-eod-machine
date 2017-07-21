@@ -5,10 +5,6 @@ describe Entry do
     let!(:deliver_these) { [FactoryGirl.create(:entry), FactoryGirl.create(:entry)] }
     let!(:do_not_deliver) { FactoryGirl.create(:entry) }
 
-    before do
-
-    end
-
     it 'marks only the given entries as delivered' do
       Entry.mark_as_delivered(deliver_these)
 

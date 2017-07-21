@@ -15,7 +15,7 @@ class EodUpdate
 
   def self.build(author, content_by_category, team_id)
     entries = content_by_category.flat_map do |category_id, attributes_array|
-      attributes_array.map { |attrs| Entry.new(author: author, content: attrs[:content], category_id: category_id, team_id: team_id) }
+      attributes_array.map { |attrs| Entry.new(author: author, content: attrs['content'], category_id: category_id, team_id: team_id) }
     end
 
     EodUpdate.new(author: author, entries: entries)

@@ -2,33 +2,33 @@ require 'rails_helper'
 
 describe Category do
   describe '.with_undelivered_entries_for_team' do
-    let(:team_id_one) { 1 }
-    let(:team_id_two) { 2 }
+    let(:team_one) { FactoryGirl.create(:team) }
+    let(:team_two) { FactoryGirl.create(:team) }
 
-    let(:category) { Category.create(name: 'Business Stuff', team_id: team_id_one) }
-    let(:another_category) { Category.create(name: 'More Things', team_id: team_id_one) }
+    let(:category) { FactoryGirl.create(:category, team: team_one) }
+    let(:another_category) { FactoryGirl.create(:category, team: team_one) }
 
     before do
-      Category.create(name: 'Empty Category', team_id: team_id_two)
+      FactoryGirl.create(:category, name: 'Empty Category', team: team_two)
 
-      category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team_id_one))
-      category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team_id_one))
-      another_category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team_id_one))
+      category.entries.create(FactoryGirl.attributes_for(:entry, team: team_one))
+      category.entries.create(FactoryGirl.attributes_for(:entry, team: team_one))
+      another_category.entries.create(FactoryGirl.attributes_for(:entry, team: team_one))
 
-      category.entries.create(FactoryGirl.attributes_for(:entry, team_id: team_id_two))
-      category.entries.create(FactoryGirl.attributes_for(:delivered_entry, team_id: team_id_two))
+      category.entries.create(FactoryGirl.attributes_for(:entry, team: team_two))
+      category.entries.create(FactoryGirl.attributes_for(:delivered_entry, team: team_two))
     end
 
     it 'scopes categories with entries by team' do
-      team_one_categories = Category.with_undelivered_entries_for_team(team_id_one)
+      team_one_categories = Category.with_undelivered_entries_for_team(team_one.id)
       expect(team_one_categories).to contain_exactly(category, another_category)
 
-      team_two_categories = Category.with_undelivered_entries_for_team(team_id_two)
+      team_two_categories = Category.with_undelivered_entries_for_team(team_two.id)
       expect(team_two_categories).to contain_exactly(category)
     end
 
     it 'does not include delivered entries' do
-      categories = Category.with_undelivered_entries_for_team(team_id_two)
+      categories = Category.with_undelivered_entries_for_team(team_two.id)
 
       expect(categories.first.entries).to have(1).entry
     end
@@ -42,7 +42,8 @@ describe Category do
 
     before do
       category.entries.create( FactoryGirl.attributes_for(:delivered_entry, team_id: team.id))
-      FactoryGirl.create(:entry, team_id: 99)
+
+      FactoryGirl.create(:entry)
     end
 
     it 'fetches undelivered entries for a team' do
@@ -53,7 +54,7 @@ describe Category do
   end
 
   describe 'team' do
-    let(:team) { FactoryGirl.build(:team) }
+    let(:team) { FactoryGirl.build(:team, category_names: []) }
 
     it 'is not valid when it does not have any categories' do
       team.categories = []

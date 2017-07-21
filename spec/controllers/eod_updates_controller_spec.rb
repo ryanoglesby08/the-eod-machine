@@ -7,18 +7,23 @@ describe EodUpdatesController do
 
   describe '#create' do
     before do
+      FactoryGirl.create(:team, id: 10)
       select_team('10')
     end
 
     it 'creates an eod update with multiple entries' do
       expect {
-        post :create, eod_update: {author: 'Ryan',
-                                   team_id: '10',
-                                   entries: {
-                                     '1' => [{content: 'I have an update'}, {content: 'And another one'}],
-                                     '3' => [{content: 'Something else'}],
-                                     '6' => [{content: ''}]
-                                   }}
+        post :create, params: {
+                        eod_update: {
+                          author: 'Ryan',
+                          team_id: '10',
+                          entries: {
+                            '1' => [{content: 'I have an update'}, {content: 'And another one'}],
+                            '3' => [{content: 'Something else'}],
+                            '6' => [{content: ''}]
+                          }
+                        }
+                      }
       }.to change{ Entry.count }.by(3)
 
       entries = Entry.all

@@ -4,7 +4,7 @@ FactoryGirl.define do
     mailing_list { Faker::Internet.safe_email }
 
     transient do
-      category_names []
+      category_names ["Some Category", "Another Category"]
     end
 
     categories { [category_names].flatten.map { |category_name| FactoryGirl.build(:category, name: category_name) } }

@@ -33,5 +33,5 @@
   = f.submit 'Submit', class: 'btn btn-primary'
 
 :javascript
-  var rawEntriesByCategory = #{@eod_update.entries_by_category.to_json};
+  var rawEntriesByCategory = #{raw(@eod_update.entries_by_category.to_json)};
   ko.applyBindings(new EodUpdatesViewModel(rawEntriesByCategory));

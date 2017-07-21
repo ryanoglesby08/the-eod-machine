@@ -7,11 +7,11 @@ describe EodUpdate do
 
   describe '.build' do
     let(:content_by_category) do
-      HashWithIndifferentAccess.new(
+      {
         '1' => [{'content' => 'first update'}, {'content' => 'second update'}],
         '2' => [{'content' => 'third update'}],
         '3' => [{'content' => ''}]
-      )
+      }
     end
 
     it 'initializes an EOD Update from form params' do

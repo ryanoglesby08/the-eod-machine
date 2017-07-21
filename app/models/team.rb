@@ -1,4 +1,4 @@
-class Team < ActiveRecord::Base
+class Team < ApplicationRecord
   has_many :team_locations
   has_many :entries
   has_many :categories

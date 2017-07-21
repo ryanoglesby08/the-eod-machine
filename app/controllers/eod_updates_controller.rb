@@ -1,17 +1,17 @@
 class EodUpdatesController < ApplicationController
-  before_filter :ensure_team_selected
+  before_action :ensure_team_selected
 
   def new
     @categories = @current_team.categories
 
-    entries = @categories.map { |category | Entry.new(category_id: category.id) }
+    entries = @categories.map { |category| Entry.new(category_id: category.id) }
     @eod_update = EodUpdate.new(entries: entries)
   end
 
   def create
-    eod_update_params = params[:eod_update]
+    create_params = eod_update_params
 
-    eod_update = EodUpdate.build(eod_update_params[:author], eod_update_params[:entries], eod_update_params[:team_id])
+    eod_update = EodUpdate.build(create_params[:author], create_params[:entries].to_h, create_params[:team_id])
 
     unless eod_update.valid?
       @categories = @current_team.categories
@@ -29,5 +29,11 @@ class EodUpdatesController < ApplicationController
 
   def ensure_team_selected
     redirect_to(teams_path, alert: 'You must select a team first.') unless team_selected?
+  end
+
+  private
+
+  def eod_update_params
+    params.require(:eod_update).permit!
   end
 end

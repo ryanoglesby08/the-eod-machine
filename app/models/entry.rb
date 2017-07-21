@@ -1,4 +1,4 @@
-class Entry < ActiveRecord::Base
+class Entry < ApplicationRecord
   belongs_to :team
 
   validates :author, presence: true

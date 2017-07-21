@@ -62,9 +62,9 @@
 
 :javascript
   $(function() {
-    var ticks = #{eod_times_ticks.to_json};
-    var friendlyToRealTimeZoneMap = #{ActiveSupport::TimeZone::MAPPING.to_json};
-    var rawTeamLocations = #{render partial: 'team_locations.json', locals: {team_locations: @team.team_locations} };
+    var ticks = #{raw(eod_times_ticks.to_json)};
+    var friendlyToRealTimeZoneMap = #{raw(ActiveSupport::TimeZone::MAPPING.to_json)};
+    var rawTeamLocations = #{ raw(render partial: 'team_locations.json', locals: {team_locations: @team.team_locations}) };
 
     var time = timeFunctions(friendlyToRealTimeZoneMap);
     var sliderBuilder = new SliderBuilder(time, ticks);
@@ -77,6 +77,6 @@
 
 :javascript
   $(function() {
-    var rawCategories = #{render partial: 'categories.json', locals: {categories: @team.categories} };
+    var rawCategories = #{ raw(render partial: 'categories.json', locals: {categories: @team.categories}) };
     ko.applyBindings(new CategoriesViewModel(rawCategories), document.getElementById('ko_categories'));
   });

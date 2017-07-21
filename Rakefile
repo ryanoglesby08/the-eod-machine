@@ -11,4 +11,4 @@ task :deliver_eod => :environment do
   EodDelivery.go(Time.now.utc)
 end
 
-task :test => %w(spec konacha:run)
+task 'test:all' => %w(spec teaspoon)

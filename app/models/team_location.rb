@@ -1,4 +1,4 @@
-class TeamLocation < ActiveRecord::Base
+class TeamLocation < ApplicationRecord
   belongs_to :team
 
   validates :name, presence: true
