@@ -10,7 +10,7 @@ gem 'whenever', '~> 0.9'
 gem 'rounding', '~> 1.0'
 
 gem 'jbuilder', '~> 2.7'
-gem 'haml-rails', '~> 1.0'
+gem 'haml', '~> 5.0'
 
 gem 'sass-rails', '~> 5.0'
 gem 'bootstrap-sass', '~> 3.3'
