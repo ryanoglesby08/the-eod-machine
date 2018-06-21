@@ -1,4 +1,4 @@
-class AddEodTimePartsToTeamLocations < ActiveRecord::Migration
+class AddEodTimePartsToTeamLocations < ActiveRecord::Migration[5.2]
   def change
     change_table :team_locations do |t|
       t.integer :eod_time_hour_utc

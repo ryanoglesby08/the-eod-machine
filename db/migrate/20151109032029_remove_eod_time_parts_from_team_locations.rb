@@ -1,4 +1,4 @@
-class RemoveEodTimePartsFromTeamLocations < ActiveRecord::Migration
+class RemoveEodTimePartsFromTeamLocations < ActiveRecord::Migration[5.2]
   def change
     change_table :team_locations do |t|
       t.remove :eod_time_hour_utc

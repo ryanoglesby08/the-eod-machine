@@ -1,4 +1,4 @@
-class SeedCategories < ActiveRecord::Migration
+class SeedCategories < ActiveRecord::Migration[5.2]
   def up
     ['Business as Usual', 'Story Movements', 'Open Questions', 'Blockers', 'Action Items', 'Other'].each do |name|
       execute <<-SQL

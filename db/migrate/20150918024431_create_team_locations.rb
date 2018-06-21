@@ -1,4 +1,4 @@
-class CreateTeamLocations < ActiveRecord::Migration
+class CreateTeamLocations < ActiveRecord::Migration[5.2]
   def change
     create_table :team_locations do |t|
       t.string :name

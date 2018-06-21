@@ -1,4 +1,4 @@
-class AddTeamIdToEntries < ActiveRecord::Migration
+class AddTeamIdToEntries < ActiveRecord::Migration[5.2]
   def change
     change_table :entries do |t|
       t.references :team
