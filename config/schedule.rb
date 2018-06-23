@@ -19,6 +19,9 @@
 
 # Learn more: http://github.com/javan/whenever
 
+# Not sure why this is needed, but it makes the cron work in Docker. https://github.com/javan/whenever/issues/656. :shrug
+ENV.each { |k, v| env(k, v) }
+
 every '0,30 * * * *' do # every hour and 30 minute
   rake 'deliver_eod'
 end

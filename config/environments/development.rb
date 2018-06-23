@@ -29,7 +29,10 @@ Rails.application.configure do
   # Don't care if the mailer can't send.
   config.action_mailer.raise_delivery_errors = false
 
+  # Ignore bad email addresses and do not raise email delivery errors.
+  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   config.action_mailer.perform_caching = false
+  
   config.action_mailer.delivery_method = Settings.mailer.delivery_method.to_sym
   config.action_mailer.smtp_settings = {
     address:              Settings.mailer.smtp_settings.address,

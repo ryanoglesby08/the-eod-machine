@@ -1,0 +1,14 @@
+.idea
+.bundle
+.byebug_history
+
+db/*.sqlite3
+
+log/
+tmp/
+
+vendor/bundle
+node_modules
+bower_components
+
+**/*.local.yml

@@ -39,3 +39,8 @@ group :development, :test do
   gem 'teaspoon-mocha', '~> 2.3.3'
   gem 'phantomjs', '~> 2.1.1'
 end
+
+group :docker do
+  # Docker container needs a JS runtime
+  gem 'therubyracer', '~> 0.12'
+end
