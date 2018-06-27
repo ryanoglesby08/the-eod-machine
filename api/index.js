@@ -26,15 +26,7 @@ const schema = makeExecutableSchema({
 const PORT = 4000
 
 const app = express()
-//
-// // CORS
-// app.use(function(req, res, next) {
-//     res.header("Access-Control-Allow-Origin", "*");
-//     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-//     next();
-// });
 
-// bodyParser is needed just for POST.
 app.use('/api/graphql', cors(), bodyParser.json(), graphqlExpress({ schema }))
 app.get('/api/graphiql', graphiqlExpress({ endpointURL: '/api/graphql' })) // if you want GraphiQL enabled
 
