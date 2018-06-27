@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "workspaces": [
+    "api",
+    "emailer",
+    "ui"
+  ],
+  "devDependencies": {
+    "prettier": "^1.13.6"
+  }
+}
