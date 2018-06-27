@@ -1,0 +1,14 @@
+version: '3'
+services:
+  ui:
+    build: ./ui
+    ports:
+     - "3000:3000"
+  api:
+    build: ./api
+    ports:
+     - "4000:4000"
+  emailer:
+    build: ./emailer
+    environment:
+      - APP_ENV=production
