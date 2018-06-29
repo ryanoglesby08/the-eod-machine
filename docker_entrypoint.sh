@@ -2,10 +2,8 @@
 
 set -e
 
-# Start cron for email scheduling
-/etc/init.d/cron start
+# Start supercronic for email scheduling
+supercronic ./crontab &
 
 # Start main web app
 exec bin/rails server
-
-exec "$@"

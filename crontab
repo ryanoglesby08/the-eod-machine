@@ -1,0 +1,1 @@
+0,30 * * * * /bin/bash -l -c 'RAILS_ENV=production bundle exec rake deliver_eod --silent'
