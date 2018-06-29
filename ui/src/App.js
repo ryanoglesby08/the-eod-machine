@@ -6,7 +6,7 @@ import { Query } from 'react-apollo'
 import logo from './logo.svg'
 import './App.css'
 
-const SAY_HELLO = gql`
+export const query = gql`
   {
     hello {
       message
@@ -15,7 +15,7 @@ const SAY_HELLO = gql`
 `
 
 const App = () => (
-  <Query query={SAY_HELLO}>
+  <Query query={query}>
     {({ loading, error, data }) => {
       if (loading) return 'Loading...'
       if (error) return `Error! ${error.message}`
