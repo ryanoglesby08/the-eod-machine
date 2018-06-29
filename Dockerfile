@@ -26,8 +26,7 @@ RUN curl -fsSLO "$SUPERCRONIC_URL" \
 RUN mkdir -p /home/eodmachine
 
 # Create an app user so EOD machine doesn't run as root
-RUN groupadd -r eodmachine &&\
-    useradd -r -g eodmachine -d /home/eodmachine -s /sbin/nologin -c "Docker image user" eodmachine
+RUN useradd --system --gid root --home /home/eodmachine --comment "Docker image user" eodmachine
 
 # Set the home directory app user's home
 ENV HOME=/home/eodmachine
@@ -43,14 +42,16 @@ RUN bundle install --with docker --without development test
 
 COPY . .
 
-RUN chown -R eodmachine:eodmachine $APP_HOME
-
-USER eodmachine
-
 ENV RAILS_ENV=production RAILS_SERVE_STATIC_FILES=true RAILS_LOG_TO_STDOUT=true \
     SMTP_AUTHENTICATION=login SMTP_ENABLE_STARTTLS_AUTO=true \
     SECRET_KEY_BASE=overrideme
 
 RUN bin/rails db:migrate assets:precompile
+
+# Ensure the app directory is group read/writable
+RUN chmod g+rwx -R $APP_HOME
+RUN chown -R eodmachine:root $APP_HOME
+
+USER eodmachine
 
 ENTRYPOINT ["./docker_entrypoint.sh"]
