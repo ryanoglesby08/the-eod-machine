@@ -1,34 +1,9 @@
-const fetch = require('node-fetch')
-
 const nodemailer = require('nodemailer')
 
-const ApolloClient = require('apollo-client').default
-const { HttpLink } = require('apollo-link-http')
-const { InMemoryCache } = require('apollo-cache-inmemory')
-const gql = require('graphql-tag')
-
-const allConfigs = require('./config')
-
-const config = allConfigs[process.env.APP_ENV || 'dev']
-
-const apiClient = new ApolloClient({
-  link: new HttpLink({ uri: `${config.apiUrl}/api/graphql`, fetch }),
-  cache: new InMemoryCache(),
-})
-
-const SAY_HELLO = gql`
-  {
-    hello {
-      message
-    }
-  }
-`
+const apiClient = require('./apiClient')
+const sendMessage = require('./sendMessage')
 
 const execute = async () => {
-  const { data } = await apiClient.query({ query: SAY_HELLO })
-
-  const message = data.hello.message
-
   // Generate test SMTP service account from ethereal.email
   // Only needed if you don't have a real mail account for testing
   nodemailer.createTestAccount(async (err, account) => {
@@ -43,18 +18,9 @@ const execute = async () => {
       },
     })
 
-    // setup email data with unicode symbols
-    const mailOptions = {
-      from: '"The EOD Machine" <eodmachine@theeodmachine.com>', // sender address
-      to: 'foobar@example.com', // list of receivers
-      subject: 'Hello from the EOD Machine', // Subject line
-      text: message, // plain text body
-      html: `<b>${message}</b>`, // html body
-    }
-
     // send mail with defined transport object
     try {
-      const info = await transporter.sendMail(mailOptions)
+      const info = await sendMessage(apiClient, transporter)
 
       console.log('Message sent: %s', info.messageId)
       // Preview only available when sending through an Ethereal account
