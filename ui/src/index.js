@@ -4,8 +4,11 @@ import ReactDOM from 'react-dom'
 import ApolloClient from 'apollo-boost'
 import { ApolloProvider } from 'react-apollo'
 
-import './index.css'
-import App from './App'
+import { Provider } from 'rebass/emotion'
+
+// import './index.css'
+// import App from './App'
+import EnterEod from './EnterEod/EnterEod'
 import registerServiceWorker from './registerServiceWorker'
 
 const uri =
@@ -16,7 +19,9 @@ const apiClient = new ApolloClient({ uri })
 
 ReactDOM.render(
   <ApolloProvider client={apiClient}>
-    <App />
+    <Provider>
+      <EnterEod />
+    </Provider>
   </ApolloProvider>,
   document.getElementById('root')
 )
