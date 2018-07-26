@@ -12,3 +12,12 @@ services:
     build: ./emailer
     environment:
       - APP_ENV=production
+  db:
+    image: mongo
+  db-admin:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_SERVER: db
