@@ -6,8 +6,6 @@ import { ApolloProvider } from 'react-apollo'
 
 import { Provider } from 'rebass/emotion'
 
-// import './index.css'
-// import App from './App'
 import EnterEod from './EnterEod/EnterEod'
 import registerServiceWorker from './registerServiceWorker'
 
