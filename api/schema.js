@@ -24,10 +24,11 @@ const typeDefs = `
 
   type Query { 
     hello: Message
+    eod: Eod
   }
   
   type Mutation {
-    addToEod(entries: [EntryInput]!): Eod
+    addToEod(entries: [EntryInput]!): [Entry]
   }
   
   schema {
@@ -37,11 +38,14 @@ const typeDefs = `
 `
 
 const resolvers = {
-  Query: { hello: () => ({ message: 'Hello from the EOD Machine' }) },
+  Query: {
+    hello: () => ({ message: 'Hello from the EOD Machine' }),
+    eod: () => eod,
+  },
   Mutation: {
     addToEod: (_, { entries }) => {
       eod.entries = eod.entries.concat(entries)
-      return eod
+      return entries
     },
   },
 }

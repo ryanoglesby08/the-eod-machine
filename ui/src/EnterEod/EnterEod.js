@@ -1,17 +1,26 @@
 import React, { Component } from 'react'
 
 import gql from 'graphql-tag'
-import { Mutation } from 'react-apollo'
+import { Mutation, Query } from 'react-apollo'
 
 import { Button, Label, Textarea } from 'rebass/emotion'
 
-export const ADD_TO_EOD = gql`
-  mutation AddToEod($entries: [EntryInput]!) {
-    addToEod(entries: $entries) {
+export const GET_EOD = gql`
+  {
+    eod {
       entries {
         category
         content
       }
+    }
+  }
+`
+
+export const ADD_TO_EOD = gql`
+  mutation AddToEod($entries: [EntryInput]!) {
+    addToEod(entries: $entries) {
+      category
+      content
     }
   }
 `
@@ -47,34 +56,63 @@ class EnterEod extends Component {
 
   render() {
     return (
-      <Mutation mutation={ADD_TO_EOD}>
-        {(addToEod, { data }) => (
-          <form
-            onSubmit={e => {
-              e.preventDefault()
+      <Query query={GET_EOD}>
+        {({ loading, error, data }) => {
+          const fetchedData = data
 
-              this.onSubmit(addToEod)
-            }}
-          >
-            <p>Current EOD: {JSON.stringify(data)}</p>
+          return (
+            <Mutation
+              mutation={ADD_TO_EOD}
+              update={(cache, { data: { addToEod } }) => {
+                const { eod } = cache.readQuery({ query: GET_EOD })
 
-            {categories.map(category => (
-              <div key={category}>
-                <Label htmlFor={toHtmlId(category)}>{category}</Label>
-                <Textarea
-                  id={toHtmlId(category)}
-                  value={this.state[category]}
-                  onChange={e => this.onChange(category, e.target.value)}
-                />
-              </div>
-            ))}
+                eod.entries = eod.entries.concat(addToEod)
 
-            <div>
-              <Button type="submit">Submit</Button>
-            </div>
-          </form>
-        )}
-      </Mutation>
+                cache.writeQuery({
+                  query: GET_EOD,
+                  data: { eod },
+                })
+              }}
+            >
+              {addToEod => (
+                <form
+                  onSubmit={e => {
+                    e.preventDefault()
+
+                    this.onSubmit(addToEod)
+                  }}
+                >
+                  {categories.map(category => (
+                    <div key={category}>
+                      <ul data-testid={category}>
+                        {!loading &&
+                          !error &&
+                          fetchedData.eod.entries &&
+                          fetchedData.eod.entries
+                            .filter(entry => entry.category === category)
+                            .map(entry => (
+                              <li key={entry.content}>{entry.content}</li>
+                            ))}
+                      </ul>
+
+                      <Label htmlFor={toHtmlId(category)}>{category}</Label>
+                      <Textarea
+                        id={toHtmlId(category)}
+                        value={this.state[category]}
+                        onChange={e => this.onChange(category, e.target.value)}
+                      />
+                    </div>
+                  ))}
+
+                  <div>
+                    <Button type="submit">Submit</Button>
+                  </div>
+                </form>
+              )}
+            </Mutation>
+          )
+        }}
+      </Query>
     )
   }
 }
