@@ -1,40 +1,19 @@
 import React from 'react'
 
 import { MockedProvider } from 'react-apollo/lib/test-utils'
-import { render, fireEvent, within, wait } from 'react-testing-library'
+import { render, fireEvent, wait } from 'react-testing-library'
 
-import EnterEod, { ADD_TO_EOD, GET_EOD } from './EnterEod'
+import {
+  buildMockGetEod,
+  buildMockGetEmptyEod,
+  buildMockAddToEod,
+} from './__mocks__/graphQlMocks'
 
-const buildMockGetEod = entries => ({
-  request: {
-    query: GET_EOD,
-  },
-  result: {
-    data: {
-      eod: {
-        entries,
-      },
-    },
-  },
-})
-
-const buildMockAddToEod = entries => ({
-  request: {
-    query: ADD_TO_EOD,
-    variables: {
-      entries,
-    },
-  },
-  result: {
-    data: {
-      addToEod: entries,
-    },
-  },
-})
+import EnterEod from './EnterEod'
 
 it('shows the default categories', () => {
   const { container } = render(
-    <MockedProvider mocks={[]} addTypename={false}>
+    <MockedProvider mocks={[buildMockGetEmptyEod()]} addTypename={false}>
       <EnterEod />
     </MockedProvider>
   )
@@ -55,15 +34,15 @@ it('shows the current EOD', async () => {
     ]),
   ]
 
-  const { container } = render(
+  const { getByTestId } = render(
     <MockedProvider mocks={mocks} addTypename={false}>
       <EnterEod />
     </MockedProvider>
   )
 
   await wait(() => {
-    expect(container).toHaveTextContent('a story movement')
-    expect(container).toHaveTextContent('a blocker')
+    expect(getByTestId('story-movements')).toHaveTextContent('a story movement')
+    expect(getByTestId('blockers')).toHaveTextContent('a blocker')
   })
 })
 
@@ -95,10 +74,7 @@ it('adds eod entries for the entered categories', async () => {
   fireEvent.click(getByText('Submit'))
 
   await wait(() => {
-    const blockersEntries = getByTestId('Blockers')
-    expect(blockersEntries).toHaveTextContent('new blocker')
-
-    const actionItemsEntries = getByTestId('Action Items')
-    expect(actionItemsEntries).toHaveTextContent('new action item')
+    expect(getByTestId('blockers')).toHaveTextContent('new blocker')
+    expect(getByTestId('action-items')).toHaveTextContent('new action item')
   })
 })

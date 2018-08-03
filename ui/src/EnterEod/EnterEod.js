@@ -5,6 +5,9 @@ import { Mutation, Query } from 'react-apollo'
 
 import { Button, Label, Textarea } from 'rebass/emotion'
 
+import toHtmlId from './toHtmlId'
+import EntriesForCategory from './EntriesForCategory'
+
 export const GET_EOD = gql`
   {
     eod {
@@ -25,6 +28,17 @@ export const ADD_TO_EOD = gql`
   }
 `
 
+const updateQuery = (cache, { data: { addToEod } }) => {
+  const { eod } = cache.readQuery({ query: GET_EOD })
+
+  eod.entries = eod.entries.concat(addToEod)
+
+  cache.writeQuery({
+    query: GET_EOD,
+    data: { eod },
+  })
+}
+
 const categories = [
   'Business as Usual',
   'Story Movements',
@@ -33,8 +47,6 @@ const categories = [
   'Action Items',
   'Other',
 ]
-
-const toHtmlId = text => text.toLowerCase().replace(/ /g, '-')
 
 class EnterEod extends Component {
   state = {}
@@ -57,45 +69,29 @@ class EnterEod extends Component {
   render() {
     return (
       <Query query={GET_EOD}>
-        {({ loading, error, data }) => {
-          const fetchedData = data
-
+        {({ data: { eod } }) => {
           return (
-            <Mutation
-              mutation={ADD_TO_EOD}
-              update={(cache, { data: { addToEod } }) => {
-                const { eod } = cache.readQuery({ query: GET_EOD })
-
-                eod.entries = eod.entries.concat(addToEod)
-
-                cache.writeQuery({
-                  query: GET_EOD,
-                  data: { eod },
-                })
-              }}
-            >
+            <Mutation mutation={ADD_TO_EOD} update={updateQuery}>
               {addToEod => (
                 <form
                   onSubmit={e => {
                     e.preventDefault()
-
                     this.onSubmit(addToEod)
                   }}
                 >
                   {categories.map(category => (
                     <div key={category}>
-                      <ul data-testid={category}>
-                        {!loading &&
-                          !error &&
-                          fetchedData.eod.entries &&
-                          fetchedData.eod.entries
-                            .filter(entry => entry.category === category)
-                            .map(entry => (
-                              <li key={entry.content}>{entry.content}</li>
-                            ))}
-                      </ul>
-
                       <Label htmlFor={toHtmlId(category)}>{category}</Label>
+
+                      {eod && (
+                        <EntriesForCategory
+                          category={category}
+                          entries={eod.entries.filter(
+                            entry => entry.category === category
+                          )}
+                        />
+                      )}
+
                       <Textarea
                         id={toHtmlId(category)}
                         value={this.state[category]}
