@@ -1,8 +1,6 @@
 const { makeExecutableSchema } = require('graphql-tools')
 
-const eod = {
-  entries: [],
-}
+const dbEntries = require('./dbConnection').entries
 
 const typeDefs = `
   type Entry {
@@ -40,12 +38,17 @@ const typeDefs = `
 const resolvers = {
   Query: {
     hello: () => ({ message: 'Hello from the EOD Machine' }),
-    eod: () => eod,
+    eod: async () => ({
+      entries: await dbEntries()
+        .find()
+        .toArray(),
+    }),
   },
   Mutation: {
-    addToEod: (_, { entries }) => {
-      eod.entries = eod.entries.concat(entries)
-      return entries
+    addToEod: async (_, { entries }) => {
+      const { ops } = await dbEntries().insertMany(entries)
+
+      return ops
     },
   },
 }

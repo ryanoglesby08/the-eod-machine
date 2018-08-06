@@ -7,7 +7,7 @@
   ],
   "scripts": {
     "precommit": "pretty-quick --staged && yarn test:api && yarn test:emailer && yarn test:ui",
-    "test:api": "pushd api && yarn test && popd",
+    "test:api": "pushd api && yarn test:ci && popd",
     "test:emailer": "pushd emailer && yarn test && popd",
     "test:ui": "pushd ui && CI=true yarn test && popd"
   },
