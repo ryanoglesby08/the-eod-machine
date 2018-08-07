@@ -11,6 +11,11 @@ import {
 
 import EnterEod from './EnterEod'
 
+const enterText = (component, value) => {
+  component.value = value
+  fireEvent.change(component)
+}
+
 it('shows the default categories', () => {
   const { container } = render(
     <MockedProvider mocks={[buildMockGetEmptyEod()]} addTypename={false}>
@@ -63,18 +68,36 @@ it('adds eod entries for the entered categories', async () => {
     </MockedProvider>
   )
 
-  const storyMovementsEntry = getByLabelText('Blockers')
-  storyMovementsEntry.value = 'new blocker'
-  fireEvent.change(storyMovementsEntry)
-
-  const actionItemEntry = getByLabelText('Action Items')
-  actionItemEntry.value = 'new action item'
-  fireEvent.change(actionItemEntry)
+  enterText(getByLabelText('Blockers'), 'new blocker')
+  enterText(getByLabelText('Action Items'), 'new action item')
 
   fireEvent.click(getByText('Submit'))
 
   await wait(() => {
     expect(getByTestId('blockers')).toHaveTextContent('new blocker')
     expect(getByTestId('action-items')).toHaveTextContent('new action item')
+  })
+})
+
+it('does not submit empty entries', async () => {
+  const mocks = [
+    buildMockGetEmptyEod(),
+    buildMockAddToEod([{ category: 'Blockers', content: 'new blocker' }]),
+  ]
+
+  const { getByLabelText, getByTestId, getByText } = render(
+    <MockedProvider mocks={mocks} addTypename={false}>
+      <EnterEod />
+    </MockedProvider>
+  )
+
+  enterText(getByLabelText('Blockers'), 'new blocker')
+  enterText(getByLabelText('Action Items'), '')
+
+  fireEvent.click(getByText('Submit'))
+
+  await wait(() => {
+    expect(getByTestId('blockers')).toHaveTextContent('new blocker')
+    expect(getByTestId('action-items')).toBeEmpty()
   })
 })

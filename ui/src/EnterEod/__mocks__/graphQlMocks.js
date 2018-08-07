@@ -19,7 +19,9 @@ export const buildMockGetEmptyEod = () => ({
   },
   result: {
     data: {
-      eod: {},
+      eod: {
+        entries: [],
+      },
     },
   },
 })

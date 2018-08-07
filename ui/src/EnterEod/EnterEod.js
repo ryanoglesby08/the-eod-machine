@@ -3,10 +3,9 @@ import React, { Component } from 'react'
 import gql from 'graphql-tag'
 import { Mutation, Query } from 'react-apollo'
 
-import { Button, Label, Textarea } from 'rebass/emotion'
+import { Button } from 'rebass/emotion'
 
-import toHtmlId from './toHtmlId'
-import EntriesForCategory from './EntriesForCategory'
+import CategoryEntry from './CategoryEntry'
 
 export const GET_EOD = gql`
   {
@@ -56,10 +55,12 @@ class EnterEod extends Component {
   }
 
   onSubmit = addToEod => {
-    const entries = Object.keys(this.state).map(category => ({
-      category,
-      content: this.state[category],
-    }))
+    const entries = Object.keys(this.state)
+      .filter(category => this.state[category] !== '')
+      .map(category => ({
+        category,
+        content: this.state[category],
+      }))
 
     addToEod({
       variables: { entries },
@@ -80,24 +81,13 @@ class EnterEod extends Component {
                   }}
                 >
                   {categories.map(category => (
-                    <div key={category}>
-                      <Label htmlFor={toHtmlId(category)}>{category}</Label>
-
-                      {eod && (
-                        <EntriesForCategory
-                          category={category}
-                          entries={eod.entries.filter(
-                            entry => entry.category === category
-                          )}
-                        />
-                      )}
-
-                      <Textarea
-                        id={toHtmlId(category)}
-                        value={this.state[category]}
-                        onChange={e => this.onChange(category, e.target.value)}
-                      />
-                    </div>
+                    <CategoryEntry
+                      key={category}
+                      category={category}
+                      entry={this.state[category]}
+                      savedEntries={eod ? eod.entries : []}
+                      onChange={this.onChange}
+                    />
                   ))}
 
                   <div>
