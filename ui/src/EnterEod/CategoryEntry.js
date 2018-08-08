@@ -31,4 +31,8 @@ const CategoryEntry = ({ category, entry, savedEntries, onChange }) => {
   )
 }
 
+CategoryEntry.defaultProps = {
+  entry: '',
+}
+
 export default CategoryEntry
