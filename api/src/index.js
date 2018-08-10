@@ -10,7 +10,8 @@ const app = express()
 const { connectToDb } = require('./dbConnection')
 const schema = require('./schema')
 
-connectToDb('mongodb://localhost', 'eodmachine')
+const DB_HOST = process.env.DB_HOST || 'localhost'
+connectToDb(`mongodb://${DB_HOST}`, 'eodmachine')
 
 app.use('/api/graphql', cors(), bodyParser.json(), graphqlExpress({ schema }))
 app.get('/api/graphiql', graphiqlExpress({ endpointURL: '/api/graphql' }))

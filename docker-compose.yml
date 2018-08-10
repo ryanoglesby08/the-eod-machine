@@ -5,13 +5,15 @@ services:
       context: ./
       dockerfile: Dockerfile.ui
     ports:
-     - "3000:3000"
+      - "3000:3000"
   api:
     build:
       context: ./
       dockerfile: Dockerfile.api
     ports:
-     - "4000:4000"
+      - "4000:4000"
+    environment:
+      - DB_HOST=db
   emailer:
     build:
       context: ./
