@@ -11,10 +11,8 @@ import {
 
 import EnterEod from './EnterEod'
 
-const enterText = (component, value) => {
-  component.value = value
-  fireEvent.change(component)
-}
+const enterText = (component, value) =>
+  fireEvent.change(component, { target: { value } })
 
 const doRender = ({ getEodMock, addToEodMock } = {}) => {
   const mocks = [getEodMock || buildMockGetEmptyEod()].concat(

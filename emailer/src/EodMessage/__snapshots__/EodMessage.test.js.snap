@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`is an EOD message 1`] = `
+<div>
+  <div>
+    <div>
+      Test category
+      : 
+      test content
+    </div>
+  </div>
+</div>
+`;

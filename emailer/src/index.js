@@ -1,7 +1,7 @@
-const nodemailer = require('nodemailer')
+import nodemailer from 'nodemailer'
 
-const apiClient = require('./apiClient')
-const sendMessage = require('./sendMessage')
+import renderHtmlMessage from './renderHtmlMessage'
+import sendMessage from './sendMessage/sendMessage'
 
 const execute = async () => {
   // Generate test SMTP service account from ethereal.email
@@ -20,7 +20,8 @@ const execute = async () => {
 
     // send mail with defined transport object
     try {
-      const info = await sendMessage(apiClient, transporter)
+      const html = await renderHtmlMessage()
+      const info = await sendMessage(transporter, html)
 
       console.log('Message sent: %s', info.messageId)
       // Preview only available when sending through an Ethereal account
