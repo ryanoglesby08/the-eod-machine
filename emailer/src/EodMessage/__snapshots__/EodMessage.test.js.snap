@@ -2,12 +2,24 @@
 
 exports[`is an EOD message 1`] = `
 <div>
-  <div>
-    <div>
-      Test category
-      : 
-      test content
-    </div>
-  </div>
+  <h2>
+    Category 1
+  </h2>
+  <ul>
+    <li>
+      some content
+    </li>
+    <li>
+      more content
+    </li>
+  </ul>
+  <h2>
+    Category 2
+  </h2>
+  <ul>
+    <li>
+      even more content
+    </li>
+  </ul>
 </div>
 `;

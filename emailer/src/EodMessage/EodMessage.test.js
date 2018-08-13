@@ -14,7 +14,11 @@ it('is an EOD message', async () => {
       result: {
         data: {
           eod: {
-            entries: [{ category: 'Test category', content: 'test content' }],
+            entries: [
+              { category: 'Category 1', content: 'some content' },
+              { category: 'Category 1', content: 'more content' },
+              { category: 'Category 2', content: 'even more content' },
+            ],
           },
         },
       },
