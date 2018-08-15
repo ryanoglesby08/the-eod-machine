@@ -20,6 +20,7 @@ services:
       dockerfile: Dockerfile.emailer
     environment:
       - APP_ENV=production
+      - API_HOST=api
   db:
     image: mongo
   db-admin:
