@@ -1,7 +1,7 @@
-const ApolloClient = require('apollo-client').default
-const { HttpLink } = require('apollo-link-http')
-const { InMemoryCache } = require('apollo-cache-inmemory')
-const fetch = require('node-fetch')
+import ApolloClient from 'apollo-client'
+import { HttpLink } from 'apollo-link-http'
+import { InMemoryCache } from 'apollo-cache-inmemory'
+import fetch from 'node-fetch'
 
 const API_HOST = process.env.API_HOST || 'localhost'
 const apiUri = `http://${API_HOST}:4000/api/graphql`
