@@ -1,9 +1,9 @@
-const sendMessage = async (transporter, html) => {
+const sendMessage = async (transporter, text, html) => {
   return await transporter.sendMail({
     from: 'sender@example.com',
     to: 'recipient@example.com',
     subject: 'An EOD',
-    text: 'Coming soon...',
+    text,
     html,
   })
 }

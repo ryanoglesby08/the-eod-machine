@@ -1,22 +1,11 @@
 import React, { Fragment } from 'react'
-
-import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 
 import groupBy from 'lodash/groupBy'
 
-export const GET_EOD = gql`
-  {
-    eod {
-      entries {
-        category
-        content
-      }
-    }
-  }
-`
+import GET_EOD from '../getEodQuery'
 
-const EodEmail = () => (
+const HtmlMessage = () => (
   <Query query={GET_EOD}>
     {({ data: { eod } }) => {
       const savedEntries = eod ? eod.entries : []
@@ -41,4 +30,4 @@ const EodEmail = () => (
   </Query>
 )
 
-export default EodEmail
+export default HtmlMessage

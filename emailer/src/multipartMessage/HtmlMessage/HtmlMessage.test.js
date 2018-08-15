@@ -3,7 +3,8 @@ import React from 'react'
 import { MockedProvider } from 'react-apollo/lib/test-utils'
 import { render, waitForElement } from 'react-testing-library'
 
-import EodMessage, { GET_EOD } from './EodMessage'
+import GET_EOD from '../getEodQuery'
+import EodMessage from './HtmlMessage'
 
 it('is an EOD message', async () => {
   const mocks = [

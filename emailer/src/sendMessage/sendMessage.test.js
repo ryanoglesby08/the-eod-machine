@@ -2,17 +2,18 @@ import nodemailer from 'nodemailer'
 
 import sendMessage from './sendMessage'
 
-it('sends a message', async () => {
+it('sends a message in html and text', async () => {
   const transporter = nodemailer.createTransport({
     jsonTransport: true,
   })
 
   const { message } = await sendMessage(
     transporter,
-    '<div>The html content</div>'
+    'The eod message content',
+    '<div>The eod message content</div>'
   )
 
   const parsedMessage = JSON.parse(message)
-  // expect(parsedMessage.text).toEqual('Coming soon...')
-  expect(parsedMessage.html).toEqual('<div>The html content</div>')
+  expect(parsedMessage.text).toEqual('The eod message content')
+  expect(parsedMessage.html).toEqual('<div>The eod message content</div>')
 })

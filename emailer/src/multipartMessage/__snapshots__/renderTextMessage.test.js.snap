@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`is an EOD message as plain text 1`] = `
+"Category 1
+* some content
+* more content
+
+Category 2
+* even more content"
+`;

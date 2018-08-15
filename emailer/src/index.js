@@ -1,6 +1,7 @@
 import nodemailer from 'nodemailer'
 
-import renderHtmlMessage from './renderHtmlMessage'
+import renderHtmlMessage from './multipartMessage/renderHtmlMessage'
+import renderTextMessage from './multipartMessage/renderTextMessage'
 import sendMessage from './sendMessage/sendMessage'
 
 const execute = async () => {
@@ -20,8 +21,11 @@ const execute = async () => {
 
     // send mail with defined transport object
     try {
-      const html = await renderHtmlMessage()
-      const info = await sendMessage(transporter, html)
+      const info = await sendMessage(
+        transporter,
+        await renderTextMessage(),
+        await renderHtmlMessage()
+      )
 
       console.log('Message sent: %s', info.messageId)
       // Preview only available when sending through an Ethereal account

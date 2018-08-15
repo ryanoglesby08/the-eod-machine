@@ -3,12 +3,12 @@ import { renderToStaticMarkup } from 'react-dom/server'
 
 import { ApolloProvider, getDataFromTree } from 'react-apollo'
 
-import apiClient from './apiClient'
-import EodMessage from './EodMessage/EodMessage'
+import apiClient from '../apiClient'
+import HtmlMessage from './HtmlMessage/HtmlMessage'
 
 const message = (
   <ApolloProvider client={apiClient}>
-    <EodMessage />
+    <HtmlMessage />
   </ApolloProvider>
 )
 
