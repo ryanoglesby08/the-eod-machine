@@ -37,88 +37,89 @@ describe('hello query', () => {
   })
 })
 
-const deleteAllEntries = async () => await entries().deleteMany()
+const GET_EOD = `
+  {
+    eod {
+      entries {
+        category
+        content
+      }
+    }
+  }
+`
 
-describe('queries', () => {
-  describe('eod', () => {
-    beforeEach(deleteAllEntries)
+const ADD_TO_EOD = `
+  mutation AddToEod($entries: [EntryInput]!) {
+    addToEod(entries: $entries) {
+      category
+      content
+    }
+  }
+`
 
-    it('fetches all entries', async () => {
-      await entries().insertOne({
-        category: 'Test category',
-        content: 'some content',
-      })
+const SEND_EOD = `
+  mutation SendEod {
+    sendEod {
+      status
+    }
+  }
+`
 
-      const query = `
-        {
-          eod {
-            entries {
-              category
-              content
-            }
-          }
-        }
-      `
+const executeQuery = async (query, variables) => {
+  const { data } = await graphql(schema, query, {}, {}, variables)
 
-      const { data } = await graphql(schema, query)
+  return data
+}
 
-      expect(data).toEqual({
-        eod: {
-          entries: [
-            {
-              category: 'Test category',
-              content: 'some content',
-            },
-          ],
-        },
-      })
-    })
+beforeEach(async () => await entries().deleteMany())
+
+it('adds entries to the current eod', async () => {
+  const entry = {
+    category: 'Test category',
+    content: 'some content',
+  }
+
+  let eodQueryResult = await executeQuery(GET_EOD)
+  expect(eodQueryResult).toEqual({
+    eod: {
+      entries: [],
+    },
+  })
+
+  const addToEodResult = await executeQuery(ADD_TO_EOD, { entries: [entry] })
+  expect(addToEodResult).toEqual({
+    addToEod: [entry],
+  })
+
+  eodQueryResult = await executeQuery(GET_EOD)
+  expect(eodQueryResult).toEqual({
+    eod: {
+      entries: [entry],
+    },
   })
 })
 
-describe('mutations', () => {
-  describe('addToEod', () => {
-    beforeEach(deleteAllEntries)
+it('marks eod entries as sent', async () => {
+  const entry = {
+    category: 'Test category',
+    content: 'some content',
+  }
 
-    it('appends entries', async () => {
-      const mutation = `
-        mutation AddToEod($entries: [EntryInput]!) {
-          addToEod(entries: $entries) {
-            category
-            content
-          }
-        }
-      `
-      const variables = {
-        entries: [
-          {
-            category: 'Test category',
-            content: 'some content',
-          },
-        ],
-      }
+  await executeQuery(ADD_TO_EOD, { entries: [entry] })
 
-      const { data } = await graphql(schema, mutation, {}, {}, variables)
+  let eodQueryResult = await executeQuery(GET_EOD)
+  expect(eodQueryResult).toEqual({
+    eod: {
+      entries: [entry],
+    },
+  })
 
-      expect(data).toEqual({
-        addToEod: [
-          {
-            category: 'Test category',
-            content: 'some content',
-          },
-        ],
-      })
+  await executeQuery(SEND_EOD)
 
-      const savedEntries = await entries()
-        .find()
-        .toArray()
-
-      expect(savedEntries).toEqual([
-        expect.objectContaining({
-          category: 'Test category',
-          content: 'some content',
-        }),
-      ])
-    })
+  eodQueryResult = await executeQuery(GET_EOD)
+  expect(eodQueryResult).toEqual({
+    eod: {
+      entries: [],
+    },
   })
 })

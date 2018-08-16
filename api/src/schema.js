@@ -6,10 +6,15 @@ const typeDefs = `
   type Entry {
     category: String!
     content: String!
+    sent: Boolean
   }
   
   type Eod {
     entries: [Entry]
+  }
+  
+  type Response {
+    status: String!
   }
   
   input EntryInput {
@@ -27,6 +32,7 @@ const typeDefs = `
   
   type Mutation {
     addToEod(entries: [EntryInput]!): [Entry]
+    sendEod: Response
   }
   
   schema {
@@ -40,15 +46,24 @@ const resolvers = {
     hello: () => ({ message: 'Hello from the EOD Machine' }),
     eod: async () => ({
       entries: await dbEntries()
-        .find()
+        .find({ sent: false })
         .toArray(),
     }),
   },
   Mutation: {
     addToEod: async (_, { entries }) => {
-      const { ops } = await dbEntries().insertMany(entries)
+      const unsavedEntries = entries.map(entry =>
+        Object.assign({}, entry, { sent: false })
+      )
+      const { ops } = await dbEntries().insertMany(unsavedEntries)
 
       return ops
+    },
+    sendEod: async () => {
+      await dbEntries().updateMany({ sent: false }, { $set: { sent: true } })
+
+      // TODO: Can this return the updated documents?
+      return { status: 'success' }
     },
   },
 }

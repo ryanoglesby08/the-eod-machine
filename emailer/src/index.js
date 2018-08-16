@@ -3,6 +3,7 @@ import nodemailer from 'nodemailer'
 import renderHtmlMessage from './multipartMessage/renderHtmlMessage'
 import renderTextMessage from './multipartMessage/renderTextMessage'
 import sendMessage from './sendMessage/sendMessage'
+import markEodAsSent from './markEodAsSent'
 
 const execute = async () => {
   // Generate test SMTP service account from ethereal.email
@@ -26,6 +27,8 @@ const execute = async () => {
         await renderTextMessage(),
         await renderHtmlMessage()
       )
+
+      await markEodAsSent()
 
       console.log('Message sent: %s', info.messageId)
       // Preview only available when sending through an Ethereal account
