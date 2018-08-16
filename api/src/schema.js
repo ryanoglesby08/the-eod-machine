@@ -21,12 +21,9 @@ const typeDefs = `
     category: String!
     content: String!
   }
-
-  type Message { message: String }
   
 
   type Query { 
-    hello: Message
     eod: Eod
   }
   
@@ -43,7 +40,6 @@ const typeDefs = `
 
 const resolvers = {
   Query: {
-    hello: () => ({ message: 'Hello from the EOD Machine' }),
     eod: async () => ({
       entries: await dbEntries()
         .find({ sent: false })
