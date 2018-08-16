@@ -45,7 +45,7 @@ const ADD_TO_EOD = `
 const SEND_EOD = `
   mutation SendEod {
     sendEod {
-      status
+      success
     }
   }
 `

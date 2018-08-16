@@ -13,8 +13,8 @@ const typeDefs = `
     entries: [Entry]
   }
   
-  type Response {
-    status: String!
+  type MutationResponse {
+    success: Boolean!
   }
   
   input EntryInput {
@@ -29,7 +29,7 @@ const typeDefs = `
   
   type Mutation {
     addToEod(entries: [EntryInput]!): [Entry]
-    sendEod: Response
+    sendEod: MutationResponse
   }
   
   schema {
@@ -56,10 +56,12 @@ const resolvers = {
       return ops
     },
     sendEod: async () => {
-      await dbEntries().updateMany({ sent: false }, { $set: { sent: true } })
+      const { result } = await dbEntries().updateMany(
+        { sent: false },
+        { $set: { sent: true } }
+      )
 
-      // TODO: Can this return the updated documents?
-      return { status: 'success' }
+      return { success: result.ok === 1 }
     },
   },
 }
