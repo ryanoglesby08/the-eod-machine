@@ -1,6 +1,6 @@
 const { makeExecutableSchema } = require('graphql-tools')
 
-const dbEntries = require('./dbConnection').entries
+const { entriesCollection, teamsCollection } = require('./dbConnection')
 
 const typeDefs = `
   type Entry {
@@ -13,6 +13,11 @@ const typeDefs = `
     entries: [Entry]
   }
   
+  type Team {
+    name: String!
+    mailingList: [String]!
+  }
+  
   type MutationResponse {
     success: Boolean!
   }
@@ -22,14 +27,21 @@ const typeDefs = `
     content: String!
   }
   
+  input TeamInput {
+    name: String!
+    mailingList: [String]!
+  }
+  
 
   type Query { 
-    eod: Eod
+    eod: Eod,
+    teams: [Team]
   }
   
   type Mutation {
     addToEod(entries: [EntryInput]!): [Entry]
     sendEod: MutationResponse
+    createTeam(team: TeamInput!): Team
   }
   
   schema {
@@ -41,27 +53,36 @@ const typeDefs = `
 const resolvers = {
   Query: {
     eod: async () => ({
-      entries: await dbEntries()
+      entries: await entriesCollection()
         .find({ sent: false })
         .toArray(),
     }),
+    teams: async () =>
+      await teamsCollection()
+        .find()
+        .toArray(),
   },
   Mutation: {
     addToEod: async (_, { entries }) => {
       const unsavedEntries = entries.map(entry =>
         Object.assign({}, entry, { sent: false })
       )
-      const { ops } = await dbEntries().insertMany(unsavedEntries)
+      const { ops } = await entriesCollection().insertMany(unsavedEntries)
 
       return ops
     },
     sendEod: async () => {
-      const { result } = await dbEntries().updateMany(
+      const { result } = await entriesCollection().updateMany(
         { sent: false },
         { $set: { sent: true } }
       )
 
       return { success: result.ok === 1 }
+    },
+    createTeam: async (_, { team }) => {
+      const { ops } = await teamsCollection().insertOne(team)
+
+      return ops[0]
     },
   },
 }

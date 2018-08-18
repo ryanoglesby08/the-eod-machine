@@ -4,7 +4,12 @@ const { graphql } = require('graphql')
 const startDbServer = require('../test/startDbServer')
 const stopDbServer = require('../test/stopDbServer')
 
-const { connectToDb, closeDbConnection, entries } = require('./dbConnection')
+const {
+  connectToDb,
+  closeDbConnection,
+  entriesCollection,
+  teamsCollection,
+} = require('./dbConnection')
 
 const schema = require('./schema')
 
@@ -50,13 +55,34 @@ const SEND_EOD = `
   }
 `
 
+const CREATE_TEAM = `
+  mutation CreateTeam($team: TeamInput!) {
+    createTeam(team: $team) {
+      name
+      mailingList
+    }
+  }
+`
+
+const GET_TEAMS = `
+  {
+    teams {
+      name
+      mailingList
+    }
+  }
+`
+
 const executeQuery = async (query, variables) => {
   const { data } = await graphql(schema, query, {}, {}, variables)
 
   return data
 }
 
-beforeEach(async () => await entries().deleteMany())
+beforeEach(async () => {
+  await entriesCollection().deleteMany()
+  await teamsCollection().deleteMany()
+})
 
 it('adds entries to the current eod', async () => {
   const entry = {
@@ -106,5 +132,22 @@ it('marks eod entries as sent', async () => {
     eod: {
       entries: [],
     },
+  })
+})
+
+it('creates teams', async () => {
+  const team = {
+    name: 'Test team',
+    mailingList: ['test@example.com', 'anothertest@example.com'],
+  }
+
+  const createTeamResult = await executeQuery(CREATE_TEAM, { team })
+  expect(createTeamResult).toEqual({
+    createTeam: team,
+  })
+
+  const teamsResult = await executeQuery(GET_TEAMS)
+  expect(teamsResult).toEqual({
+    teams: [team],
   })
 })
