@@ -58,6 +58,7 @@ const SEND_EOD = `
 const CREATE_TEAM = `
   mutation CreateTeam($team: TeamInput!) {
     createTeam(team: $team) {
+      _id
       name
       mailingList
     }
@@ -67,6 +68,17 @@ const CREATE_TEAM = `
 const GET_TEAMS = `
   {
     teams {
+      _id
+      name
+      mailingList
+    }
+  }
+`
+
+const GET_TEAM = `
+  query Team($id: String!) {
+    team(id: $id) {
+      _id
       name
       mailingList
     }
@@ -143,11 +155,19 @@ it('creates teams', async () => {
 
   const createTeamResult = await executeQuery(CREATE_TEAM, { team })
   expect(createTeamResult).toEqual({
-    createTeam: team,
+    createTeam: expect.objectContaining(team),
   })
 
   const teamsResult = await executeQuery(GET_TEAMS)
   expect(teamsResult).toEqual({
-    teams: [team],
+    teams: [expect.objectContaining(team)],
+  })
+
+  const createdTeamId = createTeamResult.createTeam._id
+  const teamResult = await executeQuery(GET_TEAM, {
+    id: createdTeamId,
+  })
+  expect(teamResult).toEqual({
+    team: Object.assign({}, { _id: createdTeamId }, team),
   })
 })

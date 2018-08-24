@@ -2,6 +2,8 @@ const { makeExecutableSchema } = require('graphql-tools')
 
 const { entriesCollection, teamsCollection } = require('./dbConnection')
 
+const { ObjectId } = require('mongodb')
+
 const typeDefs = `
   type Entry {
     category: String!
@@ -14,6 +16,7 @@ const typeDefs = `
   }
   
   type Team {
+    _id: String!
     name: String!
     mailingList: [String]!
   }
@@ -35,6 +38,7 @@ const typeDefs = `
 
   type Query { 
     eod: Eod,
+    team(id: String!): Team
     teams: [Team]
   }
   
@@ -61,6 +65,7 @@ const resolvers = {
       await teamsCollection()
         .find()
         .toArray(),
+    team: async (_, { id }) => await teamsCollection().findOne(ObjectId(id)),
   },
   Mutation: {
     addToEod: async (_, { entries }) => {

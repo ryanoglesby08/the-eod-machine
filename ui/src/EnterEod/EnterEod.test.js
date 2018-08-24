@@ -7,7 +7,7 @@ import {
   buildMockGetEod,
   buildMockGetEmptyEod,
   buildMockAddToEod,
-} from './__mocks__/graphQlMocks'
+} from './__mocks__/eodGraphQlMocks'
 
 import EnterEod from './EnterEod'
 

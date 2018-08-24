@@ -1,32 +1,34 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 
-import { Label, Textarea } from 'rebass/emotion'
+import { Textarea } from 'rebass/emotion'
 
-import toHtmlId from './toHtmlId'
 import SavedEntriesList from './SavedEntriesList'
 
+import LabeledField from '../ui-components/LabeledField/LabeledField'
+
 const CategoryEntry = ({ category, entry, savedEntries, onChange }) => {
-  const inputId = toHtmlId(category)
   const savedEntriesForCategory = savedEntries.filter(
     entry => entry.category === category
   )
 
   return (
     <div>
-      <Label htmlFor={inputId}>{category}</Label>
+      <LabeledField label={category}>
+        {id => (
+          <Fragment>
+            <SavedEntriesList
+              category={category}
+              entries={savedEntriesForCategory}
+            />
 
-      {savedEntries && (
-        <SavedEntriesList
-          category={category}
-          entries={savedEntriesForCategory}
-        />
-      )}
-
-      <Textarea
-        id={inputId}
-        value={entry}
-        onChange={e => onChange(category, e.target.value)}
-      />
+            <Textarea
+              id={id}
+              value={entry}
+              onChange={e => onChange(category, e.target.value)}
+            />
+          </Fragment>
+        )}
+      </LabeledField>
     </div>
   )
 }
