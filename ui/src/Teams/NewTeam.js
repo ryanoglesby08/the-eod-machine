@@ -36,21 +36,21 @@ const doCreateTeam = (teamData, createTeamMutation) => {
 
 class NewTeam extends Component {
   state = {
-    newTeamId: undefined,
+    toTeamsList: false,
   }
 
   render() {
-    const { newTeamId } = this.state
+    const { toTeamsList } = this.state
 
-    if (newTeamId) {
-      return <Redirect to={`/teams/${newTeamId}/edit`} push />
+    if (toTeamsList) {
+      return <Redirect to="/teams" push />
     }
 
     return (
       <Mutation
         mutation={CREATE_TEAM}
-        onCompleted={({ createTeam: { _id } }) => {
-          this.setState({ newTeamId: _id })
+        onCompleted={() => {
+          this.setState({ toTeamsList: true })
         }}
       >
         {createTeam => {

@@ -7,11 +7,12 @@ import { render, fireEvent, wait } from 'react-testing-library'
 
 import {
   buildCreateTeamMock,
-  buildMockGetTeam,
+  buildGetTeamsMock,
 } from './__mocks__/teamGraphQlMocks'
+import { aTeam } from './__test-utils__/team-builder'
 
 import NewTeam from './NewTeam'
-import EditTeam from './EditTeam'
+import Teams from './Teams'
 
 const enterText = (component, value) =>
   fireEvent.change(component, { target: { value } })
@@ -21,26 +22,24 @@ const doRender = mocks => {
     <MemoryRouter initialEntries={['/teams/new']}>
       <MockedProvider mocks={mocks} addTypename={false}>
         <Route path="/teams/new" component={NewTeam} />
-        <Route path="/teams/:id/edit" component={EditTeam} />
+        <Route path="/teams" component={Teams} />
       </MockedProvider>
     </MemoryRouter>
   )
 }
 
 it('shows the edit team form after creating a new team', async () => {
-  const createTeamMock = buildCreateTeamMock({
-    name: 'My team',
-    mailingList: ['team@example.com', 'another@example.com'],
-  })
-  const getTeamMock = buildMockGetTeam({
-    _id: '123',
+  const teamToCreate = aTeam({
     name: 'My team',
     mailingList: ['team@example.com', 'another@example.com'],
   })
 
+  const createTeamMock = buildCreateTeamMock(teamToCreate)
+  const getTeamsMock = buildGetTeamsMock([teamToCreate])
+
   const { container, getByLabelText, getByText } = doRender([
     createTeamMock,
-    getTeamMock,
+    getTeamsMock,
   ])
 
   enterText(getByLabelText('Name'), 'My team')
@@ -52,6 +51,6 @@ it('shows the edit team form after creating a new team', async () => {
   fireEvent.click(getByText('Save'))
 
   await wait(() => {
-    expect(container).toHaveTextContent('Editing team "My team"')
+    expect(container).toHaveTextContent('All teams')
   })
 })

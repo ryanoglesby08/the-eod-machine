@@ -1,7 +1,19 @@
 import { CREATE_TEAM } from '../NewTeam'
 import { GET_TEAM } from '../EditTeam'
+import { GET_TEAMS } from '../Teams'
 
-export const buildMockGetTeam = team => ({
+export const buildGetTeamsMock = teams => ({
+  request: {
+    query: GET_TEAMS,
+  },
+  result: {
+    data: {
+      teams,
+    },
+  },
+})
+
+export const buildGetTeamMock = team => ({
   request: {
     query: GET_TEAM,
     variables: { id: team._id },
@@ -13,7 +25,7 @@ export const buildMockGetTeam = team => ({
   },
 })
 
-export const buildCreateTeamMock = team => ({
+export const buildCreateTeamMock = ({ _id, ...team }) => ({
   request: {
     query: CREATE_TEAM,
     variables: {
@@ -22,7 +34,7 @@ export const buildCreateTeamMock = team => ({
   },
   result: {
     data: {
-      createTeam: { _id: '123', ...team },
+      createTeam: { _id, ...team },
     },
   },
 })
