@@ -46,6 +46,7 @@ const typeDefs = `
     addToEod(entries: [EntryInput]!): [Entry]
     sendEod: MutationResponse
     createTeam(team: TeamInput!): Team
+    editTeam(id: String!, team: TeamInput!): MutationResponse
   }
   
   schema {
@@ -88,6 +89,16 @@ const resolvers = {
       const { ops } = await teamsCollection().insertOne(team)
 
       return ops[0]
+    },
+    editTeam: async (_, { id, team }) => {
+      const { result } = await teamsCollection().updateOne(
+        { _id: ObjectId(id) },
+        {
+          $set: team,
+        }
+      )
+
+      return { success: result.ok === 1 }
     },
   },
 }

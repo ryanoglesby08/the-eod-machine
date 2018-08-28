@@ -65,6 +65,14 @@ const CREATE_TEAM = `
   }
 `
 
+const EDIT_TEAM = `
+  mutation EditTeam($id: String!, $team: TeamInput!) {
+    editTeam(id: $id, team: $team) {
+      success
+    }
+  }
+`
+
 const GET_TEAMS = `
   {
     teams {
@@ -147,7 +155,7 @@ it('marks eod entries as sent', async () => {
   })
 })
 
-it('creates teams', async () => {
+it('creates and edits teams', async () => {
   const team = {
     name: 'Test team',
     mailingList: ['test@example.com', 'anothertest@example.com'],
@@ -164,10 +172,30 @@ it('creates teams', async () => {
   })
 
   const createdTeamId = createTeamResult.createTeam._id
-  const teamResult = await executeQuery(GET_TEAM, {
+  let teamResult = await executeQuery(GET_TEAM, {
     id: createdTeamId,
   })
   expect(teamResult).toEqual({
     team: Object.assign({}, { _id: createdTeamId }, team),
+  })
+
+  const teamEdits = {
+    name: 'New name',
+    mailingList: ['new@mail.com'],
+  }
+
+  const editTeamResult = await executeQuery(EDIT_TEAM, {
+    id: createdTeamId,
+    team: teamEdits,
+  })
+  // expect(editTeamResult).toEqual({
+  //   editTeam: expect.objectContaining(teamEdits),
+  // })
+
+  teamResult = await executeQuery(GET_TEAM, {
+    id: createdTeamId,
+  })
+  expect(teamResult).toEqual({
+    team: expect.objectContaining(teamEdits),
   })
 })
