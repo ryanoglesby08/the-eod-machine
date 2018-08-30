@@ -1,15 +1,14 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import { Button, Input } from 'rebass/emotion'
 
 import LabeledField from '../ui-components/LabeledField/LabeledField'
 
-// TODO need better tests for the mailing list logic
-
 class TeamForm extends Component {
   state = {
-    name: this.props.name || '',
-    mailingList: this.props.mailingList ? this.props.mailingList.join(',') : '',
+    name: this.props.name,
+    mailingList: this.props.mailingList.join(', '),
   }
 
   render() {
@@ -46,6 +45,14 @@ class TeamForm extends Component {
       </form>
     )
   }
+}
+TeamForm.propTypes = {
+  name: PropTypes.string,
+  mailingList: PropTypes.arrayOf(PropTypes.string),
+}
+TeamForm.defaultProps = {
+  name: '',
+  mailingList: [],
 }
 
 export default TeamForm
