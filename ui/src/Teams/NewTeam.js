@@ -1,6 +1,4 @@
-import React, { Component } from 'react'
-
-import { Redirect } from 'react-router-dom'
+import React from 'react'
 
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
@@ -8,7 +6,7 @@ import gql from 'graphql-tag'
 import { Heading } from 'rebass/emotion'
 
 import TeamForm from './TeamForm'
-// import RedirectToTeams from './RedirectToTeams'
+import RedirectToTeams from './RedirectToTeams'
 
 export const CREATE_TEAM = gql`
   mutation CreateTeam($team: TeamInput!) {
@@ -35,40 +33,27 @@ const doCreateTeam = (teamData, createTeamMutation) => {
   })
 }
 
-class NewTeam extends Component {
-  state = {
-    toTeamsList: false,
-  }
-
-  render() {
-    const { toTeamsList } = this.state
-
-    if (toTeamsList) {
-      return <Redirect to="/teams" push />
-    }
-
-    return (
-      <Mutation
-        mutation={CREATE_TEAM}
-        onCompleted={() => {
-          this.setState({ toTeamsList: true })
-        }}
-      >
-        {createTeam => {
-          return (
-            <div>
-              <Heading>Create a new team</Heading>
-              <TeamForm
-                onSubmit={teamData => {
-                  doCreateTeam(teamData, createTeam)
-                }}
-              />
-            </div>
-          )
-        }}
-      </Mutation>
-    )
-  }
-}
+const NewTeam = () => (
+  <RedirectToTeams>
+    {doRedirect => {
+      return (
+        <Mutation mutation={CREATE_TEAM} onCompleted={doRedirect}>
+          {createTeam => {
+            return (
+              <div>
+                <Heading>Create a new team</Heading>
+                <TeamForm
+                  onSubmit={teamData => {
+                    doCreateTeam(teamData, createTeam)
+                  }}
+                />
+              </div>
+            )
+          }}
+        </Mutation>
+      )
+    }}
+  </RedirectToTeams>
+)
 
 export default NewTeam
