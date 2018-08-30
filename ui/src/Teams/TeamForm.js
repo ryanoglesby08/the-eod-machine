@@ -4,23 +4,17 @@ import { Button, Input } from 'rebass/emotion'
 
 import LabeledField from '../ui-components/LabeledField/LabeledField'
 
+// TODO need better tests for the mailing list logic
+
 class TeamForm extends Component {
   state = {
-    name: undefined,
-    mailingList: undefined,
-  }
-
-  getStateOrPropFallback(value) {
-    return this.state[value] === undefined
-      ? this.props[value]
-      : this.state[value]
+    name: this.props.name || '',
+    mailingList: this.props.mailingList ? this.props.mailingList.join(',') : '',
   }
 
   render() {
     const { onSubmit } = this.props
-
-    const name = this.getStateOrPropFallback('name')
-    const mailingList = this.getStateOrPropFallback('mailingList')
+    const { name, mailingList } = this.state
 
     return (
       <form
@@ -33,7 +27,7 @@ class TeamForm extends Component {
           {id => (
             <Input
               id={id}
-              value={name || ''}
+              value={name}
               onChange={e => this.setState({ name: e.target.value })}
             />
           )}
@@ -42,7 +36,7 @@ class TeamForm extends Component {
           {id => (
             <Input
               id={id}
-              value={mailingList || ''}
+              value={mailingList}
               onChange={e => this.setState({ mailingList: e.target.value })}
             />
           )}

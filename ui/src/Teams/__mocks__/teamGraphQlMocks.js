@@ -1,6 +1,6 @@
-import { CREATE_TEAM } from '../NewTeam'
-import { GET_TEAM } from '../EditTeam'
 import { GET_TEAMS } from '../Teams'
+import { CREATE_TEAM } from '../NewTeam'
+import { GET_TEAM, EDIT_TEAM } from '../EditTeam'
 
 export const buildGetTeamsMock = teams => ({
   request: {
@@ -35,6 +35,21 @@ export const buildCreateTeamMock = ({ _id, ...team }) => ({
   result: {
     data: {
       createTeam: { _id, ...team },
+    },
+  },
+})
+
+export const buildEditTeamMock = ({ _id, ...team }) => ({
+  request: {
+    query: EDIT_TEAM,
+    variables: {
+      id: _id,
+      team,
+    },
+  },
+  result: {
+    data: {
+      editTeam: { success: true },
     },
   },
 })

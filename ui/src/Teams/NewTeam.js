@@ -8,6 +8,7 @@ import gql from 'graphql-tag'
 import { Heading } from 'rebass/emotion'
 
 import TeamForm from './TeamForm'
+// import RedirectToTeams from './RedirectToTeams'
 
 export const CREATE_TEAM = gql`
   mutation CreateTeam($team: TeamInput!) {
