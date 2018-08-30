@@ -5,6 +5,8 @@ import gql from 'graphql-tag'
 
 import { Heading } from 'rebass/emotion'
 
+import { toGraphQlSchema } from './team'
+
 import TeamForm from './TeamForm'
 import RedirectToTeams from './RedirectToTeams'
 
@@ -19,16 +21,9 @@ export const CREATE_TEAM = gql`
 `
 
 const doCreateTeam = (teamData, createTeamMutation) => {
-  const mailingListAsArray = teamData.mailingList
-    .split(',')
-    .map(emailAddress => emailAddress.trim())
-
   createTeamMutation({
     variables: {
-      team: {
-        ...teamData,
-        mailingList: mailingListAsArray,
-      },
+      team: toGraphQlSchema(teamData),
     },
   })
 }

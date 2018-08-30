@@ -10,19 +10,17 @@ import {
   buildGetTeamsMock,
 } from './__mocks__/teamGraphQlMocks'
 import { aTeam } from './__test-utils__/team-builder'
+import enterText from '../__test-utils__/enterText'
 
 import NewTeam from './NewTeam'
 import Teams from './Teams'
-
-const enterText = (component, value) =>
-  fireEvent.change(component, { target: { value } })
 
 const doRender = mocks => {
   return render(
     <MemoryRouter initialEntries={['/teams/new']}>
       <MockedProvider mocks={mocks} addTypename={false}>
         <Route path="/teams/new" component={NewTeam} />
-        <Route path="/teams" component={Teams} />
+        <Route path="/teams" component={Teams} exact />
       </MockedProvider>
     </MemoryRouter>
   )
