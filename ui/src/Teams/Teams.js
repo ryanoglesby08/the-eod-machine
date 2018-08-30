@@ -5,7 +5,9 @@ import { Link } from 'react-router-dom'
 import { Query } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import { Box, Heading } from 'rebass/emotion'
+import { Heading } from 'rebass/emotion'
+
+import TabularList from '../ui-components/TabularList/TabularList'
 
 export const GET_TEAMS = gql`
   {
@@ -17,28 +19,33 @@ export const GET_TEAMS = gql`
   }
 `
 
-const Teams = ({ match }) => (
-  <Query query={GET_TEAMS}>
-    {({ loading, data: { teams } }) => {
-      if (loading) {
-        teams = []
-      }
+const Teams = ({ match }) => {
+  const teamsUrl = match.url
 
-      return (
-        <div>
-          <Heading>All teams</Heading>
-          {teams.map(({ _id, name }) => (
-            <Box py={3} key={_id}>
-              <Link to={`${match.url}/${_id}/edit`}>{name}</Link>
-            </Box>
-          ))}
+  return (
+    <Query query={GET_TEAMS}>
+      {({ loading, data: { teams } }) => {
+        if (loading) {
+          teams = []
+        }
+
+        return (
           <div>
-            <Link to={`${match.url}/new`}>Create a team</Link>
+            <Heading>All teams</Heading>
+            <TabularList
+              rows={teams.map(({ _id, name }) => (
+                <Link to={`${teamsUrl}/${_id}/edit`}>{name}</Link>
+              ))}
+            />
+
+            <div>
+              <Link to={`${teamsUrl}/new`}>Create a team</Link>
+            </div>
           </div>
-        </div>
-      )
-    }}
-  </Query>
-)
+        )
+      }}
+    </Query>
+  )
+}
 
 export default Teams

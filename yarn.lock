@@ -71,6 +71,10 @@
   version "0.12.6"
   resolved "https://registry.yarnpkg.com/@types/graphql/-/graphql-0.12.6.tgz#3d619198585fcabe5f4e1adfb5cf5f3388c66c13"
 
+"@types/jest@^23.0.2":
+  version "23.3.1"
+  resolved "https://registry.yarnpkg.com/@types/jest/-/jest-23.3.1.tgz#a4319aedb071d478e6f407d1c4578ec8156829cf"
+
 "@types/node@^9.4.6":
   version "9.6.22"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-9.6.22.tgz#05b55093faaadedea7a4b3f76e9a61346a6dd209"
@@ -2225,7 +2229,7 @@ css-what@2.1:
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/css-what/-/css-what-2.1.0.tgz#9467d032c38cfaefb9f2d79501253062f87fa1bd"
 
-css@^2.2.3:
+css@^2.2.1, css@^2.2.3:
   version "2.2.3"
   resolved "https://registry.yarnpkg.com/css/-/css-2.2.3.tgz#f861f4ba61e79bedc962aa548e5780fd95cbc6be"
   dependencies:
@@ -4555,6 +4559,14 @@ jest-dom@^1.11.0:
     jest-matcher-utils "^22.4.3"
     pretty-format "^23.0.1"
     redent "^2.0.0"
+
+jest-emotion@^9.2.7:
+  version "9.2.7"
+  resolved "https://registry.yarnpkg.com/jest-emotion/-/jest-emotion-9.2.7.tgz#7a854156d1d5ceb95d8f36095a3f81d04109f125"
+  dependencies:
+    "@types/jest" "^23.0.2"
+    chalk "^2.4.1"
+    css "^2.2.1"
 
 jest-environment-jsdom@^20.0.3:
   version "20.0.3"

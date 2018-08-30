@@ -1,0 +1,50 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`is a bordered, unordered list that resembles a table 1`] = `
+.emotion-3 {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.emotion-0 {
+  border: 1px solid;
+  border-bottom: 0;
+  border-color: gray;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+.emotion-2 {
+  border: 1px solid;
+  border-color: gray;
+  padding-left: 8px;
+  padding-right: 8px;
+  padding-top: 16px;
+  padding-bottom: 16px;
+}
+
+<div>
+  <ul
+    class="emotion-3"
+  >
+    <li
+      class="emotion-0"
+    >
+      a
+    </li>
+    <li
+      class="emotion-0"
+    >
+      b
+    </li>
+    <li
+      class="emotion-2"
+    >
+      c
+    </li>
+  </ul>
+</div>
+`;
