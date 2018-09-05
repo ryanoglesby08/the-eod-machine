@@ -5,8 +5,8 @@ import { MemoryRouter, Route } from 'react-router-dom'
 
 import { render, wait } from 'react-testing-library'
 
-import { buildGetTeamsMock } from './__mocks__/teamGraphQlMocks'
-import { aTeam } from './__test-utils__/team-builder'
+import { buildGetTeamsMock } from '../__mocks__/teamGraphQlMocks'
+import { aTeam } from '../__test-utils__/team-builder'
 
 import Teams from './Teams'
 

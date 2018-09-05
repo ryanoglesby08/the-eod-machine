@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, fireEvent } from 'react-testing-library'
 
-import enterText from '../__test-utils__/enterText'
+import enterText from '../../__test-utils__/enterText'
 
 import TeamForm from './TeamForm'
 

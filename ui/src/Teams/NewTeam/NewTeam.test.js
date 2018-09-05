@@ -8,12 +8,12 @@ import { render, fireEvent, wait } from 'react-testing-library'
 import {
   buildCreateTeamMock,
   buildGetTeamsMock,
-} from './__mocks__/teamGraphQlMocks'
-import { aTeam } from './__test-utils__/team-builder'
-import enterText from '../__test-utils__/enterText'
+} from '../__mocks__/teamGraphQlMocks'
+import { aTeam } from '../__test-utils__/team-builder'
+import enterText from '../../__test-utils__/enterText'
 
 import NewTeam from './NewTeam'
-import Teams from './Teams'
+import Teams from '../Teams/Teams'
 
 const doRender = mocks => {
   return render(

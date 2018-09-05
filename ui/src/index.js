@@ -9,9 +9,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { Provider as RebassProvider } from 'rebass/emotion'
 
 import EnterEod from './EnterEod/EnterEod'
-import Teams from './Teams/Teams'
-import EditTeam from './Teams/EditTeam'
-import NewTeam from './Teams/NewTeam'
+import Teams from './Teams/Teams/Teams'
+import EditTeam from './Teams/EditTeam/EditTeam'
+import NewTeam from './Teams/NewTeam/NewTeam'
 
 import registerServiceWorker from './registerServiceWorker'
 

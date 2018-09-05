@@ -5,10 +5,10 @@ import gql from 'graphql-tag'
 
 import { Heading } from 'rebass/emotion'
 
-import { toGraphQlSchema } from './team'
+import { toGraphQlSchema } from '../team'
 
-import TeamForm from './TeamForm'
-import RedirectToTeams from './RedirectToTeams'
+import TeamForm from '../TeamForm/TeamForm'
+import RedirectToTeams from '../RedirectToTeams'
 
 export const GET_TEAM = gql`
   query Team($id: String!) {

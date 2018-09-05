@@ -1,6 +1,6 @@
-import { GET_TEAMS } from '../Teams'
-import { CREATE_TEAM } from '../NewTeam'
-import { GET_TEAM, EDIT_TEAM } from '../EditTeam'
+import { GET_TEAMS } from '../Teams/Teams'
+import { CREATE_TEAM } from '../NewTeam/NewTeam'
+import { GET_TEAM, EDIT_TEAM } from '../EditTeam/EditTeam'
 
 export const buildGetTeamsMock = teams => ({
   request: {

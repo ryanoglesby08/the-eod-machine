@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import { Button, Input } from 'rebass/emotion'
 
-import LabeledField from '../ui-components/LabeledField/LabeledField'
+import LabeledField from '../../ui-components/LabeledField/LabeledField'
 
 class TeamForm extends Component {
   state = {

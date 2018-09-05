@@ -7,7 +7,7 @@ import gql from 'graphql-tag'
 
 import { Heading } from 'rebass/emotion'
 
-import TabularList from '../ui-components/TabularList/TabularList'
+import TabularList from '../../ui-components/TabularList/TabularList'
 
 export const GET_TEAMS = gql`
   {
