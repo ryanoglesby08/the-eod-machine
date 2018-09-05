@@ -41,6 +41,7 @@ const NewTeam = () => (
                   onSubmit={teamData => {
                     doCreateTeam(teamData, createTeam)
                   }}
+                  onCancel={doRedirect}
                 />
               </div>
             )

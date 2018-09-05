@@ -6,9 +6,15 @@ import enterText from '../../__test-utils__/enterText'
 
 import TeamForm from './TeamForm'
 
+const defaultProps = {
+  onCancel: jest.fn(),
+}
+const doRender = (props = {}) =>
+  render(<TeamForm {...defaultProps} {...props} />)
+
 it('gives changes back on submit', () => {
   const onSubmit = jest.fn()
-  const { getByLabelText, getByText } = render(<TeamForm onSubmit={onSubmit} />)
+  const { getByLabelText, getByText } = doRender({ onSubmit })
 
   enterText(getByLabelText('Name'), 'A team')
   enterText(
@@ -26,13 +32,11 @@ it('gives changes back on submit', () => {
 
 it('uses supplied team values to start', () => {
   const onSubmit = jest.fn()
-  const { getByText } = render(
-    <TeamForm
-      name="Starting name"
-      mailingList={['email1@example.com', 'email2@example.com']}
-      onSubmit={onSubmit}
-    />
-  )
+  const { getByText } = doRender({
+    name: 'Starting name',
+    mailingList: ['email1@example.com', 'email2@example.com'],
+    onSubmit,
+  })
 
   fireEvent.click(getByText('Save'))
 

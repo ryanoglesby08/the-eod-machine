@@ -7,18 +7,27 @@ import { render, fireEvent, wait, waitForElement } from 'react-testing-library'
 
 import {
   buildGetTeamsMock,
+  buildGetEmptyTeamsMock,
   buildGetTeamMock,
   buildEditTeamMock,
 } from '../__mocks__/teamGraphQlMocks'
 import { aTeam } from '../__test-utils__/team-builder'
 import enterText from '../../__test-utils__/enterText'
+import filteredArray from '../../__test-utils__/filteredArray'
 
 import EditTeam from './EditTeam'
 import Teams from '../Teams/Teams'
 
-const doRender = mocks => {
+const TEST_ID = '123'
+const doRender = ({
+  getTeamMock = buildGetTeamMock(aTeam({ _id: TEST_ID })),
+  editTeamMock,
+  getTeamsMock = buildGetEmptyTeamsMock(),
+}) => {
+  const mocks = filteredArray(getTeamMock, editTeamMock, getTeamsMock)
+
   return render(
-    <MemoryRouter initialEntries={['/teams/123/edit']}>
+    <MemoryRouter initialEntries={[`/teams/${TEST_ID}/edit`]}>
       <MockedProvider mocks={mocks} addTypename={false}>
         <Route path="/teams" component={Teams} exact />
         <Route path="/teams/:id/edit" component={EditTeam} />
@@ -29,7 +38,7 @@ const doRender = mocks => {
 
 it('shows the all teams list after editing a team', async () => {
   const teamToEdit = aTeam({
-    _id: '123',
+    _id: TEST_ID,
     name: 'My team',
   })
   const editedTeam = {
@@ -41,11 +50,11 @@ it('shows the all teams list after editing a team', async () => {
   const editTeamMock = buildEditTeamMock(editedTeam)
   const getTeamsMock = buildGetTeamsMock([editedTeam])
 
-  const { container, getByLabelText, getByText } = doRender([
+  const { container, getByLabelText, getByText } = doRender({
     getTeamMock,
     editTeamMock,
     getTeamsMock,
-  ])
+  })
 
   await waitForElement(() => getByLabelText('Name'))
   enterText(getByLabelText('Name'), 'New team name')
@@ -55,5 +64,16 @@ it('shows the all teams list after editing a team', async () => {
   await wait(() => {
     expect(container).toHaveTextContent('All teams')
     expect(container).toHaveTextContent('New team name')
+  })
+})
+
+it('returns to the teams list on cancel', async () => {
+  const { container, getByLabelText, getByText } = doRender({})
+
+  await waitForElement(() => getByLabelText('Name'))
+  fireEvent.click(getByText('Cancel'))
+
+  await wait(() => {
+    expect(container).toHaveTextContent('All teams')
   })
 })

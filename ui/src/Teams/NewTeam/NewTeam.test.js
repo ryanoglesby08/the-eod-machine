@@ -8,14 +8,21 @@ import { render, fireEvent, wait } from 'react-testing-library'
 import {
   buildCreateTeamMock,
   buildGetTeamsMock,
+  buildGetEmptyTeamsMock,
 } from '../__mocks__/teamGraphQlMocks'
 import { aTeam } from '../__test-utils__/team-builder'
 import enterText from '../../__test-utils__/enterText'
+import filteredArray from '../../__test-utils__/filteredArray'
 
 import NewTeam from './NewTeam'
 import Teams from '../Teams/Teams'
 
-const doRender = mocks => {
+const doRender = ({
+  createTeamMock,
+  getTeamsMock = buildGetEmptyTeamsMock(),
+}) => {
+  const mocks = filteredArray(createTeamMock, getTeamsMock)
+
   return render(
     <MemoryRouter initialEntries={['/teams/new']}>
       <MockedProvider mocks={mocks} addTypename={false}>
@@ -35,10 +42,10 @@ it('shows the all teams list after creating a new team', async () => {
   const createTeamMock = buildCreateTeamMock(teamToCreate)
   const getTeamsMock = buildGetTeamsMock([teamToCreate])
 
-  const { container, getByLabelText, getByText } = doRender([
+  const { container, getByLabelText, getByText } = doRender({
     createTeamMock,
     getTeamsMock,
-  ])
+  })
 
   enterText(getByLabelText('Name'), 'My team')
   enterText(
@@ -51,5 +58,15 @@ it('shows the all teams list after creating a new team', async () => {
   await wait(() => {
     expect(container).toHaveTextContent('All teams')
     expect(container).toHaveTextContent('My team')
+  })
+})
+
+it('returns to the teams list on cancel', async () => {
+  const { container, getByText } = doRender({})
+
+  fireEvent.click(getByText('Cancel'))
+
+  await wait(() => {
+    expect(container).toHaveTextContent('All teams')
   })
 })

@@ -12,7 +12,7 @@ class TeamForm extends Component {
   }
 
   render() {
-    const { onSubmit } = this.props
+    const { onSubmit, onCancel } = this.props
     const { name, mailingList } = this.state
 
     return (
@@ -42,6 +42,9 @@ class TeamForm extends Component {
         </LabeledField>
 
         <Button type="submit">Save</Button>
+        <Button type="button" onClick={onCancel}>
+          Cancel
+        </Button>
       </form>
     )
   }
@@ -49,6 +52,8 @@ class TeamForm extends Component {
 TeamForm.propTypes = {
   name: PropTypes.string,
   mailingList: PropTypes.arrayOf(PropTypes.string),
+  onSubmit: PropTypes.func.isRequired,
+  onCancel: PropTypes.func.isRequired,
 }
 TeamForm.defaultProps = {
   name: '',

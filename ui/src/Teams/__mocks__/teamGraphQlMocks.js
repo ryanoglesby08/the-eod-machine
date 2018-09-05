@@ -13,6 +13,17 @@ export const buildGetTeamsMock = teams => ({
   },
 })
 
+export const buildGetEmptyTeamsMock = () => ({
+  request: {
+    query: GET_TEAMS,
+  },
+  result: {
+    data: {
+      teams: [],
+    },
+  },
+})
+
 export const buildGetTeamMock = team => ({
   request: {
     query: GET_TEAM,

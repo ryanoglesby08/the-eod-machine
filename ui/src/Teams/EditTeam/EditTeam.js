@@ -66,6 +66,7 @@ const EditTeam = ({ match }) => {
                           onSubmit={teamData =>
                             doEditTeam(_id, teamData, editTeam)
                           }
+                          onCancel={doRedirect}
                         />
                       </div>
                     )
