@@ -27,13 +27,6 @@ const doRender = mocks => {
   )
 }
 
-/*
-TODO
-
-- change the graphql responses to have id intead of _id so we can use the cache
-
- */
-
 it('shows the all teams list after editing a team', async () => {
   const teamToEdit = aTeam({
     _id: '123',

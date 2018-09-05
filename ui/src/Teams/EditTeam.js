@@ -23,7 +23,9 @@ export const GET_TEAM = gql`
 export const EDIT_TEAM = gql`
   mutation EditTeam($id: String!, $team: TeamInput!) {
     editTeam(id: $id, team: $team) {
-      success
+      _id
+      name
+      mailingList
     }
   }
 `

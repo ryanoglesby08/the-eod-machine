@@ -68,7 +68,9 @@ const CREATE_TEAM = `
 const EDIT_TEAM = `
   mutation EditTeam($id: String!, $team: TeamInput!) {
     editTeam(id: $id, team: $team) {
-      success
+      _id
+      name
+      mailingList
     }
   }
 `
@@ -176,7 +178,7 @@ it('creates and edits teams', async () => {
     id: createdTeamId,
   })
   expect(teamResult).toEqual({
-    team: Object.assign({}, { _id: createdTeamId }, team),
+    team: expect.objectContaining(team),
   })
 
   const teamEdits = {
@@ -188,9 +190,9 @@ it('creates and edits teams', async () => {
     id: createdTeamId,
     team: teamEdits,
   })
-  // expect(editTeamResult).toEqual({
-  //   editTeam: expect.objectContaining(teamEdits),
-  // })
+  expect(editTeamResult).toEqual({
+    editTeam: Object.assign({}, { _id: createdTeamId }, teamEdits),
+  })
 
   teamResult = await executeQuery(GET_TEAM, {
     id: createdTeamId,

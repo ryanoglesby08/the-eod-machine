@@ -1,7 +1,6 @@
 const { ObjectId } = require('mongodb')
 
 const { teamsCollection } = require('../dbConnection')
-const { buildMutationResponse } = require('./MutationResponse')
 
 const TeamInput = `
   input TeamInput {
@@ -33,14 +32,14 @@ const resolvers = {
       return ops[0]
     },
     editTeam: async (_, { id, team }) => {
-      const { result } = await teamsCollection().updateOne(
+      await teamsCollection().updateOne(
         { _id: ObjectId(id) },
         {
           $set: team,
         }
       )
 
-      return buildMutationResponse(result)
+      return Object.assign({}, { _id: id }, team)
     },
   },
 }

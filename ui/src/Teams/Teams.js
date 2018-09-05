@@ -20,7 +20,7 @@ export const GET_TEAMS = gql`
 `
 
 const Teams = ({ match }) => {
-  const teamsUrl = match.url
+  const teamsUrl = match.path
 
   return (
     <Query query={GET_TEAMS}>

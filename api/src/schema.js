@@ -17,7 +17,7 @@ const SchemaDefinition = `
     sendEod: MutationResponse
     
     createTeam(team: TeamInput!): Team
-    editTeam(id: String!, team: TeamInput!): MutationResponse
+    editTeam(id: String!, team: TeamInput!): Team
   }
   
   schema {

@@ -49,7 +49,7 @@ export const buildEditTeamMock = ({ _id, ...team }) => ({
   },
   result: {
     data: {
-      editTeam: { success: true },
+      editTeam: { _id, ...team },
     },
   },
 })
