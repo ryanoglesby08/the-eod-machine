@@ -5,16 +5,8 @@ import { Mutation, Query } from 'react-apollo'
 
 import { Button } from 'rebass/emotion'
 
+import CATEGORIES from './categories'
 import CategoryEntry from './CategoryEntry'
-
-const categories = [
-  'Business as Usual',
-  'Story Movements',
-  'Open Questions',
-  'Blockers',
-  'Action Items',
-  'Other',
-]
 
 export const GET_EOD = gql`
   {
@@ -47,15 +39,33 @@ const updateQuery = (cache, { data: { addToEod } }) => {
   })
 }
 
+// TODO lodash
+const groupBy = (array, key) =>
+  array.reduce((groupsByKey, element) => {
+    const value = element[key]
+
+    return {
+      ...groupsByKey,
+      [value]: (groupsByKey[value] || []).concat(element),
+    }
+  }, {})
+
 class EnterEod extends Component {
   state = {
     entriesByCategory: {},
   }
 
   onChange = (category, content) => {
-    this.setState(({ entriesByCategory }) => {
-      entriesByCategory[category] = content
-      return { entriesByCategory }
+    this.setState(prevState => {
+      const { entriesByCategory } = prevState
+
+      return {
+        ...prevState,
+        entriesByCategory: {
+          ...entriesByCategory,
+          [category]: content,
+        },
+      }
     })
   }
 
@@ -85,6 +95,7 @@ class EnterEod extends Component {
       <Query query={GET_EOD}>
         {({ data: { eod } }) => {
           const savedEntries = eod ? eod.entries : []
+          const savedEntriesByCategory = groupBy(savedEntries, 'category')
 
           return (
             <Mutation
@@ -99,12 +110,12 @@ class EnterEod extends Component {
                     this.onSubmit(addToEod)
                   }}
                 >
-                  {categories.map(category => (
+                  {CATEGORIES.map(category => (
                     <CategoryEntry
                       key={category}
                       category={category}
                       entry={entriesByCategory[category]}
-                      savedEntries={savedEntries}
+                      savedEntries={savedEntriesByCategory[category]}
                       onChange={this.onChange}
                     />
                   ))}
