@@ -1,9 +1,11 @@
-const defaults = () => ({
-  _id: Math.floor(Math.random() * 1000).toString(),
-  name: 'A team name',
-})
+import buildDefaultTeam from '../../__test-utils__/team-builder'
 
-export const aTeam = (overrides = {}) => ({
-  ...defaults(),
-  ...overrides,
-})
+export const aTeam = (overrides = {}) => {
+  const { _id, name } = buildDefaultTeam()
+
+  return {
+    _id,
+    name,
+    ...overrides,
+  }
+}

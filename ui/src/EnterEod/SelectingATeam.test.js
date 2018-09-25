@@ -5,10 +5,12 @@ import { MemoryRouter } from 'react-router-dom'
 
 import { render, wait, fireEvent, waitForElement } from 'react-testing-library'
 
-import { buildMockGetTeams } from './__mocks__/teamGraphQlMocks'
+import buildGraphQlMockForQuery from '../__test-utils__/GraphQlMock'
 import { aTeam } from './__test-utils__/team-builder'
 
-import WithTeam from './WithTeam'
+import WithTeam, { GET_TEAMS } from './WithTeam'
+
+const mockGetTeams = buildGraphQlMockForQuery(GET_TEAMS)
 
 const doRender = ({ getTeamsMock }, cookies) => {
   const mocks = [getTeamsMock]
@@ -39,9 +41,9 @@ afterEach(() => {
 describe('when a team has already been selected', () => {
   it('skips the team selector', async () => {
     cookies.set('team', 'id-111')
-    const getTeamsMock = buildMockGetTeams([
-      aTeam({ _id: 'id-111', name: 'First team' }),
-    ])
+    const getTeamsMock = mockGetTeams.returns({
+      teams: [aTeam({ _id: 'id-111', name: 'First team' })],
+    })
 
     const { container } = doRender({ getTeamsMock }, cookies)
 
@@ -52,9 +54,9 @@ describe('when a team has already been selected', () => {
 
   it('requires you to choose a new team when yours does not exist', async () => {
     cookies.set('team', '211')
-    const getTeamsMock = buildMockGetTeams([
-      aTeam({ _id: 'id-222', name: 'First team' }),
-    ])
+    const getTeamsMock = mockGetTeams.returns({
+      teams: [aTeam({ _id: 'id-222', name: 'First team' })],
+    })
 
     const { container, getByText } = doRender({ getTeamsMock }, cookies)
 
@@ -68,10 +70,9 @@ describe('when a team has already been selected', () => {
 
 describe("when a team hasn't already been selected", () => {
   it('shows the team selector', async () => {
-    const getTeamsMock = buildMockGetTeams([
-      aTeam({ name: 'First team' }),
-      aTeam({ name: 'Second team' }),
-    ])
+    const getTeamsMock = mockGetTeams.returns({
+      teams: [aTeam({ name: 'First team' }), aTeam({ name: 'Second team' })],
+    })
     const { container } = doRender({ getTeamsMock }, cookies)
 
     await wait(() => {
@@ -82,9 +83,9 @@ describe("when a team hasn't already been selected", () => {
   })
 
   it('requires you to choose a team', async () => {
-    const getTeamsMock = buildMockGetTeams([
-      aTeam({ _id: 'id-333', name: 'First team' }),
-    ])
+    const getTeamsMock = mockGetTeams.returns({
+      teams: [aTeam({ _id: 'id-333', name: 'First team' })],
+    })
     const { container, getByText } = doRender({ getTeamsMock }, cookies)
 
     const firstTeam = await waitForElement(() => getByText('First team'))
@@ -96,11 +97,9 @@ describe("when a team hasn't already been selected", () => {
 })
 
 it('tells you to create some teams when none exist yet', async () => {
-  const getTeamsMock = buildMockGetTeams([])
+  const getTeamsMock = mockGetTeams.returns({ teams: [] })
   const { container, getByText } = doRender({ getTeamsMock }, cookies)
 
   await waitForElement(() => getByText('There are no teams'))
   expect(container).toHaveTextContent('Create teams')
 })
-
-// TODO handle when there are not any teams created yet

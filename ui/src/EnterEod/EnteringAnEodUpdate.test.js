@@ -3,21 +3,21 @@ import React from 'react'
 import { MockedProvider } from 'react-apollo/lib/test-utils'
 import { render, fireEvent, wait } from 'react-testing-library'
 
-import {
-  buildMockGetEod,
-  buildMockGetEmptyEod,
-  buildMockAddToEod,
-} from './__mocks__/eodGraphQlMocks'
+import buildGraphQlMockForQuery from '../__test-utils__/GraphQlMock'
+import filteredArray from '../__test-utils__/filteredArray'
 
-import EnterEod from './EnterEod'
+import EnterEod, { ADD_TO_EOD, GET_EOD } from './EnterEod'
+
+const mockGetEod = buildGraphQlMockForQuery(GET_EOD)
+const mockAddToEod = buildGraphQlMockForQuery(ADD_TO_EOD)
+
+const mockGetEmptyEod = mockGetEod.returns({ eod: { entries: [] } })
 
 const enterText = (component, value) =>
   fireEvent.change(component, { target: { value } })
 
-const doRender = ({ getEodMock, addToEodMock } = {}) => {
-  const mocks = [getEodMock || buildMockGetEmptyEod()].concat(
-    addToEodMock || []
-  )
+const doRender = ({ getEodMock = mockGetEmptyEod, addToEodMock } = {}) => {
+  const mocks = filteredArray(getEodMock, addToEodMock)
 
   return render(
     <MockedProvider mocks={mocks} addTypename={false}>
@@ -38,10 +38,14 @@ it('shows the default categories', () => {
 })
 
 it('shows the current EOD', async () => {
-  const getEodMock = buildMockGetEod([
-    { category: 'Story Movements', content: 'a story movement' },
-    { category: 'Blockers', content: 'a blocker' },
-  ])
+  const getEodMock = mockGetEod.returns({
+    eod: {
+      entries: [
+        { category: 'Story Movements', content: 'a story movement' },
+        { category: 'Blockers', content: 'a blocker' },
+      ],
+    },
+  })
 
   const { getByTestId } = doRender({ getEodMock })
 
@@ -52,10 +56,13 @@ it('shows the current EOD', async () => {
 })
 
 it('saves eod entries for the entered categories', async () => {
-  const addToEodMock = buildMockAddToEod([
+  const entries = [
     { category: 'Blockers', content: 'new blocker' },
     { category: 'Action Items', content: 'new action item' },
-  ])
+  ]
+  const addToEodMock = mockAddToEod
+    .withVariables({ entries })
+    .returns({ addToEod: entries })
 
   const { getByLabelText, getByText, getByTestId } = doRender({ addToEodMock })
 
@@ -71,9 +78,10 @@ it('saves eod entries for the entered categories', async () => {
 })
 
 it('does not submit empty entries', async () => {
-  const addToEodMock = buildMockAddToEod([
-    { category: 'Blockers', content: 'new blocker' },
-  ])
+  const entries = [{ category: 'Blockers', content: 'new blocker' }]
+  const addToEodMock = mockAddToEod
+    .withVariables({ entries })
+    .returns({ addToEod: entries })
 
   const { getByLabelText, getByTestId, getByText } = doRender({ addToEodMock })
 
@@ -88,9 +96,10 @@ it('does not submit empty entries', async () => {
 })
 
 it('clears entries after submitting', async () => {
-  const addToEodMock = buildMockAddToEod([
-    { category: 'Blockers', content: 'new blocker' },
-  ])
+  const entries = [{ category: 'Blockers', content: 'new blocker' }]
+  const addToEodMock = mockAddToEod
+    .withVariables({ entries })
+    .returns({ addToEod: entries })
 
   const { getByLabelText, getByText } = doRender({ addToEodMock })
 
