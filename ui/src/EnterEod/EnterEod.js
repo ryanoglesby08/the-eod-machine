@@ -1,9 +1,12 @@
 import React, { Component } from 'react'
+import PropTypes from 'prop-types'
 
 import gql from 'graphql-tag'
 import { Mutation, Query } from 'react-apollo'
 
 import { Button } from 'rebass/emotion'
+
+import { groupBy } from 'lodash'
 
 import CATEGORIES from './categories'
 import CategoryEntry from './CategoryEntry'
@@ -39,17 +42,6 @@ const updateQuery = (cache, { data: { addToEod } }) => {
   })
 }
 
-// TODO lodash
-const groupBy = (array, key) =>
-  array.reduce((groupsByKey, element) => {
-    const value = element[key]
-
-    return {
-      ...groupsByKey,
-      [value]: (groupsByKey[value] || []).concat(element),
-    }
-  }, {})
-
 class EnterEod extends Component {
   state = {
     entriesByCategory: {},
@@ -69,21 +61,6 @@ class EnterEod extends Component {
     })
   }
 
-  onSubmit = addToEod => {
-    const { entriesByCategory } = this.state
-
-    const entries = Object.keys(entriesByCategory)
-      .filter(category => entriesByCategory[category] !== '')
-      .map(category => ({
-        category,
-        content: entriesByCategory[category],
-      }))
-
-    addToEod({
-      variables: { entries },
-    })
-  }
-
   clearEntries = () => {
     this.setState({ entriesByCategory: {} })
   }
@@ -92,45 +69,89 @@ class EnterEod extends Component {
     const { entriesByCategory } = this.state
 
     return (
-      <Query query={GET_EOD}>
-        {({ data: { eod } }) => {
+      <FetchEod>
+        {eod => {
           const savedEntries = eod ? eod.entries : []
           const savedEntriesByCategory = groupBy(savedEntries, 'category')
 
           return (
-            <Mutation
-              mutation={ADD_TO_EOD}
-              update={updateQuery}
-              onCompleted={this.clearEntries}
-            >
-              {addToEod => (
-                <form
-                  onSubmit={e => {
-                    e.preventDefault()
-                    this.onSubmit(addToEod)
-                  }}
-                >
-                  {CATEGORIES.map(category => (
-                    <CategoryEntry
-                      key={category}
-                      category={category}
-                      entry={entriesByCategory[category]}
-                      savedEntries={savedEntriesByCategory[category]}
-                      onChange={this.onChange}
-                    />
-                  ))}
-
-                  <div>
-                    <Button type="submit">Submit</Button>
-                  </div>
-                </form>
-              )}
-            </Mutation>
+            <EodForm
+              savedEntriesByCategory={savedEntriesByCategory}
+              entriesByCategory={entriesByCategory}
+              onChange={this.onChange}
+              onSubmitComplete={this.clearEntries}
+            />
           )
         }}
-      </Query>
+      </FetchEod>
     )
   }
+}
+
+const FetchEod = ({ children }) => (
+  <Query query={GET_EOD}>
+    {({ data: { eod } }) => {
+      return children(eod)
+    }}
+  </Query>
+)
+FetchEod.propTypes = {
+  children: PropTypes.func.isRequired,
+}
+
+const onSubmit = (entriesByCategory, addToEod) => {
+  const entries = Object.keys(entriesByCategory)
+    .filter(category => entriesByCategory[category] !== '')
+    .map(category => ({
+      category,
+      content: entriesByCategory[category],
+    }))
+
+  addToEod({
+    variables: { entries },
+  })
+}
+
+const EodForm = ({
+  savedEntriesByCategory,
+  entriesByCategory,
+  onChange,
+  onSubmitComplete,
+}) => (
+  <Mutation
+    mutation={ADD_TO_EOD}
+    update={updateQuery}
+    onCompleted={onSubmitComplete}
+  >
+    {addToEod => (
+      <form
+        onSubmit={e => {
+          e.preventDefault()
+          onSubmit(entriesByCategory, addToEod)
+        }}
+      >
+        {CATEGORIES.map(category => (
+          <CategoryEntry
+            key={category}
+            category={category}
+            entry={entriesByCategory[category]}
+            savedEntries={savedEntriesByCategory[category]}
+            onChange={onChange}
+          />
+        ))}
+
+        <div>
+          <Button type="submit">Submit</Button>
+        </div>
+      </form>
+    )}
+  </Mutation>
+)
+EodForm.propTypes = {
+  savedEntriesByCategory: PropTypes.object.isRequired,
+  entriesByCategory: PropTypes.object.isRequired,
+  onChange: PropTypes.func.isRequired,
+  onSubmitComplete: PropTypes.func.isRequired,
 }
 
 export default EnterEod
