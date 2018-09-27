@@ -8,6 +8,9 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 import { Provider as RebassProvider } from 'rebass/emotion'
 
+import './global-styles.js'
+
+import App from './App'
 import EnterEodForTeam from './EnterEod/EnterEodForTeam'
 import Teams from './Teams/Teams/Teams'
 import EditTeam from './Teams/EditTeam/EditTeam'
@@ -25,10 +28,12 @@ ReactDOM.render(
   <Router>
     <ApolloProvider client={apiClient}>
       <RebassProvider>
-        <Route exact path="/" component={EnterEodForTeam} />
-        <Route exact path="/teams" component={Teams} />
-        <Route path="/teams/new" component={NewTeam} />
-        <Route path="/teams/:id/edit" component={EditTeam} />
+        <App>
+          <Route exact path="/" component={EnterEodForTeam} />
+          <Route exact path="/teams" component={Teams} />
+          <Route path="/teams/new" component={NewTeam} />
+          <Route path="/teams/:id/edit" component={EditTeam} />
+        </App>
       </RebassProvider>
     </ApolloProvider>
   </Router>,
