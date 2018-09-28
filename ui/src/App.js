@@ -1,33 +1,31 @@
 import React, { Fragment } from 'react'
 
-import styled from 'react-emotion'
-import { Box, Text } from 'rebass/emotion'
+import { Box, Text, Measure } from 'rebass/emotion'
 import PropTypes from 'prop-types'
 
 const PageCenter = ({ children }) => (
-  <Box css={{ maxWidth: 992, margin: '0 auto' }}>{children}</Box>
+  <Measure my="0" mx="auto" maxWidth={992}>
+    {children}
+  </Measure>
 )
 PageCenter.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-const Wrapper = styled('header')({
-  backgroundColor: '#000',
-  padding: '20px 0',
-})
-
 const Header = () => (
-  <Wrapper>
+  <Box is="header" bg="blue" p={3}>
     <PageCenter>
-      <Text color="white">✉️ 🌏 The Eod Machine</Text>
+      <Text color="white" fontSize={3}>
+        ✉️ 🌏 The Eod Machine
+      </Text>
     </PageCenter>
-  </Wrapper>
+  </Box>
 )
 
 const Main = ({ children }) => (
-  <main>
+  <Box is="main" mt={3}>
     <PageCenter>{children}</PageCenter>
-  </main>
+  </Box>
 )
 Main.propTypes = {
   children: PropTypes.node.isRequired,

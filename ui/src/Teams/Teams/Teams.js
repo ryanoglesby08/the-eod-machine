@@ -32,11 +32,13 @@ const Teams = ({ match }) => {
         return (
           <div>
             <Heading>All teams</Heading>
-            <TabularList
-              rows={teams.map(({ _id, name }) => (
-                <Link to={`${teamsUrl}/${_id}/edit`}>{name}</Link>
+            <TabularList>
+              {teams.map(({ _id, name }) => (
+                <Link to={`${teamsUrl}/${_id}/edit`} key={_id}>
+                  {name}
+                </Link>
               ))}
-            />
+            </TabularList>
 
             <div>
               <Link to={`${teamsUrl}/new`}>Create a team</Link>

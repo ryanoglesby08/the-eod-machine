@@ -1,7 +1,10 @@
-import React from 'react'
+import React, { Children } from 'react'
+import PropTypes from 'prop-types'
 
 import styled from 'react-emotion'
 import { Border } from 'rebass/emotion'
+
+import ClickableRow from './ClickableRow'
 
 const lastItemInList = (list, index) => list.length === index + 1
 
@@ -11,14 +14,13 @@ const BareList = styled('ul')({
   listStyleType: 'none',
 })
 
-const TabularList = ({ rows }) => (
+const TabularList = ({ children }) => (
   <BareList>
-    {rows.map((row, index) => (
+    {Children.map(children, (row, index) => (
       <Border
         is="li"
-        py={3}
-        px={2}
-        borderBottom={lastItemInList(rows, index) ? undefined : 0}
+        p={row.type.name === 'ClickableRow' ? 0 : 3}
+        borderBottom={lastItemInList(children, index) ? undefined : 0}
         key={index}
       >
         {row}
@@ -26,5 +28,10 @@ const TabularList = ({ rows }) => (
     ))}
   </BareList>
 )
+TabularList.propTypes = {
+  children: PropTypes.node.isRequired,
+}
+
+TabularList.ClickableRow = ClickableRow
 
 export default TabularList

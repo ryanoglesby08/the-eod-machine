@@ -7,6 +7,10 @@ import { Link } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 
+import { Heading, Text } from 'rebass/emotion'
+
+import TabularList from '../ui-components/TabularList/TabularList'
+
 export const GET_TEAMS = gql`
   {
     teams {
@@ -33,12 +37,15 @@ FetchTeams.propTypes = {
 
 const TeamSelector = ({ teams, chooseTeam }) => (
   <div>
-    Select your team
-    {teams.map(team => (
-      <div key={team._id} onClick={() => chooseTeam(team._id)}>
-        {team.name}
-      </div>
-    ))}
+    <Heading>Select your team</Heading>
+
+    <TabularList>
+      {teams.map(({ _id, name }) => (
+        <TabularList.ClickableRow onClick={() => chooseTeam(_id)} key={_id}>
+          <Text textAlign="left">{name}</Text>
+        </TabularList.ClickableRow>
+      ))}
+    </TabularList>
   </div>
 )
 TeamSelector.propTypes = {

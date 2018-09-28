@@ -1,7 +1,29 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`can have rows that are clickable 1`] = `
+.emotion-0 {
+  font: inherit;
+  border: 0;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 16px;
+  background-color: transparent;
+}
+
+.emotion-0:hover,
+.emotion-0:focus {
+  background-color: #eee;
+}
+
+<button
+  class="emotion-0"
+>
+  hello
+</button>
+`;
+
 exports[`is a bordered, unordered list that resembles a table 1`] = `
-.emotion-3 {
+.emotion-2 {
   padding: 0;
   margin: 0;
   list-style-type: none;
@@ -11,39 +33,32 @@ exports[`is a bordered, unordered list that resembles a table 1`] = `
   border: 1px solid;
   border-bottom: 0;
   border-color: gray;
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 16px;
 }
 
-.emotion-2 {
+.emotion-1 {
   border: 1px solid;
   border-color: gray;
-  padding-left: 8px;
-  padding-right: 8px;
-  padding-top: 16px;
-  padding-bottom: 16px;
+  padding: 16px;
 }
 
 <div>
   <ul
-    class="emotion-3"
+    class="emotion-2"
   >
     <li
       class="emotion-0"
     >
-      a
+      <div>
+        first row
+      </div>
     </li>
     <li
-      class="emotion-0"
+      class="emotion-1"
     >
-      b
-    </li>
-    <li
-      class="emotion-2"
-    >
-      c
+      <div>
+        second row
+      </div>
     </li>
   </ul>
 </div>
