@@ -4,12 +4,14 @@ import { Label } from 'rebass/emotion'
 
 import toHtmlId from './toHtmlId'
 
-const LabeledField = ({ label, children }) => {
+const LabeledField = ({ label, children, ...rest }) => {
   const fieldId = toHtmlId(label)
 
   return (
     <Fragment>
-      <Label htmlFor={fieldId}>{label}</Label>
+      <Label htmlFor={fieldId} {...rest}>
+        {label}
+      </Label>
 
       {children(fieldId)}
     </Fragment>

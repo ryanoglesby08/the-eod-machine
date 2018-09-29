@@ -37,7 +37,7 @@ FetchTeams.propTypes = {
 
 const TeamSelector = ({ teams, chooseTeam }) => (
   <Fragment>
-    <Box mb={2}>
+    <Box mb={3}>
       <Heading>Choose a team to receive your EOD update</Heading>
     </Box>
 
@@ -97,7 +97,7 @@ class WithTeam extends Component {
           if (!doesTeamExist(teams, teamId)) {
             return (
               <Fragment>
-                <Box mb={2}>
+                <Box mb={3}>
                   <Message bg="red">
                     That's odd... the team you've selected doesn't exist. Try
                     picking a different one.

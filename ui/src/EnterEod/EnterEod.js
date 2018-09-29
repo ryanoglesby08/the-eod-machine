@@ -1,10 +1,10 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import PropTypes from 'prop-types'
 
 import gql from 'graphql-tag'
 import { Mutation, Query } from 'react-apollo'
 
-import { Button } from 'rebass/emotion'
+import { Heading, Box, Button } from 'rebass/emotion'
 
 import { groupBy } from 'lodash'
 
@@ -124,26 +124,30 @@ const EodForm = ({
     onCompleted={onSubmitComplete}
   >
     {addToEod => (
-      <form
-        onSubmit={e => {
-          e.preventDefault()
-          onSubmit(entriesByCategory, addToEod)
-        }}
-      >
-        {CATEGORIES.map(category => (
-          <CategoryEntry
-            key={category}
-            category={category}
-            entry={entriesByCategory[category]}
-            savedEntries={savedEntriesByCategory[category]}
-            onChange={onChange}
-          />
-        ))}
+      <Fragment>
+        <Box mb={3}>
+          <Heading>Enter your EOD update</Heading>
+        </Box>
 
-        <div>
+        <form
+          onSubmit={e => {
+            e.preventDefault()
+            onSubmit(entriesByCategory, addToEod)
+          }}
+        >
+          {CATEGORIES.map(category => (
+            <CategoryEntry
+              key={category}
+              category={category}
+              entry={entriesByCategory[category]}
+              savedEntries={savedEntriesByCategory[category]}
+              onChange={onChange}
+            />
+          ))}
+
           <Button type="submit">Submit</Button>
-        </div>
-      </form>
+        </form>
+      </Fragment>
     )}
   </Mutation>
 )
