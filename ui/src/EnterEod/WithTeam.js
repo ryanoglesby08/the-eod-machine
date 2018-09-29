@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 import gql from 'graphql-tag'
 import { Query } from 'react-apollo'
 
-import { Heading, Text } from 'rebass/emotion'
+import { Heading, Text, Box, Message } from 'rebass/emotion'
 
 import TabularList from '../ui-components/TabularList/TabularList'
 
@@ -36,8 +36,10 @@ FetchTeams.propTypes = {
 }
 
 const TeamSelector = ({ teams, chooseTeam }) => (
-  <div>
-    <Heading>Select your team</Heading>
+  <Fragment>
+    <Box mb={2}>
+      <Heading>Choose a team to receive your EOD update</Heading>
+    </Box>
 
     <TabularList>
       {teams.map(({ _id, name }) => (
@@ -46,7 +48,7 @@ const TeamSelector = ({ teams, chooseTeam }) => (
         </TabularList.ClickableRow>
       ))}
     </TabularList>
-  </div>
+  </Fragment>
 )
 TeamSelector.propTypes = {
   teams: PropTypes.arrayOf(
@@ -81,10 +83,10 @@ class WithTeam extends Component {
         {teams => {
           if (teams.length === 0) {
             return (
-              <Fragment>
-                <span>There are no teams</span>
-                <Link to={'/teams'}>Create teams</Link>
-              </Fragment>
+              <Text>
+                You'll need to create a team before you can enter an EOD update.{' '}
+                <Link to={'/teams/new'}>Create a team →</Link>
+              </Text>
             )
           }
 
@@ -95,7 +97,13 @@ class WithTeam extends Component {
           if (!doesTeamExist(teams, teamId)) {
             return (
               <Fragment>
-                Team does not exist
+                <Box mb={2}>
+                  <Message bg="red">
+                    That's odd... the team you've selected doesn't exist. Try
+                    picking a different one.
+                  </Message>
+                </Box>
+
                 <TeamSelector teams={teams} chooseTeam={this.chooseTeam} />
               </Fragment>
             )

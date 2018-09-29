@@ -23,7 +23,7 @@ const Header = () => (
 )
 
 const Main = ({ children }) => (
-  <Box is="main" mt={3}>
+  <Box is="main" mt={4}>
     <PageCenter>{children}</PageCenter>
   </Box>
 )

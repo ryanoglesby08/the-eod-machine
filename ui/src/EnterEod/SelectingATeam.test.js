@@ -60,7 +60,11 @@ describe('when a team has already been selected', () => {
 
     const { container, getByText } = doRender({ getTeamsMock }, cookies)
 
-    await wait(() => expect(container).toHaveTextContent('Team does not exist'))
+    await wait(() =>
+      expect(container).toHaveTextContent(
+        "That's odd... the team you've selected doesn't exist. Try picking a different one."
+      )
+    )
     fireEvent.click(getByText('First team'))
 
     expect(container).toHaveTextContent('Selected team id is id-222')
@@ -76,7 +80,9 @@ describe("when a team hasn't already been selected", () => {
     const { container } = doRender({ getTeamsMock }, cookies)
 
     await wait(() => {
-      expect(container).toHaveTextContent('Select your team')
+      expect(container).toHaveTextContent(
+        'Choose a team to receive your EOD update'
+      )
       expect(container).toHaveTextContent('First team')
       expect(container).toHaveTextContent('Second team')
     })
@@ -100,6 +106,10 @@ it('tells you to create some teams when none exist yet', async () => {
   const getTeamsMock = mockGetTeams.returns({ teams: [] })
   const { container, getByText } = doRender({ getTeamsMock }, cookies)
 
-  await waitForElement(() => getByText('There are no teams'))
-  expect(container).toHaveTextContent('Create teams')
+  await waitForElement(() =>
+    getByText(
+      "You'll need to create a team before you can enter an EOD update."
+    )
+  )
+  expect(container).toHaveTextContent('Create a team →')
 })
