@@ -11,7 +11,9 @@ import { Provider as RebassProvider } from 'rebass/emotion'
 import './global-styles.js'
 
 import App from './App'
-import EnterEodForTeam from './EnterEod/EnterEodForTeam'
+import TeamRequiredRoute from './EnterEod/SelectTeam/TeamRequiredRoute'
+import SelectTeam from './EnterEod/SelectTeam/SelectTeam'
+import EnterEod from './EnterEod/EnterEod'
 import Teams from './Teams/Teams/Teams'
 import EditTeam from './Teams/EditTeam/EditTeam'
 import NewTeam from './Teams/NewTeam/NewTeam'
@@ -29,8 +31,9 @@ ReactDOM.render(
     <ApolloProvider client={apiClient}>
       <RebassProvider>
         <App>
-          <Route exact path="/" component={EnterEodForTeam} />
-          <Route exact path="/teams" component={Teams} />
+          <TeamRequiredRoute path="/" exact component={EnterEod} />
+          <Route path="/select-team" component={SelectTeam} />
+          <Route path="/teams" exact component={Teams} />
           <Route path="/teams/new" component={NewTeam} />
           <Route path="/teams/:id/edit" component={EditTeam} />
         </App>

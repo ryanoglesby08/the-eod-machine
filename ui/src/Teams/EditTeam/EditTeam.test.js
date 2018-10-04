@@ -34,7 +34,7 @@ const doRender = ({
   return render(
     <MemoryRouter initialEntries={[`/teams/${TEAM_ID}/edit`]}>
       <MockedProvider mocks={mocks} addTypename={false}>
-        <Route path="/teams" component={Teams} exact />
+        <Route path="/teams" exact component={Teams} />
         <Route path="/teams/:id/edit" component={EditTeam} />
       </MockedProvider>
     </MemoryRouter>

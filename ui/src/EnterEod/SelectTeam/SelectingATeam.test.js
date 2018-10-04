@@ -1,27 +1,32 @@
 import React from 'react'
 import { CookiesProvider, Cookies } from 'react-cookie'
 import { MockedProvider } from 'react-apollo/lib/test-utils'
-import { MemoryRouter } from 'react-router-dom'
+import { MemoryRouter, Route } from 'react-router-dom'
 
 import { render, wait, fireEvent, waitForElement } from 'react-testing-library'
 
-import buildGraphQlMockForQuery from '../__test-utils__/GraphQlMock'
-import { aTeam } from './__test-utils__/team-builder'
+import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
+import { aTeam } from '../__test-utils__/team-builder'
 
-import WithTeam, { GET_TEAMS } from './WithTeam'
+import { GET_TEAMS } from './FetchTeams'
+import SelectTeam from './SelectTeam'
+import TeamRequiredRoute from './TeamRequiredRoute'
 
 const mockGetTeams = buildGraphQlMockForQuery(GET_TEAMS)
+
+const ShowSelectedTeamId = ({ teamId }) => (
+  <div>Selected team id is {teamId}</div>
+)
 
 const doRender = ({ getTeamsMock }, cookies) => {
   const mocks = [getTeamsMock]
 
   return render(
-    <MemoryRouter>
+    <MemoryRouter initialEntries={['/']}>
       <MockedProvider mocks={mocks} addTypename={false}>
         <CookiesProvider cookies={cookies}>
-          <WithTeam>
-            {teamId => <div>Selected team id is {teamId}</div>}
-          </WithTeam>
+          <TeamRequiredRoute path="/" exact component={ShowSelectedTeamId} />
+          <Route path="/select-team" component={SelectTeam} />
         </CookiesProvider>
       </MockedProvider>
     </MemoryRouter>
