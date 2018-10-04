@@ -1,18 +1,12 @@
 import React, { Children } from 'react'
 import PropTypes from 'prop-types'
 
-import styled from 'react-emotion'
 import { Border } from 'rebass/emotion'
 
+import BareList from '../BareList/BareList'
 import ClickableRow from './ClickableRow'
 
 const lastItemInList = (list, index) => list.length === index + 1
-
-const BareList = styled('ul')({
-  padding: 0,
-  margin: 0,
-  listStyleType: 'none',
-})
 
 const TabularList = ({ children }) => (
   <BareList>
