@@ -1,6 +1,6 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
-import { Box, Text, Measure } from 'rebass/emotion'
+import { Box, Text, Measure, Flex } from 'rebass/emotion'
 import PropTypes from 'prop-types'
 
 const PageCenter = ({ children }) => (
@@ -12,17 +12,24 @@ PageCenter.propTypes = {
   children: PropTypes.node.isRequired,
 }
 
-const Header = () => (
+export const Header = ({ children }) => (
   <Box is="header" bg="blue" p={3}>
     <PageCenter>
-      <Text color="white" fontSize={3}>
-        ✉️ 🌏 The Eod Machine
-      </Text>
+      <Flex alignItems="center">
+        <Text color="white" fontSize={3}>
+          ✉️ 🌏 The Eod Machine
+        </Text>
+
+        <Box ml="auto">{children}</Box>
+      </Flex>
     </PageCenter>
   </Box>
 )
+Header.propTypes = {
+  children: PropTypes.node.isRequired,
+}
 
-const Main = ({ children }) => (
+export const Main = ({ children }) => (
   <Box is="main" mt={4} px={3}>
     <PageCenter>{children}</PageCenter>
   </Box>
@@ -30,15 +37,3 @@ const Main = ({ children }) => (
 Main.propTypes = {
   children: PropTypes.node.isRequired,
 }
-
-const App = ({ children }) => (
-  <Fragment>
-    <Header />
-    <Main>{children}</Main>
-  </Fragment>
-)
-App.propTypes = {
-  children: PropTypes.node.isRequired,
-}
-
-export default App
