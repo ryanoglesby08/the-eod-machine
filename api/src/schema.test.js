@@ -1,8 +1,10 @@
 const { graphql } = require('graphql')
 
 //TODO: This mongo setup only works with one file. Need to upgrade jest in order to do this way --> https://jestjs.io/docs/en/mongodb
-const startDbServer = require('../test/startDbServer')
-const stopDbServer = require('../test/stopDbServer')
+const startDbServer = require('./__test-utils__/startDbServer')
+const stopDbServer = require('./__test-utils__/stopDbServer')
+
+const anEntry = require('./__test-utils__/eod-entry-mother')
 
 const {
   connectToDb,
@@ -28,8 +30,8 @@ afterAll(async () => {
 })
 
 const GET_EOD = `
-  {
-    eod {
+  query Eod($teamId: String!) {
+    eod(teamId: $teamId) {
       entries {
         category
         content
@@ -39,8 +41,8 @@ const GET_EOD = `
 `
 
 const ADD_TO_EOD = `
-  mutation AddToEod($entries: [EntryInput]!) {
-    addToEod(entries: $entries) {
+  mutation AddToEod($entries: [EntryInput]!, $teamId: String!) {
+    addToEod(entries: $entries, teamId: $teamId) {
       category
       content
     }
@@ -106,57 +108,72 @@ beforeEach(async () => {
   await teamsCollection().deleteMany()
 })
 
-it('adds entries to the current eod', async () => {
-  const entry = {
-    category: 'Test category',
-    content: 'some content',
-  }
+it("adds entries to a team's current eod", async () => {
+  const entry = anEntry()
 
-  let eodQueryResult = await executeQuery(GET_EOD)
+  let eodQueryResult = await executeQuery(GET_EOD, { teamId: 'team-1' })
   expect(eodQueryResult).toEqual({
     eod: {
       entries: [],
     },
   })
 
-  const addToEodResult = await executeQuery(ADD_TO_EOD, { entries: [entry] })
+  const addToEodResult = await executeQuery(ADD_TO_EOD, {
+    entries: [entry],
+    teamId: 'team-1',
+  })
   expect(addToEodResult).toEqual({
     addToEod: [entry],
   })
 
-  eodQueryResult = await executeQuery(GET_EOD)
+  eodQueryResult = await executeQuery(GET_EOD, { teamId: 'team-1' })
   expect(eodQueryResult).toEqual({
     eod: {
       entries: [entry],
     },
   })
-})
 
-it('marks eod entries as sent', async () => {
-  const entry = {
-    category: 'Test category',
-    content: 'some content',
-  }
-
-  await executeQuery(ADD_TO_EOD, { entries: [entry] })
-
-  let eodQueryResult = await executeQuery(GET_EOD)
+  eodQueryResult = await executeQuery(GET_EOD, { teamId: 'team-2' })
   expect(eodQueryResult).toEqual({
     eod: {
-      entries: [entry],
+      entries: [],
+    },
+  })
+})
+
+it('marks all eod entries as sent regardless of team', async () => {
+  const team1Entry = anEntry({ content: 'some content' })
+  const team2Entry = anEntry({ content: 'other content' })
+
+  await executeQuery(ADD_TO_EOD, { entries: [team1Entry], teamId: 'team-1' })
+  await executeQuery(ADD_TO_EOD, { entries: [team2Entry], teamId: 'team-2' })
+
+  let eodQueryResult = await executeQuery(GET_EOD, { teamId: 'team-1' })
+  expect(eodQueryResult).toEqual({
+    eod: {
+      entries: [team1Entry],
     },
   })
 
   await executeQuery(SEND_EOD)
 
-  eodQueryResult = await executeQuery(GET_EOD)
+  eodQueryResult = await executeQuery(GET_EOD, { teamId: 'team-1' })
   expect(eodQueryResult).toEqual({
     eod: {
       entries: [],
     },
   })
+
+  // TODO. this will change when sendEod works with teams
+  eodQueryResult = await executeQuery(GET_EOD, { teamId: 'team-2' })
+  expect(eodQueryResult).toEqual({
+    eod: {
+      entries: [], // [team2Entry]
+    },
+  })
 })
 
+// TODO Try to use expect "toMatchObject"
 it('creates and edits teams', async () => {
   const team = {
     name: 'Test team',

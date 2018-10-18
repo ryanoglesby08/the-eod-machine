@@ -6,14 +6,14 @@ const MutationResponse = require('./schema/MutationResponse')
 
 const SchemaDefinition = `
   type Query { 
-    eod: Eod
+    eod(teamId: String!): Eod
     
     team(id: String!): Team
     teams: [Team]
   }
   
   type Mutation {
-    addToEod(entries: [EntryInput]!): [Entry]
+    addToEod(entries: [EntryInput]!, teamId: String!): [Entry]
     sendEod: MutationResponse
     
     createTeam(team: TeamInput!): Team

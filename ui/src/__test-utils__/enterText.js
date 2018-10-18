@@ -1,4 +1,6 @@
 import { fireEvent } from 'react-testing-library'
 
-export default (component, value) =>
+const enterText = (component, value) =>
   fireEvent.change(component, { target: { value } })
+
+export default enterText

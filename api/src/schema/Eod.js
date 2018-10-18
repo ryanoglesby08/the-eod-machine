@@ -24,16 +24,18 @@ const Eod = `
 
 const resolvers = {
   Query: {
-    eod: async () => ({
-      entries: await entriesCollection()
-        .find({ sent: false })
-        .toArray(),
-    }),
+    eod: async (_, { teamId }) => {
+      return {
+        entries: await entriesCollection()
+          .find({ teamId, sent: false })
+          .toArray(),
+      }
+    },
   },
   Mutation: {
-    addToEod: async (_, { entries }) => {
+    addToEod: async (_, { entries, teamId }) => {
       const unsavedEntries = entries.map(entry =>
-        Object.assign({}, entry, { sent: false })
+        Object.assign({}, entry, { teamId, sent: false })
       )
       const { ops } = await entriesCollection().insertMany(unsavedEntries)
 
