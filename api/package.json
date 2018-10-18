@@ -4,6 +4,8 @@
   "private": true,
   "main": "src/index.js",
   "scripts": {
+    "db:start": "brew services start mongo",
+    "db:stop": "brew services stop mongo",
     "start": "node src/index.js",
     "test": "jest --watch",
     "test:ci": "jest"
