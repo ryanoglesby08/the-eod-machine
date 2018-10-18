@@ -38,10 +38,6 @@ beforeEach(() => {
   cookies.set('team', TEAM_ID)
 })
 
-afterEach(() => {
-  cookies.remove('team')
-})
-
 it('shows the default categories', () => {
   const { container } = doRender()
 

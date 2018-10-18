@@ -47,7 +47,6 @@ const updateQuery = teamId => (cache, { data: { addToEod } }) => {
 
 class EnterEod extends Component {
   state = {
-    teamId: this.props.cookies.get('team'),
     entriesByCategory: {},
   }
 
@@ -70,7 +69,10 @@ class EnterEod extends Component {
   }
 
   render() {
-    const { teamId, entriesByCategory } = this.state
+    const { cookies } = this.props
+    const { entriesByCategory } = this.state
+
+    const teamId = cookies.get('team')
 
     return (
       <FetchEod teamId={teamId}>
