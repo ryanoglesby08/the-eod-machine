@@ -10,6 +10,7 @@ jest.mock('../apiClient')
 
 it('sends a message to every team', async () => {
   const team = aTeamWithItsEod({
+    name: 'The Team',
     mailingList: ['team1@example.com', 'team2@example.com'],
   })
 
@@ -33,12 +34,20 @@ it('sends a message to every team', async () => {
   expect(renderTextMessage).toHaveBeenCalledWith(team)
   expect(renderHtmlMessage).toHaveBeenCalledWith(team)
 
-  const parsedMessage = JSON.parse(messages[0].message)
+  expect(messages).toHaveLength(1)
 
-  expect(parsedMessage).toHaveProperty('to', [
+  const eodMessage = JSON.parse(messages[0].message)
+
+  expect(eodMessage).toHaveProperty('from', {
+    address: 'eod-machine@theeodmachine.local',
+    name: 'EOD Machine',
+  })
+  expect(eodMessage).toHaveProperty('to', [
     { address: 'team1@example.com', name: '' },
     { address: 'team2@example.com', name: '' },
   ])
-  expect(parsedMessage).toHaveProperty('text', 'the text')
-  expect(parsedMessage).toHaveProperty('html', 'the html')
+  expect(eodMessage).toHaveProperty('subject', '[EOD] The Team')
+
+  expect(eodMessage).toHaveProperty('text', 'the text')
+  expect(eodMessage).toHaveProperty('html', 'the html')
 })

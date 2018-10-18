@@ -27,9 +27,12 @@ const sendMessages = async (
   return await Promise.all(
     teams.map(async team => {
       return await transporter.sendMail({
-        from: 'sender@example.com',
+        from: {
+          address: 'eod-machine@theeodmachine.local',
+          name: 'EOD Machine',
+        },
         to: team.mailingList,
-        subject: 'An EOD',
+        subject: `[EOD] ${team.name}`,
         text: await renderTextMessage(team),
         html: await renderHtmlMessage(team),
       })
