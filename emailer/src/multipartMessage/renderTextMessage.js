@@ -1,5 +1,5 @@
 import textMessage from './textMessage/textMessage'
 
-const renderTextMessage = async ({ currentEod }) => textMessage(currentEod)
+const renderTextMessage = team => textMessage(team)
 
 export default renderTextMessage

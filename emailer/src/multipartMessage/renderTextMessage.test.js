@@ -11,7 +11,7 @@ it('is an EOD message as plain text', async () => {
     ],
   })
 
-  const message = await renderTextMessage(team)
+  const message = renderTextMessage(team)
 
   expect(message).toMatchSnapshot()
 })
