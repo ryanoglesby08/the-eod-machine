@@ -66,9 +66,7 @@ describe('when a team has already been selected', () => {
     const { container, getByText } = doRender({ getTeamsMock }, cookies)
 
     await wait(() =>
-      expect(container).toHaveTextContent(
-        "That's odd... the team you've selected doesn't exist. Try picking a different one."
-      )
+      expect(container).toHaveTextContent(/team you've selected doesn't exist/)
     )
     fireEvent.click(getByText('First team'))
 
@@ -99,8 +97,12 @@ describe("when a team hasn't already been selected", () => {
     })
     const { container, getByText } = doRender({ getTeamsMock }, cookies)
 
-    const firstTeam = await waitForElement(() => getByText('First team'))
-    fireEvent.click(firstTeam)
+    await wait(() => {
+      expect(container).not.toHaveTextContent(
+        /team you've selected doesn't exist/
+      )
+    })
+    fireEvent.click(getByText('First team'))
 
     expect(container).toHaveTextContent('Selected team id is id-333')
     expect(cookies.get('team')).toEqual('id-333')

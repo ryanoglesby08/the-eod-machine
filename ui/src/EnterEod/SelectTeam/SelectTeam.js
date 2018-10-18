@@ -68,11 +68,12 @@ class SelectTeam extends Component {
         {(teams, doesTeamExist) => {
           return (
             <Fragment>
-              {!doesTeamExist(teamId) && (
-                <Box mb={3}>
-                  <NonExistantTeamMessage />
-                </Box>
-              )}
+              {teamId &&
+                !doesTeamExist(teamId) && (
+                  <Box mb={3}>
+                    <NonExistantTeamMessage />
+                  </Box>
+                )}
 
               <TeamSelector teams={teams} chooseTeam={this.chooseTeam} />
             </Fragment>
