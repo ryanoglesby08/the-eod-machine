@@ -5,7 +5,7 @@ const blankLine = '\r\n'
 const entriesToString = entries =>
   entries.map(({ content }) => `* ${content}`).join(blankLine)
 
-const textMessage = ({ entries }) => {
+const textMessage = entries => {
   const entriesByCategory = groupBy(entries, 'category')
 
   return Object.keys(entriesByCategory)

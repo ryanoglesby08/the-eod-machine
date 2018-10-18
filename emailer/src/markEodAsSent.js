@@ -5,7 +5,7 @@ import apiClient from './apiClient'
 const SEND_EOD = gql`
   mutation SendEod {
     sendEod {
-      status
+      success
     }
   }
 `

@@ -1,6 +1,6 @@
 const { ObjectId } = require('mongodb')
 
-const { teamsCollection } = require('../dbConnection')
+const { entriesCollection, teamsCollection } = require('../dbConnection')
 
 const TeamInput = `
   input TeamInput {
@@ -14,10 +14,19 @@ const Team = `
     _id: String!
     name: String!
     mailingList: [String]!
+    currentEod: [Entry]
   }
 `
 
 const resolvers = {
+  Team: {
+    currentEod: async team => {
+      return await entriesCollection()
+        .find({ teamId: team._id.toString(), sent: false })
+        .toArray()
+    },
+  },
+
   Query: {
     teams: async () =>
       await teamsCollection()

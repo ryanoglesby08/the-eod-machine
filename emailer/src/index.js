@@ -2,7 +2,7 @@ import nodemailer from 'nodemailer'
 
 import renderHtmlMessage from './multipartMessage/renderHtmlMessage'
 import renderTextMessage from './multipartMessage/renderTextMessage'
-import sendMessage from './sendMessage/sendMessage'
+import sendMessages from './sendMessage/sendMessages'
 import markEodAsSent from './markEodAsSent'
 
 const execute = async () => {
@@ -22,20 +22,24 @@ const execute = async () => {
 
     // send mail with defined transport object
     try {
-      const info = await sendMessage(
+      console.log('sending...')
+      const messages = await sendMessages(
         transporter,
-        await renderTextMessage(),
-        await renderHtmlMessage()
+        renderTextMessage,
+        renderHtmlMessage
       )
 
+      console.log('marking as sent...')
       await markEodAsSent()
 
-      console.log('Message sent: %s', info.messageId)
-      // Preview only available when sending through an Ethereal account
-      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(info))
+      messages.forEach(message => {
+        console.log('Message sent: %s', message.messageId)
+        // Preview only available when sending through an Ethereal account
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message))
 
-      // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-      // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+        // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
+        // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
+      })
     } catch (error) {
       console.log(error)
     }

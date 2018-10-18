@@ -83,6 +83,10 @@ const GET_TEAMS = `
       _id
       name
       mailingList
+      currentEod {
+        category
+        content
+      }
     }
   }
 `
@@ -216,5 +220,35 @@ it('creates and edits teams', async () => {
   })
   expect(teamResult).toEqual({
     team: expect.objectContaining(teamEdits),
+  })
+})
+
+it('gets EODs that are due to be sent', async () => {
+  const team1 = {
+    name: 'Team 1',
+    mailingList: ['test@example.com'],
+  }
+  const createTeamResult = await executeQuery(CREATE_TEAM, { team: team1 })
+  const createdTeamId = createTeamResult.createTeam._id
+
+  const team1Entry = anEntry({ content: 'team 1 content' })
+
+  await executeQuery(ADD_TO_EOD, {
+    entries: [team1Entry],
+    teamId: createdTeamId,
+  })
+
+  const getDueEodsResult = await executeQuery(GET_TEAMS)
+
+  // TODO: Clean this assertion up
+  expect(getDueEodsResult).toEqual({
+    teams: [
+      {
+        _id: createdTeamId,
+        name: team1.name,
+        mailingList: team1.mailingList,
+        currentEod: [team1Entry],
+      },
+    ],
   })
 })
