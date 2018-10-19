@@ -29,3 +29,17 @@ exports[`is an EOD message 1`] = `
   </div>
 </div>
 `;
+
+exports[`is an empty EOD message when there are no entries 1`] = `
+<div>
+  <h1>
+    EOD Updates
+  </h1>
+  <div>
+    No updates this time.
+  </div>
+  <div>
+    Delivered by The EOD Machine
+  </div>
+</div>
+`;

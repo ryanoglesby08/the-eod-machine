@@ -2,10 +2,11 @@ import groupBy from 'lodash/groupBy'
 
 const NEW_LINE = '\r\n'
 const BLANK_LINE = NEW_LINE + NEW_LINE
+
 const CATEGORY_DIVIDER =
   '---------------------------------------------------------------------'
 
-const header = () => `EOD Updates`
+const EMPTY_MESSAGE = 'No updates this time.'
 
 const entriesToString = entries =>
   entries.map(({ content }) => `* ${content}`).join(NEW_LINE)
@@ -23,15 +24,13 @@ const body = entries => {
     .join(BLANK_LINE)
 }
 
-const footer = () => '- Delivered by The EOD Machine'
+const textMessage = entries => `
+EOD Updates
 
-const textMessage = ({ currentEod }) => {
-  return header()
-    .concat(BLANK_LINE)
-    .concat(body(currentEod))
-    .concat(BLANK_LINE)
-    .concat(NEW_LINE)
-    .concat(footer())
-}
+${entries.length === 0 ? EMPTY_MESSAGE : body(entries)}
+
+
+- Delivered by The EOD Machine
+`
 
 export default textMessage

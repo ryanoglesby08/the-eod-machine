@@ -1,7 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`is an EOD message as plain text 1`] = `
-"EOD Updates
+"
+EOD Updates
 
 ---------------------------------------------------------------------
 Category 1
@@ -15,5 +16,17 @@ Category 2
 * even more content
 
 
-- Delivered by The EOD Machine"
+- Delivered by The EOD Machine
+"
+`;
+
+exports[`is an empty EOD message when there are no entries 1`] = `
+"
+EOD Updates
+
+No updates this time.
+
+
+- Delivered by The EOD Machine
+"
 `;

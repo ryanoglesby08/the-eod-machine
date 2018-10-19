@@ -34,7 +34,7 @@ const sendMessages = async (
         to: team.mailingList,
         subject: `[EOD] ${team.name}`,
         text: renderTextMessage(team),
-        html: await renderHtmlMessage(team),
+        html: renderHtmlMessage(team),
       })
     })
   )
