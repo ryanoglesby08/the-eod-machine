@@ -7,6 +7,8 @@ const HtmlMessage = ({ entries }) => {
 
   return (
     <Fragment>
+      <h1>EOD Updates</h1>
+
       {Object.keys(entriesByCategory).map(category => (
         <Fragment key={category}>
           <h2>{category}</h2>
@@ -18,6 +20,8 @@ const HtmlMessage = ({ entries }) => {
           </ul>
         </Fragment>
       ))}
+
+      <div>Delivered by The EOD Machine</div>
     </Fragment>
   )
 }
