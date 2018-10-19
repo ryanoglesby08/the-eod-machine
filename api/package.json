@@ -20,6 +20,7 @@
     "mongodb": "^3.1.1"
   },
   "devDependencies": {
+    "jest": "^23.6.0",
     "mongodb-memory-server": "^1.9.3"
   }
 }

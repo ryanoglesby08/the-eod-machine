@@ -8,13 +8,13 @@
     "eject": "react-scripts eject",
     "serve": "serve --listen 3000 build",
     "start": "react-scripts start",
-    "test": "react-scripts test --env=jsdom"
+    "test": "react-scripts test"
   },
   "dependencies": {
     "apollo-boost": "^0.1.10",
     "emotion": "^9.2.6",
     "emotion-theming": "^9.2.6",
-    "graphql": "^0.13.2",
+    "graphql": "^14.0.2",
     "graphql-tag": "^2.9.2",
     "lodash": "^4.17.11",
     "prop-types": "^15.6.2",
@@ -24,13 +24,19 @@
     "react-dom": "^16.4.1",
     "react-emotion": "^9.2.6",
     "react-router-dom": "^4.3.1",
-    "react-scripts": "^1.1.4",
+    "react-scripts": "2.0.5",
     "rebass": "^2.1.0",
-    "serve": "^9.1.0"
+    "serve": "^10.0.2"
   },
   "devDependencies": {
-    "jest-dom": "^1.11.0",
+    "jest-dom": "^2.1.0",
     "jest-emotion": "^9.2.7",
     "react-testing-library": "^5.0.0"
-  }
+  },
+  "browserslist": [
+    ">0.2%",
+    "not dead",
+    "not ie <= 11",
+    "not op_mini all"
+  ]
 }

@@ -1,6 +1,6 @@
 import React from 'react'
 
-import { MockedProvider } from 'react-apollo/lib/test-utils'
+import { MockedProvider } from 'react-apollo/test-utils'
 import { MemoryRouter, Route } from 'react-router-dom'
 
 import { render, wait } from 'react-testing-library'
