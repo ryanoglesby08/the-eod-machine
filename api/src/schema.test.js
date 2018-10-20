@@ -2,7 +2,7 @@ import { graphql } from 'graphql'
 
 //TODO: This mongo setup only works with one file. Need to upgrade jest in order to do this way --> https://jestjs.io/docs/en/mongodb
 import { startDbServer, stopDbServer } from './__test-utils__/dbServer'
-import anEntry from './__test-utils__/eod-entry-mother'
+import { anEntry } from '../../__test-utils__/entry-mother'
 
 import {
   closeDbConnection,
