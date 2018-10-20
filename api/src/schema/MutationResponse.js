@@ -4,6 +4,7 @@ const MutationResponse = `
   }
 `
 
-const buildMutationResponse = result => ({ success: result.ok === 1 })
+export const buildMutationResponse = result => ({ success: result.ok === 1 })
 
-module.exports = { schema: [MutationResponse], buildMutationResponse }
+const mutationSchema = { schema: [MutationResponse] }
+export default mutationSchema

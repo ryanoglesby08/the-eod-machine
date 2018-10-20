@@ -1,20 +1,13 @@
-const { MongoClient } = require('mongodb')
+import { MongoClient } from 'mongodb'
 
 let connection, db
 
-const connectToDb = async (uri, dbName) => {
+export const connectToDb = async (uri, dbName) => {
   connection = await MongoClient.connect(uri)
   db = await connection.db(dbName)
 }
 
-const closeDbConnection = async () => await connection.close()
+export const closeDbConnection = async () => await connection.close()
 
-const entriesCollection = () => db.collection('entries')
-const teamsCollection = () => db.collection('teams')
-
-module.exports = {
-  connectToDb,
-  closeDbConnection,
-  entriesCollection,
-  teamsCollection,
-}
+export const entriesCollection = () => db.collection('entries')
+export const teamsCollection = () => db.collection('teams')

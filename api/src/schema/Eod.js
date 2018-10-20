@@ -1,5 +1,5 @@
-const { entriesCollection } = require('../dbConnection')
-const { buildMutationResponse } = require('./MutationResponse')
+import { entriesCollection } from '../dbConnection'
+import { buildMutationResponse } from './MutationResponse'
 
 const Entry = `
   type Entry {
@@ -34,9 +34,11 @@ const resolvers = {
   },
   Mutation: {
     addToEod: async (_, { entries, teamId }) => {
-      const unsavedEntries = entries.map(entry =>
-        Object.assign({}, entry, { teamId, sent: false })
-      )
+      const unsavedEntries = entries.map(entry => ({
+        ...entry,
+        teamId,
+        sent: false,
+      }))
       const { ops } = await entriesCollection().insertMany(unsavedEntries)
 
       return ops
@@ -52,4 +54,5 @@ const resolvers = {
   },
 }
 
-module.exports = { schema: [Entry, EntryInput, Eod], resolvers }
+const eodSchema = { schema: [Entry, EntryInput, Eod], resolvers }
+export default eodSchema

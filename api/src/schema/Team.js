@@ -1,6 +1,6 @@
-const { ObjectId } = require('mongodb')
+import { ObjectId } from 'mongodb'
 
-const { entriesCollection, teamsCollection } = require('../dbConnection')
+import { entriesCollection, teamsCollection } from '../dbConnection'
 
 const TeamInput = `
   input TeamInput {
@@ -48,9 +48,10 @@ const resolvers = {
         }
       )
 
-      return Object.assign({}, { _id: id }, team)
+      return { ...team, _id: id }
     },
   },
 }
 
-module.exports = { schema: [TeamInput, Team], resolvers }
+const teamSchema = { schema: [TeamInput, Team], resolvers }
+export default teamSchema

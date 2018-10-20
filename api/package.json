@@ -6,7 +6,7 @@
   "scripts": {
     "db:start": "brew services start mongo",
     "db:stop": "brew services stop mongo",
-    "start": "node src/index.js",
+    "start": "babel-node src/index.js",
     "test": "jest --watch",
     "test:ci": "jest"
   },
@@ -20,7 +20,13 @@
     "mongodb": "^3.1.1"
   },
   "devDependencies": {
+    "@babel/core": "^7.1.2",
+    "@babel/node": "^7.0.0",
+    "@babel/preset-env": "^7.1.0",
+    "babel-core": "^7.0.0-bridge.0",
+    "babel-jest": "^23.6.0",
     "jest": "^23.6.0",
-    "mongodb-memory-server": "^1.9.3"
+    "mongodb-memory-server": "^1.9.3",
+    "regenerator-runtime": "^0.12.1"
   }
 }

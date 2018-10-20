@@ -1,8 +1,8 @@
-const { makeExecutableSchema } = require('graphql-tools')
+import { makeExecutableSchema } from 'graphql-tools'
 
-const Eod = require('./schema/Eod')
-const Team = require('./schema/Team')
-const MutationResponse = require('./schema/MutationResponse')
+import Eod from './schema/Eod'
+import Team from './schema/Team'
+import MutationResponse from './schema/MutationResponse'
 
 const SchemaDefinition = `
   type Query { 
@@ -26,10 +26,14 @@ const SchemaDefinition = `
   }
 `
 
-module.exports = makeExecutableSchema({
-  typeDefs: [SchemaDefinition]
-    .concat(Eod.schema)
-    .concat(Team.schema)
-    .concat(MutationResponse.schema),
-  resolvers: [].concat(Eod.resolvers).concat(Team.resolvers),
+const schema = makeExecutableSchema({
+  typeDefs: [
+    SchemaDefinition,
+    ...Eod.schema,
+    ...Team.schema,
+    ...MutationResponse.schema,
+  ],
+  resolvers: [Eod.resolvers, Team.resolvers],
 })
+
+export default schema

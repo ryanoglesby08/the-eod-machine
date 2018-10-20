@@ -1,32 +1,25 @@
-const { graphql } = require('graphql')
+import { graphql } from 'graphql'
 
 //TODO: This mongo setup only works with one file. Need to upgrade jest in order to do this way --> https://jestjs.io/docs/en/mongodb
-const startDbServer = require('./__test-utils__/startDbServer')
-const stopDbServer = require('./__test-utils__/stopDbServer')
+import { startDbServer, stopDbServer } from './__test-utils__/dbServer'
+import anEntry from './__test-utils__/eod-entry-mother'
 
-const anEntry = require('./__test-utils__/eod-entry-mother')
-
-const {
-  connectToDb,
+import {
   closeDbConnection,
+  connectToDb,
   entriesCollection,
   teamsCollection,
-} = require('./dbConnection')
-
-const schema = require('./schema')
-
-let dbServer
+} from './dbConnection'
+import schema from './schema'
 
 beforeAll(async () => {
-  const { server, uri } = await startDbServer()
-  dbServer = server
-
+  const { uri } = await startDbServer()
   await connectToDb(uri, 'eodmachine-test')
 })
 
 afterAll(async () => {
   await closeDbConnection()
-  await stopDbServer(dbServer)
+  await stopDbServer()
 })
 
 const GET_EOD = `
@@ -212,7 +205,7 @@ it('creates and edits teams', async () => {
     team: teamEdits,
   })
   expect(editTeamResult).toEqual({
-    editTeam: Object.assign({}, { _id: createdTeamId }, teamEdits),
+    editTeam: { ...teamEdits, _id: createdTeamId },
   })
 
   teamResult = await executeQuery(GET_TEAM, {

@@ -1,21 +1,24 @@
-const express = require('express')
+import express from 'express'
+import cors from 'cors'
+import bodyParser from 'body-parser'
 
-const cors = require('cors')
-const bodyParser = require('body-parser')
+import { graphiqlExpress, graphqlExpress } from 'apollo-server-express'
 
-const { graphqlExpress, graphiqlExpress } = require('apollo-server-express')
+import schema from './schema'
+import { connectToDb } from './dbConnection'
 
 const app = express()
 
-const { connectToDb } = require('./dbConnection')
-const schema = require('./schema')
-
 const DB_HOST = process.env.DB_HOST || 'localhost'
-connectToDb(`mongodb://${DB_HOST}`, 'eodmachine')
-
-app.use('/api/graphql', cors(), bodyParser.json(), graphqlExpress({ schema }))
-app.get('/api/graphiql', graphiqlExpress({ endpointURL: '/api/graphql' }))
-
 const PORT = 4000
 
-app.listen(PORT, () => console.log(`Listening on port ${PORT}...`))
+const run = async () => {
+  await connectToDb(`mongodb://${DB_HOST}`, 'eodmachine')
+
+  app.use('/api/graphql', cors(), bodyParser.json(), graphqlExpress({ schema }))
+  app.get('/api/graphiql', graphiqlExpress({ endpointURL: '/api/graphql' }))
+
+  app.listen(PORT, () => console.log(`Listening on port ${PORT}...`))
+}
+
+run()
