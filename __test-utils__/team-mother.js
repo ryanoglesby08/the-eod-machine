@@ -1,3 +1,4 @@
+const pick = require('./pick')
 const { anEntry } = require('./entry-mother')
 
 const defaultTeam = {
@@ -11,4 +12,12 @@ const aTeamWithItsEod = (overrides = {}) => {
   return Object.assign({}, defaultTeam, overrides)
 }
 
-module.exports = { aTeamWithItsEod }
+const someTeamInput = (overrides = {}) => {
+  return Object.assign(
+    {},
+    pick(defaultTeam, ['name', 'mailingList']),
+    overrides
+  )
+}
+
+module.exports = { aTeamWithItsEod, someTeamInput }

@@ -3,6 +3,7 @@ import { graphql } from 'graphql'
 //TODO: This mongo setup only works with one file. Need to upgrade jest in order to do this way --> https://jestjs.io/docs/en/mongodb
 import { startDbServer, stopDbServer } from './__test-utils__/dbServer'
 import { anEntry } from '../../__test-utils__/entry-mother'
+import { someTeamInput } from '../../__test-utils__/team-mother'
 
 import {
   closeDbConnection,
@@ -170,12 +171,9 @@ it('marks all eod entries as sent regardless of team', async () => {
   })
 })
 
-// TODO Try to use expect "toMatchObject"
+// TODO to toMatchObject when this jest issue is resolved: https://github.com/facebook/jest/issues/6730
 it('creates and edits teams', async () => {
-  const team = {
-    name: 'Test team',
-    mailingList: ['test@example.com', 'anothertest@example.com'],
-  }
+  const team = someTeamInput()
 
   const createTeamResult = await executeQuery(CREATE_TEAM, { team })
   expect(createTeamResult).toEqual({
@@ -195,10 +193,10 @@ it('creates and edits teams', async () => {
     team: expect.objectContaining(team),
   })
 
-  const teamEdits = {
+  const teamEdits = someTeamInput({
     name: 'New name',
     mailingList: ['new@mail.com'],
-  }
+  })
 
   const editTeamResult = await executeQuery(EDIT_TEAM, {
     id: createdTeamId,
@@ -217,30 +215,26 @@ it('creates and edits teams', async () => {
 })
 
 it('gets EODs that are due to be sent', async () => {
-  const team1 = {
-    name: 'Team 1',
-    mailingList: ['test@example.com'],
-  }
-  const createTeamResult = await executeQuery(CREATE_TEAM, { team: team1 })
-  const createdTeamId = createTeamResult.createTeam._id
+  const team = someTeamInput()
 
-  const team1Entry = anEntry({ content: 'team 1 content' })
+  const createTeamResult = await executeQuery(CREATE_TEAM, { team })
+  const { _id } = createTeamResult.createTeam
+
+  const entry = anEntry()
 
   await executeQuery(ADD_TO_EOD, {
-    entries: [team1Entry],
-    teamId: createdTeamId,
+    entries: [entry],
+    teamId: _id,
   })
 
   const getDueEodsResult = await executeQuery(GET_TEAMS)
 
-  // TODO: Clean this assertion up
   expect(getDueEodsResult).toEqual({
     teams: [
       {
-        _id: createdTeamId,
-        name: team1.name,
-        mailingList: team1.mailingList,
-        currentEod: [team1Entry],
+        _id,
+        ...team,
+        currentEod: [entry],
       },
     ],
   })
