@@ -7,7 +7,9 @@ export const connectToDb = async (uri, dbName) => {
   db = await connection.db(dbName)
 }
 
-export const closeDbConnection = async () => await connection.close()
+export const closeDbConnection = async () => {
+  await connection.close()
+}
 
 export const entriesCollection = () => db.collection('entries')
 export const teamsCollection = () => db.collection('teams')
