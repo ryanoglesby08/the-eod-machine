@@ -23,6 +23,9 @@ const SavedEntriesList = ({ category, entries }) => {
         {entries.map(entry => (
           <li key={entry.content}>
             <Panel py={1} px={2} mb={1}>
+              <Text fontSize={1} fontWeight="bold">
+                {entry.author}
+              </Text>
               <Text fontSize={1}>{entry.content}</Text>
             </Panel>
           </li>

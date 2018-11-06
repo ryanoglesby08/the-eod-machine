@@ -13,7 +13,7 @@ const SchemaDefinition = `
   }
   
   type Mutation {
-    addToEod(entries: [EntryInput]!, teamId: String!): [Entry]
+    addToEod(author: String!, entries: [EntryInput]!, teamId: String!): [Entry]
     sendEod: MutationResponse
     
     createTeam(team: TeamInput!): Team

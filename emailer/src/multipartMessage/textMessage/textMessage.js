@@ -9,7 +9,9 @@ const CATEGORY_DIVIDER =
 const EMPTY_MESSAGE = 'No updates this time.'
 
 const entriesToString = entries =>
-  entries.map(({ content }) => `* ${content}`).join(NEW_LINE)
+  entries
+    .map(({ author, content }) => `* ${content} (${author})`)
+    .join(NEW_LINE)
 
 const body = entries => {
   const entriesByCategory = groupBy(entries, 'category')

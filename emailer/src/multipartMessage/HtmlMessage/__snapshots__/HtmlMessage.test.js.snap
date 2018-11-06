@@ -10,10 +10,10 @@ exports[`is an EOD message 1`] = `
   </h2>
   <ul>
     <li>
-      some content
+      some content (Some author)
     </li>
     <li>
-      more content
+      more content (Another author)
     </li>
   </ul>
   <h2>
@@ -21,7 +21,7 @@ exports[`is an EOD message 1`] = `
   </h2>
   <ul>
     <li>
-      even more content
+      even more content (Some author)
     </li>
   </ul>
   <div>

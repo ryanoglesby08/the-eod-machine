@@ -3,6 +3,7 @@ import { buildMutationResponse } from './MutationResponse'
 
 const Entry = `
   type Entry {
+    author: String!
     category: String!
     content: String!
     sent: Boolean
@@ -33,9 +34,10 @@ const resolvers = {
     },
   },
   Mutation: {
-    addToEod: async (_, { entries, teamId }) => {
+    addToEod: async (_, { author, entries, teamId }) => {
       const unsavedEntries = entries.map(entry => ({
         ...entry,
+        author,
         teamId,
         sent: false,
       }))

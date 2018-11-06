@@ -1,4 +1,4 @@
-import { anEntry } from '../../__test-utils__/entry-mother'
+import { someEntryInputAndAuthoredEntry } from '../../__test-utils__/entry-mother'
 import { someTeamInput } from '../../__test-utils__/team-mother'
 import executeQuery from './__test-utils__/executeQuery'
 
@@ -18,8 +18,9 @@ afterAll(async () => {
 })
 
 const ADD_TO_EOD = `
-  mutation AddToEod($entries: [EntryInput]!, $teamId: String!) {
-    addToEod(entries: $entries, teamId: $teamId) {
+  mutation AddToEod($author: String!, $entries: [EntryInput]!, $teamId: String!) {
+    addToEod(author: $author, entries: $entries, teamId: $teamId) {
+      author
       category
       content
     }
@@ -52,6 +53,7 @@ const GET_TEAMS = `
       name
       mailingList
       currentEod {
+        author
         category
         content
       }
@@ -123,10 +125,13 @@ it('gets EODs that are due to be sent', async () => {
   const createTeamResult = await executeQuery(CREATE_TEAM, { team })
   const { _id } = createTeamResult.createTeam
 
-  const entry = anEntry()
+  const { entryInput, authoredEntry } = someEntryInputAndAuthoredEntry({
+    author: 'The author',
+  })
 
   await executeQuery(ADD_TO_EOD, {
-    entries: [entry],
+    author: 'The author',
+    entries: [entryInput],
     teamId: _id,
   })
 
@@ -137,7 +142,7 @@ it('gets EODs that are due to be sent', async () => {
       {
         _id,
         ...team,
-        currentEod: [entry],
+        currentEod: [authoredEntry],
       },
     ],
   })

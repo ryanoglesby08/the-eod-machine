@@ -1,4 +1,7 @@
-import { anEntry } from '../../__test-utils__/entry-mother'
+import {
+  someEntryInput,
+  someEntryInputAndAuthoredEntry,
+} from '../../__test-utils__/entry-mother'
 import executeQuery from './__test-utils__/executeQuery'
 
 import {
@@ -19,6 +22,7 @@ const GET_EOD = `
   query Eod($teamId: String!) {
     eod(teamId: $teamId) {
       entries {
+        author
         category
         content
       }
@@ -27,8 +31,9 @@ const GET_EOD = `
 `
 
 const ADD_TO_EOD = `
-  mutation AddToEod($entries: [EntryInput]!, $teamId: String!) {
-    addToEod(entries: $entries, teamId: $teamId) {
+  mutation AddToEod($author: String!, $entries: [EntryInput]!, $teamId: String!) {
+    addToEod(author: $author, entries: $entries, teamId: $teamId) {
+      author
       category
       content
     }
@@ -48,7 +53,9 @@ beforeEach(async () => {
 })
 
 it("adds entries to a team's current eod", async () => {
-  const entry = anEntry()
+  const { entryInput, authoredEntry } = someEntryInputAndAuthoredEntry({
+    author: 'The author',
+  })
 
   let eodQueryResult = await executeQuery(GET_EOD, { teamId: 'team-1' })
   expect(eodQueryResult).toEqual({
@@ -58,17 +65,18 @@ it("adds entries to a team's current eod", async () => {
   })
 
   const addToEodResult = await executeQuery(ADD_TO_EOD, {
-    entries: [entry],
+    author: 'The author',
+    entries: [entryInput],
     teamId: 'team-1',
   })
   expect(addToEodResult).toEqual({
-    addToEod: [entry],
+    addToEod: [authoredEntry],
   })
 
   eodQueryResult = await executeQuery(GET_EOD, { teamId: 'team-1' })
   expect(eodQueryResult).toEqual({
     eod: {
-      entries: [entry],
+      entries: [authoredEntry],
     },
   })
 
@@ -81,16 +89,24 @@ it("adds entries to a team's current eod", async () => {
 })
 
 it('marks all eod entries as sent regardless of team', async () => {
-  const team1Entry = anEntry({ content: 'some content' })
-  const team2Entry = anEntry({ content: 'other content' })
+  const team1Entry = someEntryInputAndAuthoredEntry({ author: 'team 1' })
+  const team2EntryInput = someEntryInput({ author: 'team 2' })
 
-  await executeQuery(ADD_TO_EOD, { entries: [team1Entry], teamId: 'team-1' })
-  await executeQuery(ADD_TO_EOD, { entries: [team2Entry], teamId: 'team-2' })
+  await executeQuery(ADD_TO_EOD, {
+    author: 'team 1',
+    entries: [team1Entry.entryInput],
+    teamId: 'team-1',
+  })
+  await executeQuery(ADD_TO_EOD, {
+    author: 'team 2',
+    entries: [team2EntryInput],
+    teamId: 'team-2',
+  })
 
   let eodQueryResult = await executeQuery(GET_EOD, { teamId: 'team-1' })
   expect(eodQueryResult).toEqual({
     eod: {
-      entries: [team1Entry],
+      entries: [team1Entry.authoredEntry],
     },
   })
 

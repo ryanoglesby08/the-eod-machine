@@ -8,6 +8,7 @@ export const GET_TEAMS_WITH_EOD = gql`
       name
       mailingList
       currentEod {
+        author
         category
         content
       }

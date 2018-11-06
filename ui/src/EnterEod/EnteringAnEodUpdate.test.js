@@ -4,6 +4,10 @@ import { MockedProvider } from 'react-apollo/test-utils'
 import { CookiesProvider, Cookies } from 'react-cookie'
 import { render, fireEvent, wait } from 'react-testing-library'
 
+import {
+  someEntryInputAndAuthoredEntry,
+  anAuthoredEntry,
+} from '../../../__test-utils__/entry-mother'
 import enterText from '../__test-utils__/enterText'
 import buildGraphQlMockForQuery from '../__test-utils__/GraphQlMock'
 import filteredArray from '../__test-utils__/filteredArray'
@@ -53,8 +57,16 @@ it("shows the current team's EOD", async () => {
   const getEodMock = mockGetEod.withVariables({ teamId: TEAM_ID }).returns({
     eod: {
       entries: [
-        { category: 'Story Movements', content: 'a story movement' },
-        { category: 'Blockers', content: 'a blocker' },
+        anAuthoredEntry({
+          author: 'Harry Potter',
+          category: 'Story Movements',
+          content: 'a story movement',
+        }),
+        anAuthoredEntry({
+          author: 'Harry Potter',
+          category: 'Blockers',
+          content: 'a blocker',
+        }),
       ],
     },
   })
@@ -62,21 +74,36 @@ it("shows the current team's EOD", async () => {
   const { getByTestId } = doRender({ getEodMock })
 
   await wait(() => {
+    expect(getByTestId('story-movements')).toHaveTextContent('Harry Potter')
     expect(getByTestId('story-movements')).toHaveTextContent('a story movement')
+    expect(getByTestId('blockers')).toHaveTextContent('Harry Potter')
     expect(getByTestId('blockers')).toHaveTextContent('a blocker')
   })
 })
 
 it('saves eod entries for the entered categories', async () => {
-  const entries = [
-    { category: 'Blockers', content: 'new blocker' },
-    { category: 'Action Items', content: 'new action item' },
-  ]
+  const entry1 = someEntryInputAndAuthoredEntry({
+    author: 'Ron Weaseley',
+    category: 'Blockers',
+    content: 'new blocker',
+  })
+  const entry2 = someEntryInputAndAuthoredEntry({
+    author: 'Ron Weaseley',
+    category: 'Action Items',
+    content: 'new action item',
+  })
+
   const addToEodMock = mockAddToEod
-    .withVariables({ entries, teamId: TEAM_ID })
-    .returns({ addToEod: entries })
+    .withVariables({
+      author: 'Ron Weaseley',
+      entries: [entry1.entryInput, entry2.entryInput],
+      teamId: TEAM_ID,
+    })
+    .returns({ addToEod: [entry1.authoredEntry, entry2.authoredEntry] })
 
   const { getByLabelText, getByText, getByTestId } = doRender({ addToEodMock })
+
+  enterText(getByLabelText('Author'), 'Ron Weaseley')
 
   enterText(getByLabelText('Blockers'), 'new blocker')
   enterText(getByLabelText('Action Items'), 'new action item')
@@ -84,18 +111,30 @@ it('saves eod entries for the entered categories', async () => {
   fireEvent.click(getByText('Submit'))
 
   await wait(() => {
+    expect(getByTestId('blockers')).toHaveTextContent('Ron Weaseley')
     expect(getByTestId('blockers')).toHaveTextContent('new blocker')
+    expect(getByTestId('action-items')).toHaveTextContent('Ron Weaseley')
     expect(getByTestId('action-items')).toHaveTextContent('new action item')
   })
 })
 
 it('does not submit empty entries', async () => {
-  const entries = [{ category: 'Blockers', content: 'new blocker' }]
+  const entry = someEntryInputAndAuthoredEntry({
+    author: 'Hermoine Grainger',
+    category: 'Blockers',
+    content: 'new blocker',
+  })
   const addToEodMock = mockAddToEod
-    .withVariables({ entries, teamId: TEAM_ID })
-    .returns({ addToEod: entries })
+    .withVariables({
+      author: 'Hermoine Grainger',
+      entries: [entry.entryInput],
+      teamId: TEAM_ID,
+    })
+    .returns({ addToEod: [entry.authoredEntry] })
 
   const { getByLabelText, getByTestId, getByText } = doRender({ addToEodMock })
+
+  enterText(getByLabelText('Author'), 'Hermoine Grainger')
 
   enterText(getByLabelText('Blockers'), 'new blocker')
   enterText(getByLabelText('Action Items'), '')
@@ -107,19 +146,30 @@ it('does not submit empty entries', async () => {
   })
 })
 
-it('clears entries after submitting', async () => {
-  const entries = [{ category: 'Blockers', content: 'new blocker' }]
+it('clears the form after submitting', async () => {
+  const entry = someEntryInputAndAuthoredEntry({
+    author: 'Jon Snow',
+    category: 'Blockers',
+    content: 'new blocker',
+  })
   const addToEodMock = mockAddToEod
-    .withVariables({ entries, teamId: TEAM_ID })
-    .returns({ addToEod: entries })
+    .withVariables({
+      author: 'Jon Snow',
+      entries: [entry.entryInput],
+      teamId: TEAM_ID,
+    })
+    .returns({ addToEod: [entry.authoredEntry] })
 
   const { getByLabelText, getByText } = doRender({ addToEodMock })
+
+  enterText(getByLabelText('Author'), 'Jon Snow')
 
   enterText(getByLabelText('Blockers'), 'new blocker')
 
   fireEvent.click(getByText('Submit'))
 
   await wait(() => {
+    expect(getByLabelText('Author')).toHaveAttribute('value', '')
     expect(getByLabelText('Blockers')).toBeEmpty()
   })
 })

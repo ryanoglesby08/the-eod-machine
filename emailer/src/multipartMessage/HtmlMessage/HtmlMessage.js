@@ -16,8 +16,8 @@ const Entries = ({ entries }) => {
           <h2>{category}</h2>
 
           <ul>
-            {entriesByCategory[category].map(({ content }) => (
-              <li key={content}>{content}</li>
+            {entriesByCategory[category].map(({ author, content }) => (
+              <li key={content}>{`${content} (${author})`}</li>
             ))}
           </ul>
         </Fragment>

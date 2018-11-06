@@ -6,17 +6,19 @@ import { Mutation, Query } from 'react-apollo'
 
 import { withCookies } from 'react-cookie'
 
-import { Heading, Box, Button } from 'rebass/emotion'
+import { Heading, Box, Button, Input } from 'rebass/emotion'
 
 import { groupBy } from 'lodash'
 
 import CATEGORIES from './categories'
 import CategoryEntry from './CategoryEntry'
+import LabeledField from '../ui-components/LabeledField/LabeledField'
 
 export const GET_EOD = gql`
   query Eod($teamId: String!) {
     eod(teamId: $teamId) {
       entries {
+        author
         category
         content
       }
@@ -25,8 +27,13 @@ export const GET_EOD = gql`
 `
 
 export const ADD_TO_EOD = gql`
-  mutation AddToEod($entries: [EntryInput]!, $teamId: String!) {
-    addToEod(entries: $entries, teamId: $teamId) {
+  mutation AddToEod(
+    $author: String!
+    $entries: [EntryInput]!
+    $teamId: String!
+  ) {
+    addToEod(author: $author, entries: $entries, teamId: $teamId) {
+      author
       category
       content
     }
@@ -47,10 +54,15 @@ const updateQuery = teamId => (cache, { data: { addToEod } }) => {
 
 class EnterEod extends Component {
   state = {
+    author: '',
     entriesByCategory: {},
   }
 
-  onChange = (category, content) => {
+  onAuthorChange = author => {
+    this.setState({ author })
+  }
+
+  onEntryChange = (category, content) => {
     this.setState(prevState => {
       const { entriesByCategory } = prevState
 
@@ -65,12 +77,15 @@ class EnterEod extends Component {
   }
 
   clearEntries = () => {
-    this.setState({ entriesByCategory: {} })
+    this.setState({ author: '', entriesByCategory: {} })
   }
+
+  // TODO: Split this file apart!
+  // TODO: Delete author-less entries from mongo
 
   render() {
     const { cookies } = this.props
-    const { entriesByCategory } = this.state
+    const { author, entriesByCategory } = this.state
 
     const teamId = cookies.get('team')
 
@@ -82,10 +97,12 @@ class EnterEod extends Component {
 
           return (
             <EodForm
-              savedEntriesByCategory={savedEntriesByCategory}
+              author={author}
+              onAuthorChange={this.onAuthorChange}
               entriesByCategory={entriesByCategory}
+              savedEntriesByCategory={savedEntriesByCategory}
+              onEntryChange={this.onEntryChange}
               teamId={teamId}
-              onChange={this.onChange}
               onSubmitComplete={this.clearEntries}
             />
           )
@@ -107,7 +124,7 @@ FetchEod.propTypes = {
   children: PropTypes.func.isRequired,
 }
 
-const onSubmit = (entriesByCategory, teamId, addToEod) => {
+const onSubmit = (author, entriesByCategory, teamId, addToEod) => {
   const entries = Object.keys(entriesByCategory)
     .filter(category => entriesByCategory[category] !== '')
     .map(category => ({
@@ -116,15 +133,17 @@ const onSubmit = (entriesByCategory, teamId, addToEod) => {
     }))
 
   addToEod({
-    variables: { entries, teamId },
+    variables: { author, entries, teamId },
   })
 }
 
 const EodForm = ({
+  author,
   savedEntriesByCategory,
   entriesByCategory,
   teamId,
-  onChange,
+  onAuthorChange,
+  onEntryChange,
   onSubmitComplete,
 }) => (
   <Mutation
@@ -141,16 +160,28 @@ const EodForm = ({
         <form
           onSubmit={e => {
             e.preventDefault()
-            onSubmit(entriesByCategory, teamId, addToEod)
+            onSubmit(author, entriesByCategory, teamId, addToEod)
           }}
         >
+          <Box mb={4}>
+            <LabeledField label="Author">
+              {id => (
+                <Input
+                  id={id}
+                  value={author}
+                  onChange={e => onAuthorChange(e.target.value)}
+                />
+              )}
+            </LabeledField>
+          </Box>
+
           {CATEGORIES.map(category => (
             <CategoryEntry
               key={category}
               category={category}
               entry={entriesByCategory[category]}
               savedEntries={savedEntriesByCategory[category]}
-              onChange={onChange}
+              onChange={onEntryChange}
             />
           ))}
 
@@ -161,10 +192,12 @@ const EodForm = ({
   </Mutation>
 )
 EodForm.propTypes = {
-  savedEntriesByCategory: PropTypes.object.isRequired,
+  author: PropTypes.string.isRequired,
+  onAuthorChange: PropTypes.func.isRequired,
   entriesByCategory: PropTypes.object.isRequired,
+  savedEntriesByCategory: PropTypes.object.isRequired,
+  onEntryChange: PropTypes.func.isRequired,
   teamId: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
   onSubmitComplete: PropTypes.func.isRequired,
 }
 

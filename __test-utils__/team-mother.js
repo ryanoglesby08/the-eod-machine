@@ -1,11 +1,11 @@
 const pick = require('./pick')
-const { anEntry } = require('./entry-mother')
+const { anAuthoredEntry } = require('./entry-mother')
 
 const defaultTeam = {
   _id: 'team-0',
   name: 'The team',
   mailingList: ['team@example.com'],
-  currentEod: [anEntry()],
+  currentEod: [anAuthoredEntry()],
 }
 
 const aTeamWithItsEod = (overrides = {}) => {
