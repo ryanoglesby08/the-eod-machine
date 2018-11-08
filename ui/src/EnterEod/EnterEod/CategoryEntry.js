@@ -6,7 +6,7 @@ import { Textarea, Box } from 'rebass/emotion'
 import CATEGORIES from './categories'
 import { EntryShape } from './schemas'
 import SavedEntriesList from './SavedEntriesList'
-import LabeledField from '../ui-components/LabeledField/LabeledField'
+import LabeledField from '../../ui-components/LabeledField/LabeledField'
 
 const CategoryEntry = ({ category, entry, savedEntries, onChange }) => (
   <Box mb={4}>

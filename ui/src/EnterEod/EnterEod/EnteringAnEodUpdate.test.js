@@ -7,12 +7,14 @@ import { render, fireEvent, wait } from 'react-testing-library'
 import {
   someEntryInputAndAuthoredEntry,
   anAuthoredEntry,
-} from '../../../__test-utils__/entry-mother'
-import enterText from '../__test-utils__/enterText'
-import buildGraphQlMockForQuery from '../__test-utils__/GraphQlMock'
-import filteredArray from '../__test-utils__/filteredArray'
+} from '../../../../__test-utils__/entry-mother'
+import enterText from '../../__test-utils__/enterText'
+import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
+import filteredArray from '../../__test-utils__/filteredArray'
 
-import EnterEod, { ADD_TO_EOD, GET_EOD } from './EnterEod'
+import EnterEod from './EnterEod'
+import { GET_EOD } from './FetchEod'
+import { ADD_TO_EOD } from './EodForm'
 
 const TEAM_ID = 'team-1'
 

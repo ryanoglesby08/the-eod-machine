@@ -5,8 +5,8 @@ import { Box, Panel, Text } from 'rebass/emotion'
 
 import { EntryShape } from './schemas'
 import CATEGORIES from './categories'
-import toHtmlId from '../ui-components/LabeledField/toHtmlId'
-import BareList from '../ui-components/BareList/BareList'
+import toHtmlId from '../../ui-components/LabeledField/toHtmlId'
+import BareList from '../../ui-components/BareList/BareList'
 
 const SavedEntriesList = ({ category, entries }) => {
   if (entries.length === 0) {
