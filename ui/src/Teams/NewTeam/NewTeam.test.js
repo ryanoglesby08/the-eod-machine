@@ -5,10 +5,8 @@ import { MemoryRouter, Route } from 'react-router-dom'
 
 import { render, fireEvent, wait } from 'react-testing-library'
 
-import { omit } from 'lodash'
-
+import { aTeam, someTeamInput } from '../../../../__test-utils__/team-mother'
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
-import { aTeam } from '../__test-utils__/team-builder'
 import enterText from '../../__test-utils__/enterText'
 import filteredArray from '../../__test-utils__/filteredArray'
 
@@ -36,13 +34,14 @@ const doRender = ({ createTeamMock, getTeamsMock = mockGetEmptyTeams }) => {
 }
 
 it('shows the all teams list after creating a new team', async () => {
-  const teamToCreate = aTeam({
+  const input = someTeamInput({
     name: 'My team',
     mailingList: ['team@example.com', 'another@example.com'],
   })
+  const teamToCreate = aTeam(input)
 
   const createTeamMock = mockCreateTeam
-    .withVariables({ team: omit(teamToCreate, '_id') })
+    .withVariables({ team: input })
     .returns({ createTeam: teamToCreate })
   const getTeamsMock = mockGetTeams.returns({ teams: [teamToCreate] })
 

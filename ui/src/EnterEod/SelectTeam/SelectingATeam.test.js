@@ -6,7 +6,7 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { render, wait, fireEvent, waitForElement } from 'react-testing-library'
 
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
-import { aTeam } from '../__test-utils__/team-builder'
+import { aTeam } from '../../../../__test-utils__/team-mother'
 
 import { GET_TEAMS } from './FetchTeams'
 import SelectTeam from './SelectTeam'

@@ -8,6 +8,14 @@ const defaultTeam = {
   currentEod: [anAuthoredEntry()],
 }
 
+const aTeam = (overrides = {}) => {
+  return Object.assign(
+    {},
+    pick(defaultTeam, ['_id', 'name', 'mailingList']),
+    pick(overrides, ['_id', 'name', 'mailingList'])
+  )
+}
+
 const aTeamWithItsEod = (overrides = {}) => {
   return Object.assign({}, defaultTeam, overrides)
 }
@@ -16,8 +24,8 @@ const someTeamInput = (overrides = {}) => {
   return Object.assign(
     {},
     pick(defaultTeam, ['name', 'mailingList']),
-    overrides
+    pick(overrides, ['name', 'mailingList'])
   )
 }
 
-module.exports = { aTeamWithItsEod, someTeamInput }
+module.exports = { aTeam, aTeamWithItsEod, someTeamInput }

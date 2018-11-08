@@ -5,10 +5,8 @@ import { MemoryRouter, Route } from 'react-router-dom'
 
 import { render, fireEvent, wait, waitForElement } from 'react-testing-library'
 
-import { omit } from 'lodash'
-
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
-import { aTeam } from '../__test-utils__/team-builder'
+import { aTeam, someTeamInput } from '../../../../__test-utils__/team-mother'
 import enterText from '../../__test-utils__/enterText'
 import filteredArray from '../../__test-utils__/filteredArray'
 
@@ -46,19 +44,23 @@ it('shows the all teams list after editing a team', async () => {
     _id: TEAM_ID,
     name: 'My team',
   })
-  const editedTeam = {
+  const edits = someTeamInput({
     ...teamToEdit,
     name: 'New team name',
-  }
+  })
+  const editedTeam = aTeam({
+    ...teamToEdit,
+    ...edits,
+  })
 
   const getTeamMock = mockGetTeam
-    .withVariables({ id: teamToEdit._id })
+    .withVariables({ id: TEAM_ID })
     .returns({ team: teamToEdit })
 
   const editTeamMock = mockEditTeam
     .withVariables({
       id: TEAM_ID,
-      team: omit(editedTeam, '_id'),
+      team: edits,
     })
     .returns({ editTeam: editedTeam })
 
@@ -84,7 +86,7 @@ it('shows the all teams list after editing a team', async () => {
 it('returns to the teams list on cancel', async () => {
   const team = aTeam({ _id: TEAM_ID })
   const getTeamMock = mockGetTeam
-    .withVariables({ id: team._id })
+    .withVariables({ id: TEAM_ID })
     .returns({ team })
 
   const { container, getByLabelText, getByText } = doRender({ getTeamMock })
