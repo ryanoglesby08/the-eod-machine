@@ -4,7 +4,6 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "build": "babel src --out-dir build --ignore 'src/**/*.test.js','src/**/__mocks__/*.js'",
     "start": "babel-node src/index.js",
     "test": "jest --watch",
     "test:ci": "jest"
@@ -22,7 +21,6 @@
     "react-dom": "^16.4.2"
   },
   "devDependencies": {
-    "@babel/cli": "^7.1.5",
     "@babel/core": "^7.1.2",
     "@babel/node": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
