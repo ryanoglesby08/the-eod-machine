@@ -1,6 +1,8 @@
+import { gql } from 'apollo-server'
+
 import { someEntryInputAndAuthoredEntry } from '../../__test-utils__/entry-mother'
 import { someTeamInput } from '../../__test-utils__/team-mother'
-import executeQuery from './__test-utils__/executeQuery'
+import { executeQuery, executeMutation } from './__test-utils__/executeQuery'
 
 import {
   closeDbConnection,
@@ -17,8 +19,12 @@ afterAll(async () => {
   await closeDbConnection()
 })
 
-const ADD_TO_EOD = `
-  mutation AddToEod($author: String!, $entries: [EntryInput]!, $teamId: String!) {
+const ADD_TO_EOD = gql`
+  mutation AddToEod(
+    $author: String!
+    $entries: [EntryInput]!
+    $teamId: String!
+  ) {
     addToEod(author: $author, entries: $entries, teamId: $teamId) {
       author
       category
@@ -26,7 +32,7 @@ const ADD_TO_EOD = `
     }
   }
 `
-const CREATE_TEAM = `
+const CREATE_TEAM = gql`
   mutation CreateTeam($team: TeamInput!) {
     createTeam(team: $team) {
       _id
@@ -36,7 +42,7 @@ const CREATE_TEAM = `
   }
 `
 
-const EDIT_TEAM = `
+const EDIT_TEAM = gql`
   mutation EditTeam($id: String!, $team: TeamInput!) {
     editTeam(id: $id, team: $team) {
       _id
@@ -46,7 +52,7 @@ const EDIT_TEAM = `
   }
 `
 
-const GET_TEAMS = `
+const GET_TEAMS = gql`
   {
     teams {
       _id
@@ -61,7 +67,7 @@ const GET_TEAMS = `
   }
 `
 
-const GET_TEAM = `
+const GET_TEAM = gql`
   query Team($id: String!) {
     team(id: $id) {
       _id
@@ -80,7 +86,7 @@ beforeEach(async () => {
 it('creates and edits teams', async () => {
   const team = someTeamInput()
 
-  const createTeamResult = await executeQuery(CREATE_TEAM, { team })
+  const createTeamResult = await executeMutation(CREATE_TEAM, { team })
   expect(createTeamResult).toEqual({
     createTeam: expect.objectContaining(team),
   })
@@ -122,7 +128,7 @@ it('creates and edits teams', async () => {
 it('gets EODs that are due to be sent', async () => {
   const team = someTeamInput()
 
-  const createTeamResult = await executeQuery(CREATE_TEAM, { team })
+  const createTeamResult = await executeMutation(CREATE_TEAM, { team })
 
   const { _id } = createTeamResult.createTeam
 
@@ -130,7 +136,7 @@ it('gets EODs that are due to be sent', async () => {
     author: 'The author',
   })
 
-  await executeQuery(ADD_TO_EOD, {
+  await executeMutation(ADD_TO_EOD, {
     author: 'The author',
     entries: [entryInput],
     teamId: _id,

@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "babel-node src/index.js",
+    "lint": "eslint src/**",
     "test": "jest --watch",
     "test:ci": "jest"
   },
@@ -27,6 +28,10 @@
     "@babel/preset-react": "^7.0.0",
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^23.6.0",
+    "eslint": "^5.9.0",
+    "eslint-plugin-graphql": "^3.0.1",
+    "eslint-plugin-react": "^7.11.1",
+    "graphql-import": "^0.7.1",
     "jest": "^23.6.0",
     "react-testing-library": "^5.0.0",
     "regenerator-runtime": "^0.12.1"

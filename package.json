@@ -1,6 +1,9 @@
 {
   "private": true,
   "scripts": {
+    "lint:api": "pushd api && yarn lint && popd",
+    "lint:emailer": "pushd emailer && yarn lint && popd",
+    "lint:ui": "pushd ui && yarn lint:queries && popd",
     "test:api": "pushd api && yarn test:ci && popd",
     "test:emailer": "pushd emailer && yarn test:ci && popd",
     "test:ui": "pushd ui && CI=true yarn test --color && popd"

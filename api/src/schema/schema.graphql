@@ -1,3 +1,7 @@
+# import MutationResponse from "./MutationResponse.graphql"
+# import Eod from "./Eod.graphql"
+# import Team from "./Team.graphql"
+
 type Query {
   eod(teamId: String!): Eod
 

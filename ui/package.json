@@ -5,6 +5,7 @@
   "scripts": {
     "build": "react-scripts build",
     "eject": "react-scripts eject",
+    "lint:queries": "eslint src/**",
     "serve": "serve --listen 3000 build",
     "start": "react-scripts start",
     "test": "react-scripts test"
@@ -28,6 +29,8 @@
     "serve": "^10.0.2"
   },
   "devDependencies": {
+    "eslint-plugin-graphql": "^3.0.1",
+    "graphql-import": "^0.7.1",
     "jest-dom": "^2.1.0",
     "jest-emotion": "^9.2.7",
     "react-testing-library": "^5.0.0"

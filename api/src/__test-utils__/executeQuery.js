@@ -1,18 +1,17 @@
-import { graphql } from 'graphql'
-import { makeExecutableSchema } from 'apollo-server'
+import { createTestClient } from 'apollo-server-testing'
 
-import typeDefs from '../schema/typeDefs'
-import resolvers from '../resolvers/resolvers'
+import server from '../server'
 
-const schema = makeExecutableSchema({
-  typeDefs,
-  resolvers,
-})
+const { query, mutate } = createTestClient(server)
 
-const executeQuery = async (query, variables) => {
-  const { data } = await graphql(schema, query, {}, {}, variables)
+export const executeQuery = async (theQuery, variables) => {
+  const { data } = await query({ query: theQuery, variables })
 
   return data
 }
 
-export default executeQuery
+export const executeMutation = async (theMutation, variables) => {
+  const { data } = await mutate({ mutation: theMutation, variables })
+
+  return data
+}

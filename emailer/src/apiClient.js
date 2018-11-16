@@ -4,7 +4,7 @@ import { InMemoryCache } from 'apollo-cache-inmemory'
 import fetch from 'node-fetch'
 
 const API_HOST = process.env.API_HOST || 'localhost'
-const apiUri = `http://${API_HOST}:4000/api/graphql`
+const apiUri = `http://${API_HOST}:4000`
 
 export default new ApolloClient({
   link: new HttpLink({

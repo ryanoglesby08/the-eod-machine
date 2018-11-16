@@ -1,8 +1,10 @@
+import { gql } from 'apollo-server'
+
 import {
   someEntryInput,
   someEntryInputAndAuthoredEntry,
 } from '../../__test-utils__/entry-mother'
-import executeQuery from './__test-utils__/executeQuery'
+import { executeQuery, executeMutation } from './__test-utils__/executeQuery'
 
 import {
   closeDbConnection,
@@ -18,7 +20,7 @@ afterAll(async () => {
   await closeDbConnection()
 })
 
-const GET_EOD = `
+const GET_EOD = gql`
   query Eod($teamId: String!) {
     eod(teamId: $teamId) {
       entries {
@@ -30,8 +32,12 @@ const GET_EOD = `
   }
 `
 
-const ADD_TO_EOD = `
-  mutation AddToEod($author: String!, $entries: [EntryInput]!, $teamId: String!) {
+const ADD_TO_EOD = gql`
+  mutation AddToEod(
+    $author: String!
+    $entries: [EntryInput]!
+    $teamId: String!
+  ) {
     addToEod(author: $author, entries: $entries, teamId: $teamId) {
       author
       category
@@ -40,7 +46,7 @@ const ADD_TO_EOD = `
   }
 `
 
-const SEND_EOD = `
+const SEND_EOD = gql`
   mutation SendEod {
     sendEod {
       success
@@ -64,7 +70,7 @@ it("adds entries to a team's current eod", async () => {
     },
   })
 
-  const addToEodResult = await executeQuery(ADD_TO_EOD, {
+  const addToEodResult = await executeMutation(ADD_TO_EOD, {
     author: 'The author',
     entries: [entryInput],
     teamId: 'team-1',
@@ -92,12 +98,12 @@ it('marks all eod entries as sent regardless of team', async () => {
   const team1Entry = someEntryInputAndAuthoredEntry({ author: 'team 1' })
   const team2EntryInput = someEntryInput({ author: 'team 2' })
 
-  await executeQuery(ADD_TO_EOD, {
+  await executeMutation(ADD_TO_EOD, {
     author: 'team 1',
     entries: [team1Entry.entryInput],
     teamId: 'team-1',
   })
-  await executeQuery(ADD_TO_EOD, {
+  await executeMutation(ADD_TO_EOD, {
     author: 'team 2',
     entries: [team2EntryInput],
     teamId: 'team-2',
@@ -110,7 +116,7 @@ it('marks all eod entries as sent regardless of team', async () => {
     },
   })
 
-  await executeQuery(SEND_EOD)
+  await executeMutation(SEND_EOD)
 
   eodQueryResult = await executeQuery(GET_EOD, { teamId: 'team-1' })
   expect(eodQueryResult).toEqual({
