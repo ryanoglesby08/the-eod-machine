@@ -1,27 +1,5 @@
 import { entriesCollection } from '../dbConnection'
-import { buildMutationResponse } from './MutationResponse'
-
-const Entry = `
-  type Entry {
-    author: String!
-    category: String!
-    content: String!
-    sent: Boolean
-  }
-`
-
-const EntryInput = `
-  input EntryInput {
-    category: String!
-    content: String!
-  }
-`
-
-const Eod = `
-  type Eod {
-    entries: [Entry]
-  }
-`
+import buildMutationResponse from './buildMutationResponse'
 
 const resolvers = {
   Query: {
@@ -56,5 +34,4 @@ const resolvers = {
   },
 }
 
-const eodSchema = { schema: [Entry, EntryInput, Eod], resolvers }
-export default eodSchema
+export default resolvers

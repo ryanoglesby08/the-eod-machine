@@ -1,0 +1,11 @@
+input TeamInput {
+  name: String!
+  mailingList: [String]!
+}
+
+type Team {
+  _id: String!
+  name: String!
+  mailingList: [String]!
+  currentEod: [Entry]
+}

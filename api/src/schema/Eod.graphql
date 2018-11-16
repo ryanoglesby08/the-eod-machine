@@ -1,0 +1,15 @@
+type Entry {
+  author: String!
+  category: String!
+  content: String!
+  sent: Boolean
+}
+
+input EntryInput {
+  category: String!
+  content: String!
+}
+
+type Eod {
+  entries: [Entry]
+}

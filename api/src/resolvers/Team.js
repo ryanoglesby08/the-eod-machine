@@ -2,22 +2,6 @@ import { ObjectId } from 'mongodb'
 
 import { entriesCollection, teamsCollection } from '../dbConnection'
 
-const TeamInput = `
-  input TeamInput {
-    name: String!
-    mailingList: [String]!
-  }
-`
-
-const Team = `
-  type Team {
-    _id: String!
-    name: String!
-    mailingList: [String]!
-    currentEod: [Entry]
-  }
-`
-
 const resolvers = {
   Team: {
     currentEod: async team => {
@@ -53,5 +37,4 @@ const resolvers = {
   },
 }
 
-const teamSchema = { schema: [TeamInput, Team], resolvers }
-export default teamSchema
+export default resolvers

@@ -1,0 +1,19 @@
+type Query {
+  eod(teamId: String!): Eod
+
+  team(id: String!): Team
+  teams: [Team]
+}
+
+type Mutation {
+  addToEod(author: String!, entries: [EntryInput]!, teamId: String!): [Entry]
+  sendEod: MutationResponse
+
+  createTeam(team: TeamInput!): Team
+  editTeam(id: String!, team: TeamInput!): Team
+}
+
+schema {
+  query: Query
+  mutation: Mutation
+}
