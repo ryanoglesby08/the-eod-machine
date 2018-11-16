@@ -21,11 +21,7 @@ import NewTeam from './Teams/NewTeam/NewTeam'
 
 import registerServiceWorker from './registerServiceWorker'
 
-const uri =
-  process.env.NODE_ENV === 'production'
-    ? 'http://localhost:4000/api/graphql'
-    : '/api/graphql'
-const apiClient = new ApolloClient({ uri })
+const apiClient = new ApolloClient({ uri: 'http://localhost:4000' })
 
 ReactDOM.render(
   <Router>

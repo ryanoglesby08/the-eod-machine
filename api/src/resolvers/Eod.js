@@ -1,3 +1,10 @@
+// Hack alert... serialize mongo ids properly
+// https://github.com/apollographql/apollo-server/issues/1633
+import { ObjectId } from 'mongodb'
+ObjectId.prototype.valueOf = function() {
+  return this.toString()
+}
+
 import { entriesCollection } from '../dbConnection'
 import buildMutationResponse from './buildMutationResponse'
 

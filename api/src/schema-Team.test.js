@@ -123,6 +123,7 @@ it('gets EODs that are due to be sent', async () => {
   const team = someTeamInput()
 
   const createTeamResult = await executeQuery(CREATE_TEAM, { team })
+
   const { _id } = createTeamResult.createTeam
 
   const { entryInput, authoredEntry } = someEntryInputAndAuthoredEntry({

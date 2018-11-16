@@ -1,5 +1,11 @@
 import { ObjectId } from 'mongodb'
 
+// Hack alert... serialize mongo ids properly
+// https://github.com/apollographql/apollo-server/issues/1633
+ObjectId.prototype.valueOf = function() {
+  return this.toString()
+}
+
 import { entriesCollection, teamsCollection } from '../dbConnection'
 
 const resolvers = {
