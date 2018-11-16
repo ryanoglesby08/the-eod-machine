@@ -1,13 +1,14 @@
 {
-  "name": "the-eod-machine-emailer",
+  "name": "@the-eod-machine/emailer",
   "version": "1.0.0",
   "private": true,
   "main": "index.js",
   "scripts": {
+    "precommit": "lint-staged",
     "start": "babel-node src/index.js",
     "lint": "eslint src/**",
     "test": "jest --watch",
-    "test:ci": "jest"
+    "test:ci": "jest --color --all"
   },
   "dependencies": {
     "apollo-cache-inmemory": "^1.2.5",
@@ -35,5 +36,8 @@
     "jest": "^23.6.0",
     "react-testing-library": "^5.0.0",
     "regenerator-runtime": "^0.12.1"
+  },
+  "lint-staged": {
+    "*": "yarn test:ci"
   }
 }

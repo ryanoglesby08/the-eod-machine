@@ -1,0 +1,4 @@
+{
+  "packages": ["api/", "emailer", "ui/"],
+  "version": "0.0.0"
+}
