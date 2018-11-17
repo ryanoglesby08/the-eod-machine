@@ -6,7 +6,7 @@
   "scripts": {
     "db:start": "brew services start mongo",
     "db:stop": "brew services stop mongo",
-    "lint": "eslint 'src/**/*.js' --color",
+    "lint": "eslint 'src/**/*.js'",
     "precommit:test": "jest --color ; # ignore changed files, just run all the tests",
     "start": "babel-node src/index.js",
     "test": "jest --watch"
@@ -34,6 +34,7 @@
     "testEnvironment": "node"
   },
   "lint-staged": {
+    "*.js": "eslint --color",
     "*": "yarn precommit:test"
   }
 }

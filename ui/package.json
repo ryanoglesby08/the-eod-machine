@@ -43,6 +43,7 @@
     "not op_mini all"
   ],
   "lint-staged": {
+    "*.js": "eslint --color",
     "*": "yarn precommit:test"
   }
 }
