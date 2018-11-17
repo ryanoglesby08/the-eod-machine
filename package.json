@@ -1,14 +1,9 @@
 {
   "name": "eod-machine",
   "private": true,
-  "scripts": {
-    "lint:api": "pushd api && yarn lint && popd",
-    "lint:emailer": "pushd emailer && yarn lint && popd",
-    "lint:ui": "pushd ui && yarn lint:queries && popd",
-    "precommit": "pretty-quick --staged && lerna run --concurrency 1 --stream precommit",
-    "test:api": "pushd api && yarn test:ci && popd",
-    "test:emailer": "pushd emailer && yarn test:ci && popd",
-    "test:ui": "pushd ui && CI=true yarn test --color && popd"
+  "scripts": {    
+    "lint:queries": "QUERIES_ONLY=true lerna run --concurrency 1 --stream lint",
+    "precommit": "pretty-quick --staged && lint-staged && lerna exec --concurrency 1 --stream -- lint-staged"
   },
   "devDependencies": {
     "husky": "^1.1.4",
@@ -22,5 +17,8 @@
     "hooks": {
       "pre-commit": "yarn precommit"
     }
+  },
+  "lint-staged": {
+    "api/src/schema/**": "yarn lint:queries"
   }
 }

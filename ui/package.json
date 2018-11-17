@@ -5,12 +5,11 @@
   "scripts": {
     "build": "react-scripts build",
     "eject": "react-scripts eject",
-    "lint:queries": "eslint src/**",
-    "precommit": "lint-staged",
+    "lint": "eslint 'src/**/*.js'",
+    "precommit:test": "CI=true yarn test --color ; # ignore changed files, just run all the tests",
     "serve": "serve --listen 3000 build",
     "start": "react-scripts start",
-    "test": "react-scripts test",
-    "test:ci": "CI=true yarn test --color --all"
+    "test": "react-scripts test"
   },
   "dependencies": {
     "apollo-boost": "^0.1.10",
@@ -44,6 +43,6 @@
     "not op_mini all"
   ],
   "lint-staged": {
-    "*": "yarn test:ci"
+    "*": "yarn precommit:test"
   }
 }

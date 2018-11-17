@@ -1,8 +1,10 @@
 const path = require('path')
 const { importSchema } = require('graphql-import')
 
+const presets = process.env.QUERIES_ONLY ? [] : ['eslint:recommended']
+
 module.exports = {
-  extends: ['eslint:recommended'],
+  extends: presets,
   parserOptions: {
     ecmaVersion: 2018,
     sourceType: 'module',

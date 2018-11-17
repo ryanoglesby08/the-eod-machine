@@ -6,11 +6,10 @@
   "scripts": {
     "db:start": "brew services start mongo",
     "db:stop": "brew services stop mongo",
-    "lint": "eslint src/**",
-    "precommit": "lint-staged",
+    "lint": "eslint 'src/**/*.js' --color",
+    "precommit:test": "jest --color ; # ignore changed files, just run all the tests",
     "start": "babel-node src/index.js",
-    "test": "jest --watch",
-    "test:ci": "jest --color --all"
+    "test": "jest --watch"
   },
   "dependencies": {
     "apollo-server": "^2.2.2",
@@ -35,6 +34,6 @@
     "testEnvironment": "node"
   },
   "lint-staged": {
-    "*": "yarn test:ci"
+    "*": "yarn precommit:test"
   }
 }
