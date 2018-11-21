@@ -5,25 +5,29 @@ exports[`is an EOD message 1`] = `
   <h1>
     EOD Updates
   </h1>
-  <h2>
-    Category 1
-  </h2>
-  <ul>
-    <li>
-      some content (Some author)
-    </li>
-    <li>
-      more content (Another author)
-    </li>
-  </ul>
-  <h2>
-    Category 2
-  </h2>
-  <ul>
-    <li>
-      even more content (Some author)
-    </li>
-  </ul>
+  <div>
+    <h2>
+      Category 1
+    </h2>
+    <ul>
+      <li>
+        some content (Some author)
+      </li>
+      <li>
+        more content (Another author)
+      </li>
+    </ul>
+  </div>
+  <div>
+    <h2>
+      Category 2
+    </h2>
+    <ul>
+      <li>
+        even more content (Some author)
+      </li>
+    </ul>
+  </div>
   <div>
     Delivered by The EOD Machine
   </div>

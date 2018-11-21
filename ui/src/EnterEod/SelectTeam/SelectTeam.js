@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
 import { Redirect } from 'react-router-dom'
@@ -17,7 +17,7 @@ const NonExistantTeamMessage = () => (
 )
 
 const TeamSelector = ({ teams, chooseTeam }) => (
-  <Fragment>
+  <>
     <Box mb={3}>
       <Heading>Choose a team to receive your EOD update</Heading>
     </Box>
@@ -29,7 +29,7 @@ const TeamSelector = ({ teams, chooseTeam }) => (
         </TabularList.ClickableRow>
       ))}
     </TabularList>
-  </Fragment>
+  </>
 )
 TeamSelector.propTypes = {
   teams: PropTypes.arrayOf(
@@ -67,16 +67,15 @@ class SelectTeam extends Component {
       <FetchTeams>
         {(teams, doesTeamExist) => {
           return (
-            <Fragment>
-              {teamId &&
-                !doesTeamExist(teamId) && (
-                  <Box mb={3}>
-                    <NonExistantTeamMessage />
-                  </Box>
-                )}
+            <>
+              {teamId && !doesTeamExist(teamId) && (
+                <Box mb={3}>
+                  <NonExistantTeamMessage />
+                </Box>
+              )}
 
               <TeamSelector teams={teams} chooseTeam={this.chooseTeam} />
-            </Fragment>
+            </>
           )
         }}
       </FetchTeams>

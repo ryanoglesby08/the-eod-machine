@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import { Label } from 'rebass/emotion'
 
@@ -8,13 +8,13 @@ const LabeledField = ({ label, children, ...rest }) => {
   const fieldId = toHtmlId(label)
 
   return (
-    <Fragment>
+    <>
       <Label htmlFor={fieldId} {...rest}>
         {label}
       </Label>
 
       {children(fieldId)}
-    </Fragment>
+    </>
   )
 }
 

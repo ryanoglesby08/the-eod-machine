@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import { Textarea, Box } from 'rebass/emotion'
@@ -12,7 +12,7 @@ const CategoryEntry = ({ category, entry, savedEntries, onChange }) => (
   <Box mb={4}>
     <LabeledField label={category} fontSize={2}>
       {id => (
-        <Fragment>
+        <>
           <Textarea
             id={id}
             rows={3}
@@ -21,7 +21,7 @@ const CategoryEntry = ({ category, entry, savedEntries, onChange }) => (
           />
 
           <SavedEntriesList category={category} entries={savedEntries} />
-        </Fragment>
+        </>
       )}
     </LabeledField>
   </Box>

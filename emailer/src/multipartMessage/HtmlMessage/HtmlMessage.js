@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 
 import groupBy from 'lodash/groupBy'
 
@@ -10,9 +10,9 @@ const Entries = ({ entries }) => {
   const entriesByCategory = groupBy(entries, 'category')
 
   return (
-    <Fragment>
+    <>
       {Object.keys(entriesByCategory).map(category => (
-        <Fragment key={category}>
+        <div key={category}>
           <h2>{category}</h2>
 
           <ul>
@@ -20,20 +20,20 @@ const Entries = ({ entries }) => {
               <li key={content}>{`${content} (${author})`}</li>
             ))}
           </ul>
-        </Fragment>
+        </div>
       ))}
-    </Fragment>
+    </>
   )
 }
 
 const HtmlMessage = ({ entries }) => (
-  <Fragment>
+  <>
     <h1>EOD Updates</h1>
 
     <Entries entries={entries} />
 
     <div>Delivered by The EOD Machine</div>
-  </Fragment>
+  </>
 )
 
 export default HtmlMessage
