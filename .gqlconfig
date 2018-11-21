@@ -1,0 +1,21 @@
+{
+  schema: {
+    files: 'api/src/schema/**/*.graphql'
+  },
+  query: {
+    files: [
+      {
+        match: 'api/src/**/*.js',
+        parser: [ 'EmbeddedQueryParser', { startTag: 'gql`', endTag: '`' } ],
+      },
+      {
+        match: 'emailer/src/**/*.js',
+        parser: [ 'EmbeddedQueryParser', { startTag: 'gql`', endTag: '`' } ],
+      },
+      {
+        match: 'ui/src/**/*.js',
+        parser: [ 'EmbeddedQueryParser', { startTag: 'gql`', endTag: '`' } ],
+      }
+    ]
+  }
+}

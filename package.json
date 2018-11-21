@@ -1,11 +1,12 @@
 {
   "name": "eod-machine",
   "private": true,
-  "scripts": {    
+  "scripts": {
     "lint:queries": "QUERIES_ONLY=true lerna run --concurrency 1 --stream lint",
     "precommit": "pretty-quick --staged && lint-staged && lerna exec --concurrency 1 --stream -- lint-staged"
   },
   "devDependencies": {
+    "@playlyfe/gql": "^2.6.0",
     "husky": "^1.1.4",
     "lerna": "^3.4.3",
     "lint-staged": "^8.0.4",
