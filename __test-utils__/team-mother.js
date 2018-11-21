@@ -28,4 +28,12 @@ const someTeamInput = (overrides = {}) => {
   )
 }
 
-module.exports = { aTeam, aTeamWithItsEod, someTeamInput }
+const createTeamBuilder = relevantFields => (overrides = {}) => {
+  return Object.assign(
+    {},
+    pick(defaultTeam, relevantFields),
+    pick(overrides, relevantFields)
+  )
+}
+
+module.exports = { aTeam, aTeamWithItsEod, someTeamInput, createTeamBuilder }

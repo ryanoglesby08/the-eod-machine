@@ -1,14 +1,14 @@
-import React, { Fragment } from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
 
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 
-import { Heading, Box, Button, Input } from 'rebass/emotion'
+import { Box, Button, Input } from 'rebass/emotion'
 
 import LabeledField from '../../ui-components/LabeledField/LabeledField'
 import CATEGORIES from './categories'
-import { updateGetEodQuery } from './FetchEod'
+import { updateGetTeamWithEodQuery } from './FetchTeamWithEod'
 import CategoryEntry from './CategoryEntry'
 
 export const ADD_TO_EOD = gql`
@@ -49,15 +49,11 @@ const EodForm = ({
 }) => (
   <Mutation
     mutation={ADD_TO_EOD}
-    update={updateGetEodQuery(teamId)}
+    update={updateGetTeamWithEodQuery(teamId)}
     onCompleted={onSubmitComplete}
   >
     {addToEod => (
-      <Fragment>
-        <Box mb={3}>
-          <Heading>Enter your EOD update</Heading>
-        </Box>
-
+      <>
         <form
           onSubmit={e => {
             e.preventDefault()
@@ -88,7 +84,7 @@ const EodForm = ({
 
           <Button type="submit">Submit</Button>
         </form>
-      </Fragment>
+      </>
     )}
   </Mutation>
 )

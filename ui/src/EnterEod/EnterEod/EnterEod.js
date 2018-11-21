@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 
 import { withCookies } from 'react-cookie'
 
+import { Heading, Box } from 'rebass/emotion'
+
 import { groupBy } from 'lodash'
 
-import FetchEod from './FetchEod'
+import FetchTeamWithEod from './FetchTeamWithEod'
 import EodForm from './EodForm'
 
 class EnterEod extends Component {
@@ -42,24 +44,29 @@ class EnterEod extends Component {
     const teamId = cookies.get('team')
 
     return (
-      <FetchEod teamId={teamId}>
-        {eod => {
-          const savedEntries = eod ? eod.entries : []
-          const savedEntriesByCategory = groupBy(savedEntries, 'category')
+      <FetchTeamWithEod id={teamId}>
+        {team => {
+          const savedEntriesByCategory = groupBy(team.currentEod, 'category')
 
           return (
-            <EodForm
-              author={author}
-              onAuthorChange={this.onAuthorChange}
-              entriesByCategory={entriesByCategory}
-              savedEntriesByCategory={savedEntriesByCategory}
-              onEntryChange={this.onEntryChange}
-              teamId={teamId}
-              onSubmitComplete={this.clearEntries}
-            />
+            <>
+              <Box mb={3}>
+                <Heading>Enter your EOD update for {team.name}</Heading>
+              </Box>
+
+              <EodForm
+                author={author}
+                onAuthorChange={this.onAuthorChange}
+                entriesByCategory={entriesByCategory}
+                savedEntriesByCategory={savedEntriesByCategory}
+                onEntryChange={this.onEntryChange}
+                teamId={teamId}
+                onSubmitComplete={this.clearEntries}
+              />
+            </>
           )
         }}
-      </FetchEod>
+      </FetchTeamWithEod>
     )
   }
 }
