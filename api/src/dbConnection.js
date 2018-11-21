@@ -3,7 +3,10 @@ import { MongoClient } from 'mongodb'
 let connection, db
 
 export const connectToDb = async (uri, dbName) => {
-  connection = await MongoClient.connect(uri)
+  connection = await MongoClient.connect(
+    uri,
+    { useNewUrlParser: true }
+  )
   db = await connection.db(dbName)
 }
 

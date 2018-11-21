@@ -7,9 +7,9 @@
     "db:start": "brew services start mongo",
     "db:stop": "brew services stop mongo",
     "lint": "eslint 'src/**/*.js'",
-    "precommit:test": "jest --color ; # ignore changed files, just run all the tests",
+    "precommit:test": "jest --runInBand --color ; # ignore changed files, just run all the tests",
     "start": "babel-node src/index.js",
-    "test": "jest --watch"
+    "test": "jest --runInBand --watch"
   },
   "dependencies": {
     "apollo-server": "^2.2.2",
