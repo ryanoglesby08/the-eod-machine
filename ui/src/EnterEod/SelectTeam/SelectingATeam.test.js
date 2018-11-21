@@ -26,7 +26,8 @@ const doRender = ({ getTeamsMock }, cookies) => {
       <MockedProvider mocks={mocks} addTypename={false}>
         <CookiesProvider cookies={cookies}>
           <TeamRequiredRoute path="/" exact component={ShowSelectedTeamId} />
-          <Route path="/select-team" component={SelectTeam} />
+          {/*Use `render` instead of `component` to prevent a silly warning from `Route` component and `withCookies`*/}
+          <Route path="/select-team" render={() => <SelectTeam />} />
         </CookiesProvider>
       </MockedProvider>
     </MemoryRouter>

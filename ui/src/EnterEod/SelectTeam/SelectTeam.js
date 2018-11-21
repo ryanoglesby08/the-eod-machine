@@ -9,7 +9,7 @@ import { Heading, Text, Box, Message } from 'rebass/emotion'
 import TabularList from '../../ui-components/TabularList/TabularList'
 import FetchTeams from './FetchTeams'
 
-const NonExistantTeamMessage = () => (
+const NonExistentTeamMessage = () => (
   <Message bg="red">
     That's odd... the team you've selected doesn't exist. Try picking a
     different one.
@@ -70,7 +70,7 @@ class SelectTeam extends Component {
             <>
               {teamId && !doesTeamExist(teamId) && (
                 <Box mb={3}>
-                  <NonExistantTeamMessage />
+                  <NonExistentTeamMessage />
                 </Box>
               )}
 
