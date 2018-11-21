@@ -9,7 +9,3 @@ input EntryInput {
   category: String!
   content: String!
 }
-
-type Eod {
-  entries: [Entry]
-}

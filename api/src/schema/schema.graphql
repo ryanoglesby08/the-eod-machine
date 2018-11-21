@@ -3,8 +3,6 @@
 # import Team from "./Team.graphql"
 
 type Query {
-  eod(teamId: String!): Eod
-
   team(id: String!): Team
   teams: [Team]
 }
