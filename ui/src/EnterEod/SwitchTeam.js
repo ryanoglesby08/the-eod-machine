@@ -2,12 +2,17 @@ import React from 'react'
 
 import { Link } from 'react-router-dom'
 
-import { Box } from 'rebass/emotion'
+import styled from 'react-emotion'
+import { Text } from 'rebass/emotion'
 
-const InverseLink = props => <Box {...props} is={Link} color="white" />
+const InverseLink = styled(Link)({
+  color: 'inherit',
+})
 
 const SwitchTeam = () => (
-  <InverseLink to="select-team">Switch teams</InverseLink>
+  <Text color="white">
+    <InverseLink to="select-team">Switch teams</InverseLink>
+  </Text>
 )
 
 export default SwitchTeam
