@@ -5,7 +5,11 @@ import { MemoryRouter, Route } from 'react-router-dom'
 
 import { render, fireEvent, wait } from 'react-testing-library'
 
-import { aTeam, someTeamInput } from '../../../../__test-utils__/team-mother'
+import createMother from '../../../../__test-utils__/graphql-query-mother'
+import {
+  baseTeam,
+  createTeamMother,
+} from '../../../../__test-utils__/team-mother'
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
 import enterText from '../../__test-utils__/enterText'
 import filteredArray from '../../__test-utils__/filteredArray'
@@ -19,6 +23,10 @@ const mockGetTeams = buildGraphQlMockForQuery(GET_TEAMS)
 const mockGetEmptyTeams = buildGraphQlMockForQuery(GET_TEAMS).returns({
   teams: [],
 })
+
+const someNewTeamInput = createTeamMother(['name', 'mailingList'])
+const aCreatedTeam = createMother(CREATE_TEAM, baseTeam)
+const aTeam = createMother(GET_TEAMS, baseTeam)
 
 const doRender = ({ createTeamMock, getTeamsMock = mockGetEmptyTeams }) => {
   const mocks = filteredArray(createTeamMock, getTeamsMock)
@@ -34,16 +42,17 @@ const doRender = ({ createTeamMock, getTeamsMock = mockGetEmptyTeams }) => {
 }
 
 it('shows the all teams list after creating a new team', async () => {
-  const input = someTeamInput({
+  const input = someNewTeamInput({
     name: 'My team',
     mailingList: ['team@example.com', 'another@example.com'],
   })
-  const teamToCreate = aTeam(input)
+  const teamToCreate = aCreatedTeam(input)
+  const returnedTeam = aTeam(teamToCreate)
 
   const createTeamMock = mockCreateTeam
     .withVariables({ team: input })
     .returns({ createTeam: teamToCreate })
-  const getTeamsMock = mockGetTeams.returns({ teams: [teamToCreate] })
+  const getTeamsMock = mockGetTeams.returns({ teams: [returnedTeam] })
 
   const { container, getByLabelText, getByText } = doRender({
     createTeamMock,

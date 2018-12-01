@@ -2,10 +2,15 @@ import React from 'react'
 
 import { render } from 'react-testing-library'
 
-import { aTeamWithItsEod } from '../../../../__test-utils__/team-mother'
+import createMother from '../../../../__test-utils__/graphql-query-mother'
+import { baseTeam } from '../../../../__test-utils__/team-mother'
 import { anAuthoredEntry } from '../../../../__test-utils__/entry-mother'
 
+import { GET_TEAMS_WITH_EOD } from '../../sendMessage/sendMessages'
+
 import HtmlMessage from './HtmlMessage'
+
+const aTeamWithItsEod = createMother(GET_TEAMS_WITH_EOD, baseTeam)
 
 it('is an EOD message', () => {
   const team = aTeamWithItsEod({

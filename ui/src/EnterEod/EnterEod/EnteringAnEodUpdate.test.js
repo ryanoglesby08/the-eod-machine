@@ -4,11 +4,12 @@ import { MockedProvider } from 'react-apollo/test-utils'
 import { CookiesProvider, Cookies } from 'react-cookie'
 import { render, fireEvent, wait, waitForElement } from 'react-testing-library'
 
+import createMother from '../../../../__test-utils__/graphql-query-mother'
+import { baseTeam } from '../../../../__test-utils__/team-mother'
 import {
   someEntryInputAndAuthoredEntry,
   anAuthoredEntry,
 } from '../../../../__test-utils__/entry-mother'
-import { createTeamBuilder } from '../../../../__test-utils__/team-mother'
 import enterText from '../../__test-utils__/enterText'
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
 import filteredArray from '../../__test-utils__/filteredArray'
@@ -19,7 +20,7 @@ import { ADD_TO_EOD } from './EodForm'
 
 const TEAM_ID = 'team-1'
 
-const aTeamWithEod = createTeamBuilder(['name', 'currentEod'])
+const aTeamWithEod = createMother(GET_TEAM_WITH_EOD, baseTeam)
 
 const mockGetTeamWithEod = buildGraphQlMockForQuery(GET_TEAM_WITH_EOD)
 const mockAddToEod = buildGraphQlMockForQuery(ADD_TO_EOD)

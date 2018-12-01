@@ -6,11 +6,13 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { render, wait } from 'react-testing-library'
 
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
-import { aTeam } from '../../../../__test-utils__/team-mother'
+import createMother from '../../../../__test-utils__/graphql-query-mother'
+import { baseTeam } from '../../../../__test-utils__/team-mother'
 
 import Teams, { GET_TEAMS } from './Teams'
 
 const mockGetTeams = buildGraphQlMockForQuery(GET_TEAMS)
+const aTeam = createMother(GET_TEAMS, baseTeam)
 
 const doRender = mocks => {
   return render(

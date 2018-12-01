@@ -6,13 +6,16 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { render, wait, fireEvent, waitForElement } from 'react-testing-library'
 
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
-import { aTeam } from '../../../../__test-utils__/team-mother'
+import createMother from '../../../../__test-utils__/graphql-query-mother'
+import { baseTeam } from '../../../../__test-utils__/team-mother'
 
 import { GET_TEAMS } from './FetchTeams'
 import SelectTeam from './SelectTeam'
 import TeamRequiredRoute from './TeamRequiredRoute'
 
 const mockGetTeams = buildGraphQlMockForQuery(GET_TEAMS)
+
+const aTeam = createMother(GET_TEAMS, baseTeam)
 
 const ShowSelectedTeamId = ({ teamId }) => (
   <div>Selected team id is {teamId}</div>

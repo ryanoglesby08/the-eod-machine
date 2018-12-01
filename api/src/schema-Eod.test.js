@@ -4,7 +4,7 @@ import {
   someEntryInput,
   someEntryInputAndAuthoredEntry,
 } from '../../__test-utils__/entry-mother'
-import { someTeamInput } from '../../__test-utils__/team-mother'
+import { createTeamMother } from '../../__test-utils__/team-mother'
 import { executeQuery, executeMutation } from './__test-utils__/executeQuery'
 
 import {
@@ -65,6 +65,8 @@ const SEND_EOD = gql`
     }
   }
 `
+
+const someTeamInput = createTeamMother(['name', 'mailingList', 'locations'])
 
 beforeEach(async () => {
   await entriesCollection().deleteMany()

@@ -7,6 +7,7 @@
   },
   "devDependencies": {
     "@playlyfe/gql": "^2.6.0",
+    "graphql-parse-fields": "^1.2.0",
     "husky": "^1.1.4",
     "lerna": "^3.4.3",
     "lint-staged": "^8.0.4",

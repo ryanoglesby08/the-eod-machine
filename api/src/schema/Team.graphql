@@ -1,11 +1,21 @@
 input TeamInput {
   name: String!
   mailingList: [String]!
+  locations: [LocationInput]
+}
+
+input LocationInput {
+  name: String!
 }
 
 type Team {
   _id: String!
   name: String!
   mailingList: [String]!
+  locations: [Location]
   currentEod: [Entry]
+}
+
+type Location {
+  name: String!
 }

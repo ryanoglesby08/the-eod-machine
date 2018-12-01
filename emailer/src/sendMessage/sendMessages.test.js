@@ -4,9 +4,12 @@ import stubApiClient from '../apiClient'
 
 import sendMessages, { GET_TEAMS_WITH_EOD } from './sendMessages'
 
-import { aTeamWithItsEod } from '../../../__test-utils__/team-mother'
+import createMother from '../../../__test-utils__/graphql-query-mother'
+import { baseTeam } from '../../../__test-utils__/team-mother'
 
 jest.mock('../apiClient')
+
+const aTeamWithItsEod = createMother(GET_TEAMS_WITH_EOD, baseTeam)
 
 it('sends a message to every team', async () => {
   const team = aTeamWithItsEod({

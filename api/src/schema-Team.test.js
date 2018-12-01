@@ -1,15 +1,9 @@
 import { gql } from 'apollo-server'
 
-import { someEntryInputAndAuthoredEntry } from '../../__test-utils__/entry-mother'
-import { someTeamInput } from '../../__test-utils__/team-mother'
+import { createTeamMother } from '../../__test-utils__/team-mother'
 import { executeQuery, executeMutation } from './__test-utils__/executeQuery'
 
-import {
-  closeDbConnection,
-  connectToDb,
-  entriesCollection,
-  teamsCollection,
-} from './dbConnection'
+import { closeDbConnection, connectToDb, teamsCollection } from './dbConnection'
 
 beforeAll(async () => {
   await connectToDb(global.__MONGO_URI__, global.__MONGO_DB_NAME__)
@@ -19,25 +13,15 @@ afterAll(async () => {
   await closeDbConnection()
 })
 
-const ADD_TO_EOD = gql`
-  mutation AddToEod(
-    $author: String!
-    $entries: [EntryInput]!
-    $teamId: String!
-  ) {
-    addToEod(author: $author, entries: $entries, teamId: $teamId) {
-      author
-      category
-      content
-    }
-  }
-`
 const CREATE_TEAM = gql`
   mutation CreateTeam($team: TeamInput!) {
     createTeam(team: $team) {
       _id
       name
       mailingList
+      locations {
+        name
+      }
     }
   }
 `
@@ -48,20 +32,21 @@ const EDIT_TEAM = gql`
       _id
       name
       mailingList
+      locations {
+        name
+      }
     }
   }
 `
 
 const GET_TEAMS = gql`
-  {
+  query Teams {
     teams {
       _id
       name
       mailingList
-      currentEod {
-        author
-        category
-        content
+      locations {
+        name
       }
     }
   }
@@ -73,18 +58,24 @@ const GET_TEAM = gql`
       _id
       name
       mailingList
+      locations {
+        name
+      }
     }
   }
 `
 
+const someTeamInput = createTeamMother(['name', 'mailingList', 'locations'])
+
 beforeEach(async () => {
-  await entriesCollection().deleteMany()
   await teamsCollection().deleteMany()
 })
 
 // TODO to toMatchObject when this jest issue is resolved: https://github.com/facebook/jest/issues/6730
 it('creates and edits teams', async () => {
-  const team = someTeamInput()
+  const team = someTeamInput({
+    locations: [{ name: 'Timbuktu' }, { name: 'Chicago' }],
+  })
 
   const createTeamResult = await executeMutation(CREATE_TEAM, { team })
   expect(createTeamResult).toEqual({
@@ -107,6 +98,7 @@ it('creates and edits teams', async () => {
   const teamEdits = someTeamInput({
     name: 'New name',
     mailingList: ['new@mail.com'],
+    locations: [{ name: 'Timbuktu' }],
   })
 
   const editTeamResult = await executeQuery(EDIT_TEAM, {
@@ -122,35 +114,5 @@ it('creates and edits teams', async () => {
   })
   expect(teamResult).toEqual({
     team: expect.objectContaining(teamEdits),
-  })
-})
-
-it('gets EODs that are due to be sent', async () => {
-  const team = someTeamInput()
-
-  const createTeamResult = await executeMutation(CREATE_TEAM, { team })
-
-  const { _id } = createTeamResult.createTeam
-
-  const { entryInput, authoredEntry } = someEntryInputAndAuthoredEntry({
-    author: 'The author',
-  })
-
-  await executeMutation(ADD_TO_EOD, {
-    author: 'The author',
-    entries: [entryInput],
-    teamId: _id,
-  })
-
-  const getDueEodsResult = await executeQuery(GET_TEAMS)
-
-  expect(getDueEodsResult).toEqual({
-    teams: [
-      {
-        _id,
-        ...team,
-        currentEod: [authoredEntry],
-      },
-    ],
   })
 })

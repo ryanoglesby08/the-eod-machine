@@ -1,26 +1,20 @@
 const pick = require('./pick')
 const { anAuthoredEntry } = require('./entry-mother')
 
-const defaultTeam = {
+const baseTeam = {
   _id: 'team-0',
   name: 'The team',
   mailingList: ['team@example.com'],
+  locations: [],
   currentEod: [anAuthoredEntry()],
 }
 
-const createTeamBuilder = relevantFields => (overrides = {}) => {
+const createTeamMother = relevantFields => (overrides = {}) => {
   return Object.assign(
     {},
-    pick(defaultTeam, relevantFields),
+    pick(baseTeam, relevantFields),
     pick(overrides, relevantFields)
   )
 }
 
-const aTeam = createTeamBuilder(['_id', 'name', 'mailingList'])
-const someTeamInput = createTeamBuilder(['name', 'mailingList'])
-
-const aTeamWithItsEod = (overrides = {}) => {
-  return Object.assign({}, defaultTeam, overrides)
-}
-
-module.exports = { aTeam, aTeamWithItsEod, someTeamInput, createTeamBuilder }
+module.exports = { baseTeam, createTeamMother }

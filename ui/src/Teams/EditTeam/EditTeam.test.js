@@ -6,7 +6,11 @@ import { MemoryRouter, Route } from 'react-router-dom'
 import { render, fireEvent, wait, waitForElement } from 'react-testing-library'
 
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
-import { aTeam, someTeamInput } from '../../../../__test-utils__/team-mother'
+import createMother from '../../../../__test-utils__/graphql-query-mother'
+import {
+  baseTeam,
+  createTeamMother,
+} from '../../../../__test-utils__/team-mother'
 import enterText from '../../__test-utils__/enterText'
 import filteredArray from '../../__test-utils__/filteredArray'
 
@@ -21,7 +25,12 @@ const mockGetEmptyTeams = buildGraphQlMockForQuery(GET_TEAMS).returns({
   teams: [],
 })
 
+const aTeamToEdit = createMother(GET_TEAM, baseTeam)
+const someTeamEdits = createTeamMother(['name', 'mailingList'])
+const aTeam = createMother(GET_TEAMS, baseTeam)
+
 const TEAM_ID = '123'
+
 const doRender = ({
   getTeamMock,
   editTeamMock,
@@ -40,11 +49,11 @@ const doRender = ({
 }
 
 it('shows the all teams list after editing a team', async () => {
-  const teamToEdit = aTeam({
+  const teamToEdit = aTeamToEdit({
     _id: TEAM_ID,
     name: 'My team',
   })
-  const edits = someTeamInput({
+  const edits = someTeamEdits({
     ...teamToEdit,
     name: 'New team name',
   })
@@ -84,7 +93,7 @@ it('shows the all teams list after editing a team', async () => {
 })
 
 it('returns to the teams list on cancel', async () => {
-  const team = aTeam({ _id: TEAM_ID })
+  const team = aTeamToEdit({ _id: TEAM_ID })
   const getTeamMock = mockGetTeam
     .withVariables({ id: TEAM_ID })
     .returns({ team })
