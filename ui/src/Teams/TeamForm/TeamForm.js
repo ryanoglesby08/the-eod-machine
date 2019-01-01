@@ -55,8 +55,9 @@ class TeamForm extends Component {
           )}
         </LabeledField>
 
-        <fieldset>
-          Location 1
+        <fieldset data-testid="location-1">
+          <legend>Location 1</legend>
+
           <LabeledField label="Name" id="location-1-name">
             {id => (
               <Input
@@ -68,8 +69,9 @@ class TeamForm extends Component {
           </LabeledField>
         </fieldset>
 
-        <fieldset>
-          Location 2
+        <fieldset data-testid="location-2">
+          <legend>Location 2</legend>
+
           <LabeledField label="Name" id="location-2-name">
             {id => (
               <Input

@@ -58,7 +58,7 @@ it('shows the all teams list after creating a new team', async () => {
     .returns({ createTeam: teamToCreate })
   const getTeamsMock = mockGetTeams.returns({ teams: [returnedTeam] })
 
-  const { container, getByLabelText, getByText } = doRender({
+  const { container, getByLabelText, getByText, getByTestId } = doRender({
     createTeamMock,
     getTeamsMock,
   })
@@ -68,9 +68,9 @@ it('shows the all teams list after creating a new team', async () => {
     getByLabelText('Mailing list'),
     'team@example.com, another@example.com'
   )
-  const location1 = within(getByText('Location 1'))
+  const location1 = within(getByTestId('location-1'))
   enterText(location1.getByLabelText('Name'), 'The first city')
-  const location2 = within(getByText('Location 2'))
+  const location2 = within(getByTestId('location-2'))
   enterText(location2.getByLabelText('Name'), 'The second city')
 
   fireEvent.click(getByText('Save'))

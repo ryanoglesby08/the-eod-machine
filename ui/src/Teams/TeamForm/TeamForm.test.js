@@ -14,16 +14,17 @@ const doRender = (props = {}) =>
 
 it('gives changes back on submit', () => {
   const onSubmit = jest.fn()
-  const { getByLabelText, getByText, debug } = doRender({ onSubmit })
+  const { getByLabelText, getByText, getByTestId } = doRender({ onSubmit })
 
   enterText(getByLabelText('Name'), 'A team')
   enterText(
     getByLabelText('Mailing list'),
     'team@example.com, another@example.com'
   )
-  const location1 = within(getByText('Location 1'))
+
+  const location1 = within(getByTestId('location-1'))
   enterText(location1.getByLabelText('Name'), 'The first city')
-  const location2 = within(getByText('Location 2'))
+  const location2 = within(getByTestId('location-2'))
   enterText(location2.getByLabelText('Name'), 'The second city')
 
   fireEvent.click(getByText('Save'))
