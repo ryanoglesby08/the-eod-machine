@@ -29,7 +29,8 @@ const doRender = ({ getTeamsMock }, cookies) => {
       <MockedProvider mocks={mocks} addTypename={false}>
         <CookiesProvider cookies={cookies}>
           <TeamRequiredRoute path="/" exact component={ShowSelectedTeamId} />
-          {/*Use `render` instead of `component` to prevent a silly warning from `Route` component and `withCookies`*/}
+          {/* Use `render` instead of `component` to prevent a silly warning from `Route` component and `withCookies` */}
+          {/* PropTypes warning will be fixed in react-router 4.4. https://github.com/ReactTraining/react-router/issues/4354 */}
           <Route path="/select-team" render={() => <SelectTeam />} />
         </CookiesProvider>
       </MockedProvider>

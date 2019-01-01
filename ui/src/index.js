@@ -32,6 +32,7 @@ ReactDOM.render(
         </Header>
         <Main>
           <TeamRequiredRoute path="/" exact component={EnterEod} />
+          {/* PropTypes warning will be fixed in react-router 4.4. https://github.com/ReactTraining/react-router/issues/4354 */}
           <Route path="/select-team" component={SelectTeam} />
           <Route path="/teams" exact component={Teams} />
           <Route path="/teams/new" component={NewTeam} />
