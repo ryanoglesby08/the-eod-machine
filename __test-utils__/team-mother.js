@@ -5,7 +5,7 @@ const baseTeam = {
   _id: 'team-0',
   name: 'The team',
   mailingList: ['team@example.com'],
-  locations: [],
+  locations: [{ name: 'First city' }, { name: 'Second city' }],
   currentEod: [anAuthoredEntry()],
 }
 

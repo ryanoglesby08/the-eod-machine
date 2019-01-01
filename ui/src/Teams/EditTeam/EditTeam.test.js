@@ -26,7 +26,8 @@ const mockGetEmptyTeams = buildGraphQlMockForQuery(GET_TEAMS).returns({
 })
 
 const aTeamToEdit = createMother(GET_TEAM, baseTeam)
-const someTeamEdits = createTeamMother(['name', 'mailingList'])
+const someTeamEdits = createTeamMother(['name', 'mailingList', 'locations'])
+const anEditedTeam = createMother(EDIT_TEAM, baseTeam)
 const aTeam = createMother(GET_TEAMS, baseTeam)
 
 const TEAM_ID = '123'
@@ -57,10 +58,11 @@ it('shows the all teams list after editing a team', async () => {
     ...teamToEdit,
     name: 'New team name',
   })
-  const editedTeam = aTeam({
+  const editedTeam = anEditedTeam({
     ...teamToEdit,
     ...edits,
   })
+  const team = aTeam(editedTeam)
 
   const getTeamMock = mockGetTeam
     .withVariables({ id: TEAM_ID })
@@ -73,7 +75,7 @@ it('shows the all teams list after editing a team', async () => {
     })
     .returns({ editTeam: editedTeam })
 
-  const getTeamsMock = mockGetTeams.returns({ teams: [editedTeam] })
+  const getTeamsMock = mockGetTeams.returns({ teams: [team] })
 
   const { container, getByLabelText, getByText } = doRender({
     getTeamMock,

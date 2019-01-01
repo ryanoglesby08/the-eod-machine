@@ -11,3 +11,15 @@ it('connects a label to a form field', () => {
 
   expect(getByLabelText('Some label')).toBeInTheDocument()
 })
+
+it('allows an id to override the default to prevent conflicts of fields with the same label', () => {
+  const { getByLabelText } = render(
+    <>
+      <LabeledField label="Some label" id="different-id">
+        {id => <input id={id} />}
+      </LabeledField>
+    </>
+  )
+
+  expect(getByLabelText('Some label')).toHaveAttribute('id', 'different-id')
+})

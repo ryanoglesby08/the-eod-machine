@@ -9,11 +9,25 @@ class TeamForm extends Component {
   state = {
     name: this.props.name,
     mailingList: this.props.mailingList.join(', '),
+    locations: this.props.locations,
+  }
+
+  changeLocationName(name, index) {
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        locations: [
+          ...prevState.locations.slice(0, index),
+          { name },
+          ...prevState.locations.slice(index + 1),
+        ],
+      }
+    })
   }
 
   render() {
     const { onSubmit, onCancel } = this.props
-    const { name, mailingList } = this.state
+    const { name, mailingList, locations } = this.state
 
     return (
       <form
@@ -41,6 +55,32 @@ class TeamForm extends Component {
           )}
         </LabeledField>
 
+        <fieldset>
+          Location 1
+          <LabeledField label="Name" id="location-1-name">
+            {id => (
+              <Input
+                id={id}
+                value={locations[0].name}
+                onChange={e => this.changeLocationName(e.target.value, 0)}
+              />
+            )}
+          </LabeledField>
+        </fieldset>
+
+        <fieldset>
+          Location 2
+          <LabeledField label="Name" id="location-2-name">
+            {id => (
+              <Input
+                id={id}
+                value={locations[1].name}
+                onChange={e => this.changeLocationName(e.target.value, 1)}
+              />
+            )}
+          </LabeledField>
+        </fieldset>
+
         <Button type="submit">Save</Button>
         <Button type="button" onClick={onCancel}>
           Cancel
@@ -50,14 +90,20 @@ class TeamForm extends Component {
   }
 }
 TeamForm.propTypes = {
-  name: PropTypes.string,
-  mailingList: PropTypes.arrayOf(PropTypes.string),
+  name: PropTypes.string.isRequired,
+  mailingList: PropTypes.arrayOf(PropTypes.string).isRequired,
+  locations: PropTypes.arrayOf(
+    PropTypes.shape({
+      name: PropTypes.string,
+    })
+  ).isRequired,
   onSubmit: PropTypes.func.isRequired,
   onCancel: PropTypes.func.isRequired,
 }
 TeamForm.defaultProps = {
   name: '',
   mailingList: [],
+  locations: [{ name: '' }, { name: '' }],
 }
 
 export default TeamForm

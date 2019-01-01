@@ -3,7 +3,7 @@ import React from 'react'
 import { MockedProvider } from 'react-apollo/test-utils'
 import { MemoryRouter, Route } from 'react-router-dom'
 
-import { render, fireEvent, wait } from 'react-testing-library'
+import { render, fireEvent, wait, within } from 'react-testing-library'
 
 import createMother from '../../../../__test-utils__/graphql-query-mother'
 import {
@@ -24,11 +24,14 @@ const mockGetEmptyTeams = buildGraphQlMockForQuery(GET_TEAMS).returns({
   teams: [],
 })
 
-const someNewTeamInput = createTeamMother(['name', 'mailingList'])
+const someNewTeamInput = createTeamMother(['name', 'mailingList', 'locations'])
 const aCreatedTeam = createMother(CREATE_TEAM, baseTeam)
 const aTeam = createMother(GET_TEAMS, baseTeam)
 
-const doRender = ({ createTeamMock, getTeamsMock = mockGetEmptyTeams }) => {
+const doRender = ({
+  createTeamMock,
+  getTeamsMock = mockGetEmptyTeams,
+} = {}) => {
   const mocks = filteredArray(createTeamMock, getTeamsMock)
 
   return render(
@@ -45,6 +48,7 @@ it('shows the all teams list after creating a new team', async () => {
   const input = someNewTeamInput({
     name: 'My team',
     mailingList: ['team@example.com', 'another@example.com'],
+    locations: [{ name: 'The first city' }, { name: 'The second city' }],
   })
   const teamToCreate = aCreatedTeam(input)
   const returnedTeam = aTeam(teamToCreate)
@@ -64,6 +68,10 @@ it('shows the all teams list after creating a new team', async () => {
     getByLabelText('Mailing list'),
     'team@example.com, another@example.com'
   )
+  const location1 = within(getByText('Location 1'))
+  enterText(location1.getByLabelText('Name'), 'The first city')
+  const location2 = within(getByText('Location 2'))
+  enterText(location2.getByLabelText('Name'), 'The second city')
 
   fireEvent.click(getByText('Save'))
 
@@ -74,7 +82,7 @@ it('shows the all teams list after creating a new team', async () => {
 })
 
 it('returns to the teams list on cancel', async () => {
-  const { container, getByText } = doRender({})
+  const { container, getByText } = doRender()
 
   fireEvent.click(getByText('Cancel'))
 

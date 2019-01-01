@@ -3,6 +3,8 @@ import React from 'react'
 import { Query, Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
+import omit from 'lodash/omit'
+
 import { Heading } from 'rebass/emotion'
 
 import { toGraphQlSchema } from '../team'
@@ -16,6 +18,9 @@ export const GET_TEAM = gql`
       _id
       name
       mailingList
+      locations {
+        name
+      }
     }
   }
 `
@@ -26,6 +31,9 @@ export const EDIT_TEAM = gql`
       _id
       name
       mailingList
+      locations {
+        name
+      }
     }
   }
 `
@@ -39,6 +47,10 @@ const doEditTeam = (id, teamData, editTeamMutation) => {
   })
 }
 
+// Workaround until: https://github.com/apollographql/apollo-feature-requests/issues/6
+const removeTypename = locations =>
+  locations.map(location => omit(location, '__typename'))
+
 const EditTeam = ({ match }) => {
   const { id } = match.params
 
@@ -49,7 +61,7 @@ const EditTeam = ({ match }) => {
           return 'Loading...'
         }
 
-        const { _id, name, mailingList } = team
+        const { _id, name, mailingList, locations } = team
 
         return (
           <RedirectToTeams>
@@ -63,6 +75,7 @@ const EditTeam = ({ match }) => {
                         <TeamForm
                           name={name}
                           mailingList={mailingList}
+                          locations={removeTypename(locations)}
                           onSubmit={teamData =>
                             doEditTeam(_id, teamData, editTeam)
                           }

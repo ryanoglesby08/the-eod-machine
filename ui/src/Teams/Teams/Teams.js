@@ -14,7 +14,6 @@ export const GET_TEAMS = gql`
     teams {
       _id
       name
-      mailingList
     }
   }
 `

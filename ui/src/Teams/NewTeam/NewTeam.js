@@ -16,6 +16,9 @@ export const CREATE_TEAM = gql`
       _id
       name
       mailingList
+      locations {
+        name
+      }
     }
   }
 `
