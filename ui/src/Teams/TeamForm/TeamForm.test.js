@@ -22,9 +22,9 @@ it('gives changes back on submit', () => {
     'team@example.com, another@example.com'
   )
 
-  const location1 = within(getByTestId('location-1'))
+  const location1 = within(getByTestId('location-0'))
   enterText(location1.getByLabelText('Name'), 'The first city')
-  const location2 = within(getByTestId('location-2'))
+  const location2 = within(getByTestId('location-1'))
   enterText(location2.getByLabelText('Name'), 'The second city')
 
   fireEvent.click(getByText('Save'))
@@ -52,4 +52,40 @@ it('uses supplied team values to start', () => {
     mailingList: 'email1@example.com, email2@example.com',
     locations: [{ name: 'Starting city 1' }, { name: 'Starting city 2' }],
   })
+})
+
+it('can have more than 2 locations', () => {
+  const onSubmit = jest.fn()
+  const { getByText, getByTestId } = doRender({
+    locations: [{ name: 'Starting city 1' }, { name: 'Starting city 2' }],
+    onSubmit,
+  })
+
+  fireEvent.click(getByText('+ Add a location'))
+
+  const location2 = within(getByTestId('location-2'))
+  enterText(location2.getByLabelText('Name'), 'The added city')
+
+  fireEvent.click(getByText('Save'))
+
+  expect(onSubmit).toHaveBeenCalledWith(
+    expect.objectContaining({
+      locations: [
+        { name: 'Starting city 1' },
+        { name: 'Starting city 2' },
+        { name: 'The added city' },
+      ],
+    })
+  )
+
+  const location1 = within(getByTestId('location-1'))
+  fireEvent.click(location1.getByText('Remove'))
+
+  fireEvent.click(getByText('Save'))
+
+  expect(onSubmit).toHaveBeenCalledWith(
+    expect.objectContaining({
+      locations: [{ name: 'Starting city 1' }, { name: 'The added city' }],
+    })
+  )
 })

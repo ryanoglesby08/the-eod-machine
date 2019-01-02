@@ -68,9 +68,9 @@ it('shows the all teams list after creating a new team', async () => {
     getByLabelText('Mailing list'),
     'team@example.com, another@example.com'
   )
-  const location1 = within(getByTestId('location-1'))
+  const location1 = within(getByTestId('location-0'))
   enterText(location1.getByLabelText('Name'), 'The first city')
-  const location2 = within(getByTestId('location-2'))
+  const location2 = within(getByTestId('location-1'))
   enterText(location2.getByLabelText('Name'), 'The second city')
 
   fireEvent.click(getByText('Save'))
