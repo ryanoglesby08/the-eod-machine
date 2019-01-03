@@ -20,7 +20,7 @@ import Teams, { GET_TEAMS } from '../Teams/Teams'
 const mockCreateTeam = buildGraphQlMockForQuery(CREATE_TEAM)
 const mockGetTeams = buildGraphQlMockForQuery(GET_TEAMS)
 
-const mockGetEmptyTeams = buildGraphQlMockForQuery(GET_TEAMS).returns({
+const mockGetEmptyTeams = mockGetTeams.returns({
   teams: [],
 })
 
@@ -51,16 +51,13 @@ it('shows the all teams list after creating a new team', async () => {
     locations: [{ name: 'The first city' }, { name: 'The second city' }],
   })
   const teamToCreate = aCreatedTeam(input)
-  const returnedTeam = aTeam(teamToCreate)
 
   const createTeamMock = mockCreateTeam
     .withVariables({ team: input })
     .returns({ createTeam: teamToCreate })
-  const getTeamsMock = mockGetTeams.returns({ teams: [returnedTeam] })
 
   const { container, getByLabelText, getByText, getByTestId } = doRender({
     createTeamMock,
-    getTeamsMock,
   })
 
   enterText(getByLabelText('Name'), 'My team')
@@ -77,7 +74,6 @@ it('shows the all teams list after creating a new team', async () => {
 
   await wait(() => {
     expect(container).toHaveTextContent('All teams')
-    expect(container).toHaveTextContent('My team')
   })
 })
 

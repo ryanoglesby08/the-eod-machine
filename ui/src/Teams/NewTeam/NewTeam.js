@@ -7,6 +7,7 @@ import { Heading } from 'rebass/emotion'
 
 import { toGraphQlSchema } from '../team'
 
+import { GET_TEAMS } from '../Teams/Teams'
 import TeamForm from '../TeamForm/TeamForm'
 import RedirectToTeams from '../RedirectToTeams'
 
@@ -35,7 +36,11 @@ const NewTeam = () => (
   <RedirectToTeams>
     {doRedirect => {
       return (
-        <Mutation mutation={CREATE_TEAM} onCompleted={doRedirect}>
+        <Mutation
+          mutation={CREATE_TEAM}
+          refetchQueries={[{ query: GET_TEAMS }]}
+          onCompleted={doRedirect}
+        >
           {createTeam => {
             return (
               <div>
