@@ -80,7 +80,7 @@ class TeamForm extends Component {
 
         {locations.map(({ name }, index) => (
           <LocationForm
-            key={name + index}
+            key={index}
             name={name}
             index={index}
             onNameChange={this.changeLocationName}
