@@ -1,6 +1,7 @@
 import { gql } from 'apollo-server'
 
 import { createTeamMother } from '../../__test-utils__/team-mother'
+import { createLocationMother } from '../../__test-utils__/location-mother'
 import { executeQuery, executeMutation } from './__test-utils__/executeQuery'
 
 import { closeDbConnection, connectToDb, teamsCollection } from './dbConnection'
@@ -21,6 +22,7 @@ const CREATE_TEAM = gql`
       mailingList
       locations {
         name
+        timeZone
       }
     }
   }
@@ -34,6 +36,7 @@ const EDIT_TEAM = gql`
       mailingList
       locations {
         name
+        timeZone
       }
     }
   }
@@ -47,6 +50,7 @@ const GET_TEAMS = gql`
       mailingList
       locations {
         name
+        timeZone
       }
     }
   }
@@ -60,12 +64,14 @@ const GET_TEAM = gql`
       mailingList
       locations {
         name
+        timeZone
       }
     }
   }
 `
 
 const someTeamInput = createTeamMother(['name', 'mailingList', 'locations'])
+const aLocation = createLocationMother(['name', 'timeZone'])
 
 beforeEach(async () => {
   await teamsCollection().deleteMany()
@@ -74,7 +80,10 @@ beforeEach(async () => {
 // TODO to toMatchObject when this jest issue is resolved: https://github.com/facebook/jest/issues/6730
 it('creates and edits teams', async () => {
   const team = someTeamInput({
-    locations: [{ name: 'Timbuktu' }, { name: 'Chicago' }],
+    locations: [
+      aLocation({ name: 'First city' }),
+      aLocation({ name: 'Second city' }),
+    ],
   })
 
   const createTeamResult = await executeMutation(CREATE_TEAM, { team })
@@ -98,7 +107,7 @@ it('creates and edits teams', async () => {
   const teamEdits = someTeamInput({
     name: 'New name',
     mailingList: ['new@mail.com'],
-    locations: [{ name: 'Timbuktu' }],
+    locations: [aLocation({ name: 'Timbuktu' })],
   })
 
   const editTeamResult = await executeQuery(EDIT_TEAM, {

@@ -26,7 +26,6 @@ const mockGetEmptyTeams = mockGetTeams.returns({
 
 const someNewTeamInput = createTeamMother(['name', 'mailingList', 'locations'])
 const aCreatedTeam = createMother(CREATE_TEAM, baseTeam)
-const aTeam = createMother(GET_TEAMS, baseTeam)
 
 const doRender = ({
   createTeamMock,

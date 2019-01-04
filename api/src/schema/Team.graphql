@@ -6,6 +6,8 @@ input TeamInput {
 
 input LocationInput {
   name: String!
+  timeZone: String
+  # TODO Make timeZone required once the UI implements it
 }
 
 type Team {
@@ -18,4 +20,5 @@ type Team {
 
 type Location {
   name: String!
+  timeZone: String!
 }
