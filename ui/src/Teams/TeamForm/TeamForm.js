@@ -8,116 +8,80 @@ import LocationForm from './LocationForm'
 
 const EMPTY_LOCATION = { name: '', timeZone: '' }
 
-// TODO use a reducer pattern here to simplify state updates :)
+const locationsReducer = (state = [], action = {}) => {
+  switch (action.type) {
+    case 'ADD_LOCATION': {
+      return [...state, EMPTY_LOCATION]
+    }
+    case 'CHANGE_LOCATION_NAME': {
+      const { index, name } = action.payload
+      return [
+        ...state.slice(0, index),
+        { ...state[index], name },
+        ...state.slice(index + 1),
+      ]
+    }
+    case 'CHANGE_LOCATION_TIME_ZONE': {
+      const { index, timeZone } = action.payload
+      return [
+        ...state.slice(0, index),
+        { ...state[index], timeZone },
+        ...state.slice(index + 1),
+      ]
+    }
+    case 'REMOVE_LOCATION': {
+      const { index } = action.payload
+      return [...state.slice(0, index), ...state.slice(index + 1)]
+    }
+    default:
+      return state
+  }
+}
 
-// const locationsReducer = (state = [], action = {}) => {
-//   switch (action.type) {
-//     case 'ADD_LOCATION': {
-//       return [...state, EMPTY_LOCATION]
-//     }
-//     case 'CHANGE_LOCATION_NAME': {
-//       const { index, name } = action.payload
-//       return [
-//         ...state.slice(0, index),
-//         { ...state[index], name },
-//         ...state.slice(index + 1),
-//       ]
-//     }
-//     case 'CHANGE_LOCATION_TIME_ZONE': {
-//       const { index, timeZone } = action.payload
-//       return [
-//         ...state.slice(0, index),
-//         { ...state[index], timeZone },
-//         ...state.slice(index + 1),
-//       ]
-//     }
-//     case 'REMOVE_LOCATION': {
-//       const { index } = action.payload
-//       return [...state.slice(0, index), ...state.slice(index + 1)]
-//     }
-//     default:
-//       return state
-//   }
-// }
-
-// const reducer = (state = {}, action = {}) => {
-//   switch (action.type) {
-//     case 'CHANGE_NAME':
-//       return { ...state, name: action.payload }
-//     case 'CHANGE_MAILING_LIST':
-//       return { ...state, mailingList: action.payload }
-//     case 'ADD_LOCATION':
-//     case 'CHANGE_LOCATION_NAME':
-//     case 'CHANGE_LOCATION_TIME_ZONE':
-//     case 'REMOVE_LOCATION':
-//       return { ...state, locations: locationsReducer(state.locations, action) }
-//     default:
-//       return state
-//   }
-// }
+const reducer = (state = {}, action = {}) => {
+  switch (action.type) {
+    case 'CHANGE_NAME':
+      return { ...state, name: action.payload }
+    case 'CHANGE_MAILING_LIST':
+      return { ...state, mailingList: action.payload }
+    case 'ADD_LOCATION':
+    case 'CHANGE_LOCATION_NAME':
+    case 'CHANGE_LOCATION_TIME_ZONE':
+    case 'REMOVE_LOCATION':
+      return { ...state, locations: locationsReducer(state.locations, action) }
+    default:
+      return state
+  }
+}
 
 class TeamForm extends Component {
-  state = {
+  state = reducer({
     name: this.props.name,
     mailingList: this.props.mailingList.join(', '),
     locations: this.props.locations,
+  })
+
+  dispatch = action => {
+    this.setState(prevState => reducer(prevState, action))
   }
 
-  // state = reducer({
-  //   name: this.props.name,
-  //   mailingList: this.props.mailingList.join(', '),
-  //   locations: this.props.locations,
-  // })
-
-  // dispatch = action => {
-  //   this.setState(prevState => reducer(prevState, action))
-  // }
-
   changeLocationName = (name, index) => {
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        locations: [
-          ...prevState.locations.slice(0, index),
-          { ...prevState.locations[index], name },
-          ...prevState.locations.slice(index + 1),
-        ],
-      }
-    })
+    this.dispatch({ type: 'CHANGE_LOCATION_NAME', payload: { index, name } })
   }
 
   changeLocationTimeZone = (timeZone, index) => {
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        locations: [
-          ...prevState.locations.slice(0, index),
-          { ...prevState.locations[index], timeZone },
-          ...prevState.locations.slice(index + 1),
-        ],
-      }
+    this.dispatch({
+      type: 'CHANGE_LOCATION_TIME_ZONE',
+      payload: { index, timeZone },
     })
   }
 
   addLocation = () => {
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        locations: prevState.locations.concat(EMPTY_LOCATION),
-      }
-    })
+    this.dispatch({ type: 'ADD_LOCATION' })
   }
 
   removeLocation = index => {
-    this.setState(prevState => {
-      return {
-        ...prevState,
-        locations: [
-          ...prevState.locations.slice(0, index),
-          ...prevState.locations.slice(index + 1),
-        ],
-      }
-    })
+    this.dispatch({ type: 'REMOVE_LOCATION', payload: { index } })
   }
 
   render() {
@@ -136,7 +100,12 @@ class TeamForm extends Component {
             <Input
               id={id}
               value={name}
-              onChange={e => this.setState({ name: e.target.value })}
+              onChange={e =>
+                this.dispatch({
+                  type: 'CHANGE_NAME',
+                  payload: e.target.value,
+                })
+              }
             />
           )}
         </LabeledField>
@@ -145,7 +114,12 @@ class TeamForm extends Component {
             <Input
               id={id}
               value={mailingList}
-              onChange={e => this.setState({ mailingList: e.target.value })}
+              onChange={e =>
+                this.dispatch({
+                  type: 'CHANGE_MAILING_LIST',
+                  payload: e.target.value,
+                })
+              }
             />
           )}
         </LabeledField>
