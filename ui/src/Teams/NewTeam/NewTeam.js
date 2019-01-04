@@ -19,6 +19,7 @@ export const CREATE_TEAM = gql`
       mailingList
       locations {
         name
+        timeZone
       }
     }
   }

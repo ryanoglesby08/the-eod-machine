@@ -10,7 +10,7 @@ import {
   someEntryInputAndAuthoredEntry,
   anAuthoredEntry,
 } from '../../../../__test-utils__/entry-mother'
-import enterText from '../../__test-utils__/enterText'
+import { enterText } from '../../__test-utils__/inputEvents'
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
 import filteredArray from '../../__test-utils__/filteredArray'
 

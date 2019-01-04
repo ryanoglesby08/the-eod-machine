@@ -11,8 +11,9 @@ import {
   createTeamMother,
 } from '../../../../__test-utils__/team-mother'
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
-import enterText from '../../__test-utils__/enterText'
+import { enterText } from '../../__test-utils__/inputEvents'
 import filteredArray from '../../__test-utils__/filteredArray'
+import fillInTeamForm from '../__test-utils__/fillInTeamForm'
 
 import NewTeam, { CREATE_TEAM } from './NewTeam'
 import Teams, { GET_TEAMS } from '../Teams/Teams'
@@ -33,7 +34,7 @@ const doRender = ({
 } = {}) => {
   const mocks = filteredArray(createTeamMock, getTeamsMock)
 
-  return render(
+  const renderQueries = render(
     <MemoryRouter initialEntries={['/teams/new']}>
       <MockedProvider mocks={mocks} addTypename={false}>
         <Route path="/teams/new" component={NewTeam} />
@@ -41,13 +42,18 @@ const doRender = ({
       </MockedProvider>
     </MemoryRouter>
   )
+
+  return { ...renderQueries, fillInTeamForm: fillInTeamForm(renderQueries) }
 }
 
 it('shows the all teams list after creating a new team', async () => {
   const input = someNewTeamInput({
     name: 'My team',
     mailingList: ['team@example.com', 'another@example.com'],
-    locations: [{ name: 'The first city' }, { name: 'The second city' }],
+    locations: [
+      { name: 'The first city', timeZone: 'Hawaiian Standard Time' },
+      { name: 'The second city', timeZone: 'Egypt Standard Time' },
+    ],
   })
   const teamToCreate = aCreatedTeam(input)
 
@@ -55,21 +61,24 @@ it('shows the all teams list after creating a new team', async () => {
     .withVariables({ team: input })
     .returns({ createTeam: teamToCreate })
 
-  const { container, getByLabelText, getByText, getByTestId } = doRender({
+  const { container, fillInTeamForm } = doRender({
     createTeamMock,
   })
 
-  enterText(getByLabelText('Name'), 'My team')
-  enterText(
-    getByLabelText('Mailing list'),
-    'team@example.com, another@example.com'
-  )
-  const location1 = within(getByTestId('location-0'))
-  enterText(location1.getByLabelText('Name'), 'The first city')
-  const location2 = within(getByTestId('location-1'))
-  enterText(location2.getByLabelText('Name'), 'The second city')
-
-  fireEvent.click(getByText('Save'))
+  fillInTeamForm({
+    Name: 'My team',
+    'Mailing list': 'team@example.com, another@example.com',
+    locations: [
+      {
+        Name: 'The first city',
+        'Time zone': 'hawaii',
+      },
+      {
+        Name: 'The second city',
+        'Time zone': 'egypt',
+      },
+    ],
+  })
 
   await wait(() => {
     expect(container).toHaveTextContent('All teams')

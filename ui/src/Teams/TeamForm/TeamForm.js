@@ -4,8 +4,57 @@ import PropTypes from 'prop-types'
 import { Button, ButtonOutline, Box, Flex, Input } from 'rebass/emotion'
 
 import LabeledField from '../../ui-components/LabeledField/LabeledField'
+import LocationForm from './LocationForm'
 
-const EMPTY_LOCATION = { name: '' }
+const EMPTY_LOCATION = { name: '', timeZone: '' }
+
+// TODO use a reducer pattern here to simplify state updates :)
+
+// const locationsReducer = (state = [], action = {}) => {
+//   switch (action.type) {
+//     case 'ADD_LOCATION': {
+//       return [...state, EMPTY_LOCATION]
+//     }
+//     case 'CHANGE_LOCATION_NAME': {
+//       const { index, name } = action.payload
+//       return [
+//         ...state.slice(0, index),
+//         { ...state[index], name },
+//         ...state.slice(index + 1),
+//       ]
+//     }
+//     case 'CHANGE_LOCATION_TIME_ZONE': {
+//       const { index, timeZone } = action.payload
+//       return [
+//         ...state.slice(0, index),
+//         { ...state[index], timeZone },
+//         ...state.slice(index + 1),
+//       ]
+//     }
+//     case 'REMOVE_LOCATION': {
+//       const { index } = action.payload
+//       return [...state.slice(0, index), ...state.slice(index + 1)]
+//     }
+//     default:
+//       return state
+//   }
+// }
+
+// const reducer = (state = {}, action = {}) => {
+//   switch (action.type) {
+//     case 'CHANGE_NAME':
+//       return { ...state, name: action.payload }
+//     case 'CHANGE_MAILING_LIST':
+//       return { ...state, mailingList: action.payload }
+//     case 'ADD_LOCATION':
+//     case 'CHANGE_LOCATION_NAME':
+//     case 'CHANGE_LOCATION_TIME_ZONE':
+//     case 'REMOVE_LOCATION':
+//       return { ...state, locations: locationsReducer(state.locations, action) }
+//     default:
+//       return state
+//   }
+// }
 
 class TeamForm extends Component {
   state = {
@@ -14,13 +63,36 @@ class TeamForm extends Component {
     locations: this.props.locations,
   }
 
+  // state = reducer({
+  //   name: this.props.name,
+  //   mailingList: this.props.mailingList.join(', '),
+  //   locations: this.props.locations,
+  // })
+
+  // dispatch = action => {
+  //   this.setState(prevState => reducer(prevState, action))
+  // }
+
   changeLocationName = (name, index) => {
     this.setState(prevState => {
       return {
         ...prevState,
         locations: [
           ...prevState.locations.slice(0, index),
-          { name },
+          { ...prevState.locations[index], name },
+          ...prevState.locations.slice(index + 1),
+        ],
+      }
+    })
+  }
+
+  changeLocationTimeZone = (timeZone, index) => {
+    this.setState(prevState => {
+      return {
+        ...prevState,
+        locations: [
+          ...prevState.locations.slice(0, index),
+          { ...prevState.locations[index], timeZone },
           ...prevState.locations.slice(index + 1),
         ],
       }
@@ -78,12 +150,14 @@ class TeamForm extends Component {
           )}
         </LabeledField>
 
-        {locations.map(({ name }, index) => (
+        {locations.map(({ name, timeZone }, index) => (
           <LocationForm
             key={index}
-            name={name}
             index={index}
+            name={name}
             onNameChange={this.changeLocationName}
+            timeZone={timeZone}
+            onTimeZoneChange={this.changeLocationTimeZone}
             onRemove={this.removeLocation}
           />
         ))}
@@ -128,34 +202,6 @@ TeamForm.defaultProps = {
   name: '',
   mailingList: [],
   locations: [EMPTY_LOCATION, EMPTY_LOCATION],
-}
-
-const LocationForm = ({ name, index, onNameChange, onRemove }) => (
-  <fieldset data-testid={`location-${index}`}>
-    <legend>Location {index + 1}</legend>
-
-    <LabeledField label="Name" id={`location-${index}-name`}>
-      {id => (
-        <Input
-          id={id}
-          value={name}
-          onChange={e => onNameChange(e.target.value, index)}
-        />
-      )}
-    </LabeledField>
-
-    <Flex flexDirection="column" alignItems="flex-end">
-      <ButtonOutline type="button" onClick={() => onRemove(index)}>
-        Remove
-      </ButtonOutline>
-    </Flex>
-  </fieldset>
-)
-LocationForm.propTypes = {
-  name: PropTypes.string.isRequired,
-  index: PropTypes.number.isRequired,
-  onNameChange: PropTypes.func.isRequired,
-  onRemove: PropTypes.func.isRequired,
 }
 
 export default TeamForm

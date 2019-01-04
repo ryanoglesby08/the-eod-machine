@@ -11,7 +11,7 @@ import {
   baseTeam,
   createTeamMother,
 } from '../../../../__test-utils__/team-mother'
-import enterText from '../../__test-utils__/enterText'
+import { enterText } from '../../__test-utils__/inputEvents'
 import filteredArray from '../../__test-utils__/filteredArray'
 
 import EditTeam, { GET_TEAM, EDIT_TEAM } from './EditTeam'

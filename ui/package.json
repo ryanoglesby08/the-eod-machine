@@ -26,8 +26,10 @@
     "react-emotion": "^9.2.6",
     "react-router-dom": "^4.3.1",
     "react-scripts": "2.0.5",
+    "react-select": "^2.2.0",
     "rebass": "^2.1.0",
-    "serve": "^10.0.2"
+    "serve": "^10.0.2",
+    "timezones.json": "^1.4.7"
   },
   "devDependencies": {
     "eslint-plugin-graphql": "^3.0.1",

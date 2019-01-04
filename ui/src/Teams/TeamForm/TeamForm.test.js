@@ -2,37 +2,46 @@ import React from 'react'
 
 import { render, fireEvent, within } from 'react-testing-library'
 
-import enterText from '../../__test-utils__/enterText'
+import { enterText, keyDown } from '../../__test-utils__/inputEvents'
+import fillInTeamForm from '../__test-utils__/fillInTeamForm'
 
 import TeamForm from './TeamForm'
 
 const defaultProps = {
   onCancel: jest.fn(),
 }
-const doRender = (props = {}) =>
-  render(<TeamForm {...defaultProps} {...props} />)
+const doRender = (props = {}) => {
+  const renderQueries = render(<TeamForm {...defaultProps} {...props} />)
+
+  return { ...renderQueries, fillInTeamForm: fillInTeamForm(renderQueries) }
+}
 
 it('gives changes back on submit', () => {
   const onSubmit = jest.fn()
-  const { getByLabelText, getByText, getByTestId } = doRender({ onSubmit })
+  const { fillInTeamForm } = doRender({ onSubmit })
 
-  enterText(getByLabelText('Name'), 'A team')
-  enterText(
-    getByLabelText('Mailing list'),
-    'team@example.com, another@example.com'
-  )
-
-  const location1 = within(getByTestId('location-0'))
-  enterText(location1.getByLabelText('Name'), 'The first city')
-  const location2 = within(getByTestId('location-1'))
-  enterText(location2.getByLabelText('Name'), 'The second city')
-
-  fireEvent.click(getByText('Save'))
+  fillInTeamForm({
+    Name: 'A team',
+    'Mailing list': 'team@example.com, another@example.com',
+    locations: [
+      {
+        Name: 'Maui',
+        'Time zone': 'hawaii',
+      },
+      {
+        Name: 'Cairo',
+        'Time zone': 'egypt',
+      },
+    ],
+  })
 
   expect(onSubmit).toHaveBeenCalledWith({
     name: 'A team',
     mailingList: 'team@example.com, another@example.com',
-    locations: [{ name: 'The first city' }, { name: 'The second city' }],
+    locations: [
+      { name: 'Maui', timeZone: 'Hawaiian Standard Time' },
+      { name: 'Cairo', timeZone: 'Egypt Standard Time' },
+    ],
   })
 })
 
@@ -41,7 +50,10 @@ it('uses supplied team values to start', () => {
   const { getByText } = doRender({
     name: 'Starting name',
     mailingList: ['email1@example.com', 'email2@example.com'],
-    locations: [{ name: 'Starting city 1' }, { name: 'Starting city 2' }],
+    locations: [
+      { name: 'Starting city 1', timeZone: 'Hawaiian Standard Time' },
+      { name: 'Starting city 2', timeZone: 'Egypt Standard Time' },
+    ],
     onSubmit,
   })
 
@@ -50,30 +62,38 @@ it('uses supplied team values to start', () => {
   expect(onSubmit).toHaveBeenCalledWith({
     name: 'Starting name',
     mailingList: 'email1@example.com, email2@example.com',
-    locations: [{ name: 'Starting city 1' }, { name: 'Starting city 2' }],
+    locations: [
+      { name: 'Starting city 1', timeZone: 'Hawaiian Standard Time' },
+      { name: 'Starting city 2', timeZone: 'Egypt Standard Time' },
+    ],
   })
 })
 
 it('can have more than 2 locations', () => {
   const onSubmit = jest.fn()
   const { getByText, getByTestId } = doRender({
-    locations: [{ name: 'Starting city 1' }, { name: 'Starting city 2' }],
+    locations: [
+      { name: 'Starting city 1', timeZone: 'Hawaiian Standard Time' },
+      { name: 'Starting city 2', timeZone: 'Egypt Standard Time' },
+    ],
     onSubmit,
   })
 
   fireEvent.click(getByText('+ Add a location'))
 
-  const location2 = within(getByTestId('location-2'))
-  enterText(location2.getByLabelText('Name'), 'The added city')
+  const location3 = within(getByTestId('location-2'))
+  enterText(location3.getByLabelText('Name'), 'The added city')
+  enterText(location3.getByLabelText('Time zone'), 'korea')
+  keyDown(location3.getByLabelText('Time zone'), 'Enter')
 
   fireEvent.click(getByText('Save'))
 
   expect(onSubmit).toHaveBeenCalledWith(
     expect.objectContaining({
       locations: [
-        { name: 'Starting city 1' },
-        { name: 'Starting city 2' },
-        { name: 'The added city' },
+        { name: 'Starting city 1', timeZone: 'Hawaiian Standard Time' },
+        { name: 'Starting city 2', timeZone: 'Egypt Standard Time' },
+        { name: 'The added city', timeZone: 'Korea Standard Time' },
       ],
     })
   )
@@ -85,7 +105,10 @@ it('can have more than 2 locations', () => {
 
   expect(onSubmit).toHaveBeenCalledWith(
     expect.objectContaining({
-      locations: [{ name: 'Starting city 1' }, { name: 'The added city' }],
+      locations: [
+        { name: 'Starting city 1', timeZone: 'Hawaiian Standard Time' },
+        { name: 'The added city', timeZone: 'Korea Standard Time' },
+      ],
     })
   )
 })

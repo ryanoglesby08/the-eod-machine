@@ -20,6 +20,7 @@ export const GET_TEAM = gql`
       mailingList
       locations {
         name
+        timeZone
       }
     }
   }
@@ -33,6 +34,7 @@ export const EDIT_TEAM = gql`
       mailingList
       locations {
         name
+        timeZone
       }
     }
   }
