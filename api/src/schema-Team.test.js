@@ -23,6 +23,7 @@ const CREATE_TEAM = gql`
       locations {
         name
         timeZone
+        eodTime
       }
     }
   }
@@ -37,6 +38,7 @@ const EDIT_TEAM = gql`
       locations {
         name
         timeZone
+        eodTime
       }
     }
   }
@@ -51,6 +53,7 @@ const GET_TEAMS = gql`
       locations {
         name
         timeZone
+        eodTime
       }
     }
   }
@@ -65,13 +68,14 @@ const GET_TEAM = gql`
       locations {
         name
         timeZone
+        eodTime
       }
     }
   }
 `
 
 const someTeamInput = createTeamMother(['name', 'mailingList', 'locations'])
-const aLocation = createLocationMother(['name', 'timeZone'])
+const aLocation = createLocationMother(['name', 'timeZone', 'eodTime'])
 
 beforeEach(async () => {
   await teamsCollection().deleteMany()

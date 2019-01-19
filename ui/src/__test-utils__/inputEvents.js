@@ -19,3 +19,8 @@ export const keyDown = (domNode, key) => {
 
   fireEvent.keyDown(domNode, keys[key])
 }
+
+export const chooseReactSelect = (domNode, value) => {
+  enterText(domNode, value)
+  keyDown(domNode, 'Enter')
+}

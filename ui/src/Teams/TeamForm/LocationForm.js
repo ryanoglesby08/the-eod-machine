@@ -2,11 +2,13 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 import Select from 'react-select'
-import timeZonesData from 'timezones.json'
 
 import { ButtonOutline, Flex, Input } from 'rebass/emotion'
 
 import LabeledField from '../../ui-components/LabeledField/LabeledField'
+
+import timeZonesOptions from './timezoneOptions'
+import eodTimesOptions from './eodTimesOptions'
 
 const LocationForm = ({
   index,
@@ -14,6 +16,8 @@ const LocationForm = ({
   onNameChange,
   timeZone,
   onTimeZoneChange,
+  eodTime,
+  onEodTimeChange,
   onRemove,
 }) => (
   <fieldset data-testid={`location-${index}`}>
@@ -40,6 +44,17 @@ const LocationForm = ({
       )}
     </LabeledField>
 
+    <LabeledField label="EOD time" id={`location-${index}-eodtime`}>
+      {id => (
+        <Select
+          inputId={id}
+          options={eodTimesOptions}
+          value={eodTimesOptions.find(option => option.value === eodTime)}
+          onChange={option => onEodTimeChange(option.value, index)}
+        />
+      )}
+    </LabeledField>
+
     <Flex flexDirection="column" alignItems="flex-end">
       <ButtonOutline type="button" onClick={() => onRemove(index)}>
         Remove
@@ -53,12 +68,9 @@ LocationForm.propTypes = {
   onNameChange: PropTypes.func.isRequired,
   timeZone: PropTypes.string.isRequired,
   onTimeZoneChange: PropTypes.func.isRequired,
+  eodTime: PropTypes.string.isRequired,
+  onEodTimeChange: PropTypes.func.isRequired,
   onRemove: PropTypes.func.isRequired,
 }
-
-const timeZonesOptions = timeZonesData.map(({ text, value }) => ({
-  value,
-  label: text,
-}))
 
 export default LocationForm

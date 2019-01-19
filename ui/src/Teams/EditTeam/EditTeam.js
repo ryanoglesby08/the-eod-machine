@@ -21,6 +21,7 @@ export const GET_TEAM = gql`
       locations {
         name
         timeZone
+        eodTime
       }
     }
   }
@@ -35,6 +36,7 @@ export const EDIT_TEAM = gql`
       locations {
         name
         timeZone
+        eodTime
       }
     }
   }

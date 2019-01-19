@@ -2,7 +2,7 @@ const pick = require('./pick')
 const { anAuthoredEntry } = require('./entry-mother')
 const { createLocationMother } = require('./location-mother')
 
-const aLocation = createLocationMother(['name', 'timeZone'])
+const aLocation = createLocationMother(['name', 'timeZone', 'eodTime'])
 
 const baseTeam = {
   _id: 'team-0',

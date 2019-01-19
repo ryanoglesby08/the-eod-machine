@@ -1,24 +1,25 @@
 input TeamInput {
   name: String!
   mailingList: [String]!
-  locations: [LocationInput]
+  locations: [LocationInput]!
 }
 
 input LocationInput {
   name: String!
-  timeZone: String
-  # TODO Make timeZone required once the UI implements it
+  timeZone: String!
+  eodTime: String!
 }
 
 type Team {
   _id: String!
   name: String!
   mailingList: [String]!
-  locations: [Location]
+  locations: [Location]!
   currentEod: [Entry]
 }
 
 type Location {
   name: String!
   timeZone: String!
+  eodTime: String!
 }

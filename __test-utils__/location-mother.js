@@ -3,6 +3,7 @@ const pick = require('./pick')
 const baseLocation = {
   name: 'The location',
   timeZone: 'The time zone',
+  eodTime: 'The EOD time',
 }
 
 const createLocationMother = relevantFields => (overrides = {}) => {

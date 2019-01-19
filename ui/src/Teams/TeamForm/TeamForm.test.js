@@ -2,7 +2,7 @@ import React from 'react'
 
 import { render, fireEvent, within } from 'react-testing-library'
 
-import { enterText, keyDown } from '../../__test-utils__/inputEvents'
+import { enterText, chooseReactSelect } from '../../__test-utils__/inputEvents'
 import fillInTeamForm from '../__test-utils__/fillInTeamForm'
 
 import TeamForm from './TeamForm'
@@ -27,10 +27,12 @@ it('gives changes back on submit', () => {
       {
         Name: 'Maui',
         'Time zone': 'hawaii',
+        'EOD time': '6:00 PM',
       },
       {
         Name: 'Cairo',
         'Time zone': 'egypt',
+        'EOD time': '7:00 PM',
       },
     ],
   })
@@ -39,8 +41,8 @@ it('gives changes back on submit', () => {
     name: 'A team',
     mailingList: 'team@example.com, another@example.com',
     locations: [
-      { name: 'Maui', timeZone: 'Hawaiian Standard Time' },
-      { name: 'Cairo', timeZone: 'Egypt Standard Time' },
+      { name: 'Maui', timeZone: 'Hawaiian Standard Time', eodTime: '6:00 PM' },
+      { name: 'Cairo', timeZone: 'Egypt Standard Time', eodTime: '7:00 PM' },
     ],
   })
 })
@@ -51,8 +53,16 @@ it('uses supplied team values to start', () => {
     name: 'Starting name',
     mailingList: ['email1@example.com', 'email2@example.com'],
     locations: [
-      { name: 'Starting city 1', timeZone: 'Hawaiian Standard Time' },
-      { name: 'Starting city 2', timeZone: 'Egypt Standard Time' },
+      {
+        name: 'Starting city 1',
+        timeZone: 'Hawaiian Standard Time',
+        eodTime: '6:00 PM',
+      },
+      {
+        name: 'Starting city 2',
+        timeZone: 'Egypt Standard Time',
+        eodTime: '7:00 PM',
+      },
     ],
     onSubmit,
   })
@@ -63,8 +73,16 @@ it('uses supplied team values to start', () => {
     name: 'Starting name',
     mailingList: 'email1@example.com, email2@example.com',
     locations: [
-      { name: 'Starting city 1', timeZone: 'Hawaiian Standard Time' },
-      { name: 'Starting city 2', timeZone: 'Egypt Standard Time' },
+      {
+        name: 'Starting city 1',
+        timeZone: 'Hawaiian Standard Time',
+        eodTime: '6:00 PM',
+      },
+      {
+        name: 'Starting city 2',
+        timeZone: 'Egypt Standard Time',
+        eodTime: '7:00 PM',
+      },
     ],
   })
 })
@@ -73,8 +91,16 @@ it('can have more than 2 locations', () => {
   const onSubmit = jest.fn()
   const { getByText, getByTestId } = doRender({
     locations: [
-      { name: 'Starting city 1', timeZone: 'Hawaiian Standard Time' },
-      { name: 'Starting city 2', timeZone: 'Egypt Standard Time' },
+      {
+        name: 'Starting city 1',
+        timeZone: 'Hawaiian Standard Time',
+        eodTime: '6:00 PM',
+      },
+      {
+        name: 'Starting city 2',
+        timeZone: 'Egypt Standard Time',
+        eodTime: '7:00 PM',
+      },
     ],
     onSubmit,
   })
@@ -83,17 +109,29 @@ it('can have more than 2 locations', () => {
 
   const location3 = within(getByTestId('location-2'))
   enterText(location3.getByLabelText('Name'), 'The added city')
-  enterText(location3.getByLabelText('Time zone'), 'korea')
-  keyDown(location3.getByLabelText('Time zone'), 'Enter')
+  chooseReactSelect(location3.getByLabelText('Time zone'), 'korea')
+  chooseReactSelect(location3.getByLabelText('EOD time'), '8:00 PM')
 
   fireEvent.click(getByText('Save'))
 
   expect(onSubmit).toHaveBeenCalledWith(
     expect.objectContaining({
       locations: [
-        { name: 'Starting city 1', timeZone: 'Hawaiian Standard Time' },
-        { name: 'Starting city 2', timeZone: 'Egypt Standard Time' },
-        { name: 'The added city', timeZone: 'Korea Standard Time' },
+        {
+          name: 'Starting city 1',
+          timeZone: 'Hawaiian Standard Time',
+          eodTime: '6:00 PM',
+        },
+        {
+          name: 'Starting city 2',
+          timeZone: 'Egypt Standard Time',
+          eodTime: '7:00 PM',
+        },
+        {
+          name: 'The added city',
+          timeZone: 'Korea Standard Time',
+          eodTime: '8:00 PM',
+        },
       ],
     })
   )
@@ -106,8 +144,16 @@ it('can have more than 2 locations', () => {
   expect(onSubmit).toHaveBeenCalledWith(
     expect.objectContaining({
       locations: [
-        { name: 'Starting city 1', timeZone: 'Hawaiian Standard Time' },
-        { name: 'The added city', timeZone: 'Korea Standard Time' },
+        {
+          name: 'Starting city 1',
+          timeZone: 'Hawaiian Standard Time',
+          eodTime: '6:00 PM',
+        },
+        {
+          name: 'The added city',
+          timeZone: 'Korea Standard Time',
+          eodTime: '8:00 PM',
+        },
       ],
     })
   )

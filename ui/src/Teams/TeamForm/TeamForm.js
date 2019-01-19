@@ -6,7 +6,7 @@ import { Button, ButtonOutline, Box, Flex, Input } from 'rebass/emotion'
 import LabeledField from '../../ui-components/LabeledField/LabeledField'
 import LocationForm from './LocationForm'
 
-const EMPTY_LOCATION = { name: '', timeZone: '' }
+const EMPTY_LOCATION = { name: '', timeZone: '', eodTime: '' }
 
 const locationsReducer = (state = [], action = {}) => {
   switch (action.type) {
@@ -29,6 +29,14 @@ const locationsReducer = (state = [], action = {}) => {
         ...state.slice(index + 1),
       ]
     }
+    case 'CHANGE_LOCATION_EOD_TIME': {
+      const { index, eodTime } = action.payload
+      return [
+        ...state.slice(0, index),
+        { ...state[index], eodTime },
+        ...state.slice(index + 1),
+      ]
+    }
     case 'REMOVE_LOCATION': {
       const { index } = action.payload
       return [...state.slice(0, index), ...state.slice(index + 1)]
@@ -47,6 +55,7 @@ const reducer = (state = {}, action = {}) => {
     case 'ADD_LOCATION':
     case 'CHANGE_LOCATION_NAME':
     case 'CHANGE_LOCATION_TIME_ZONE':
+    case 'CHANGE_LOCATION_EOD_TIME':
     case 'REMOVE_LOCATION':
       return { ...state, locations: locationsReducer(state.locations, action) }
     default:
@@ -73,6 +82,13 @@ class TeamForm extends Component {
     this.dispatch({
       type: 'CHANGE_LOCATION_TIME_ZONE',
       payload: { index, timeZone },
+    })
+  }
+
+  changeLocationEodTime = (eodTime, index) => {
+    this.dispatch({
+      type: 'CHANGE_LOCATION_EOD_TIME',
+      payload: { index, eodTime },
     })
   }
 
@@ -124,7 +140,7 @@ class TeamForm extends Component {
           )}
         </LabeledField>
 
-        {locations.map(({ name, timeZone }, index) => (
+        {locations.map(({ name, timeZone, eodTime }, index) => (
           <LocationForm
             key={index}
             index={index}
@@ -132,6 +148,8 @@ class TeamForm extends Component {
             onNameChange={this.changeLocationName}
             timeZone={timeZone}
             onTimeZoneChange={this.changeLocationTimeZone}
+            eodTime={eodTime}
+            onEodTimeChange={this.changeLocationEodTime}
             onRemove={this.removeLocation}
           />
         ))}
@@ -167,6 +185,8 @@ TeamForm.propTypes = {
   locations: PropTypes.arrayOf(
     PropTypes.shape({
       name: PropTypes.string,
+      timeZone: PropTypes.string,
+      eodTime: PropTypes.string,
     })
   ).isRequired,
   onSubmit: PropTypes.func.isRequired,

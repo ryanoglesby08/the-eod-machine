@@ -20,6 +20,7 @@ export const CREATE_TEAM = gql`
       locations {
         name
         timeZone
+        eodTime
       }
     }
   }

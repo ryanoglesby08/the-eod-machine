@@ -3,7 +3,7 @@ import React from 'react'
 import { MockedProvider } from 'react-apollo/test-utils'
 import { MemoryRouter, Route } from 'react-router-dom'
 
-import { render, fireEvent, wait, within } from 'react-testing-library'
+import { render, fireEvent, wait } from 'react-testing-library'
 
 import createMother from '../../../../__test-utils__/graphql-query-mother'
 import {
@@ -11,7 +11,6 @@ import {
   createTeamMother,
 } from '../../../../__test-utils__/team-mother'
 import buildGraphQlMockForQuery from '../../__test-utils__/GraphQlMock'
-import { enterText } from '../../__test-utils__/inputEvents'
 import filteredArray from '../../__test-utils__/filteredArray'
 import fillInTeamForm from '../__test-utils__/fillInTeamForm'
 
@@ -51,8 +50,16 @@ it('shows the all teams list after creating a new team', async () => {
     name: 'My team',
     mailingList: ['team@example.com', 'another@example.com'],
     locations: [
-      { name: 'The first city', timeZone: 'Hawaiian Standard Time' },
-      { name: 'The second city', timeZone: 'Egypt Standard Time' },
+      {
+        name: 'The first city',
+        timeZone: 'Hawaiian Standard Time',
+        eodTime: '6:00 PM',
+      },
+      {
+        name: 'The second city',
+        timeZone: 'Egypt Standard Time',
+        eodTime: '7:00 PM',
+      },
     ],
   })
   const teamToCreate = aCreatedTeam(input)
@@ -72,10 +79,12 @@ it('shows the all teams list after creating a new team', async () => {
       {
         Name: 'The first city',
         'Time zone': 'hawaii',
+        'EOD time': '6:00 PM',
       },
       {
         Name: 'The second city',
         'Time zone': 'egypt',
+        'EOD time': '7:00 PM',
       },
     ],
   })
