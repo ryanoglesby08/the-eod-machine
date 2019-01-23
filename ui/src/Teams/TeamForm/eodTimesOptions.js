@@ -1,4 +1,4 @@
-const minutes = ['00', '15', '30', '45']
+const minutes = ['00', '30']
 
 let times = []
 for (let hour = 0; hour < 24; hour++) {
