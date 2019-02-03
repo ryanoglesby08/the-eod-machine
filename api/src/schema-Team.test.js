@@ -5,6 +5,7 @@ import { createLocationMother } from '../../__test-utils__/location-mother'
 import { executeQuery, executeMutation } from './__test-utils__/executeQuery'
 
 import { closeDbConnection, connectToDb, teamsCollection } from './dbConnection'
+import { convertLocalTimeToUtcTime } from './time-utils/time-utils'
 
 beforeAll(async () => {
   await connectToDb(global.__MONGO_URI__, global.__MONGO_DB_NAME__)
@@ -74,6 +75,14 @@ const GET_TEAM = gql`
   }
 `
 
+const GET_TEAMS_READY_FOR_EOD_DELIVERY = gql`
+  query GetTeamsReadyForEodDelivery($currentTimeUtc: String!) {
+    teamsReadyForAnEodDelivery(currentTimeUtc: $currentTimeUtc) {
+      name
+    }
+  }
+`
+
 const someTeamInput = createTeamMother(['name', 'mailingList', 'locations'])
 const aLocation = createLocationMother(['name', 'timeZone', 'eodTime'])
 
@@ -129,3 +138,33 @@ it('creates and edits teams', async () => {
     team: expect.objectContaining(teamEdits),
   })
 })
+
+it('gets teams in which one of its locations has reached its EOD time', async () => {
+  const team = someTeamInput({
+    name: 'The team',
+    locations: [
+      aLocation({
+        name: 'The city',
+        timeZone: 'America/New_York',
+        eodTime: '6:00 PM',
+      }),
+    ],
+  })
+
+  await executeMutation(CREATE_TEAM, { team })
+
+  const currentTimeUtc = convertLocalTimeToUtcTime(
+    '6:00 PM',
+    'America/New_York'
+  )
+  const result = await executeQuery(GET_TEAMS_READY_FOR_EOD_DELIVERY, {
+    currentTimeUtc,
+  })
+
+  expect(result).toEqual({
+    teamsReadyForAnEodDelivery: [{ name: 'The team' }],
+  })
+})
+
+// TODO: include a team that is NOT at delivery time
+// TODO: rounding to nearest half hour (check Ruby for how much, I think 5 minutes)

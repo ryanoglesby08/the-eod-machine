@@ -5,6 +5,8 @@
 type Query {
   team(id: String!): Team
   teams: [Team]
+
+  teamsReadyForAnEodDelivery(currentTimeUtc: String!): [Team]
 }
 
 type Mutation {

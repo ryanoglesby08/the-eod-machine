@@ -7,6 +7,7 @@ ObjectId.prototype.valueOf = function() {
 }
 
 import { entriesCollection, teamsCollection } from '../dbConnection'
+import { convertLocalTimeToUtcTime } from '../time-utils/time-utils'
 
 const resolvers = {
   Team: {
@@ -18,6 +19,19 @@ const resolvers = {
   },
 
   Query: {
+    teamsReadyForAnEodDelivery: async (_, { currentTimeUtc }) => {
+      const allTeams = await teamsCollection()
+        .find()
+        .toArray()
+
+      return allTeams.filter(team => {
+        return team.locations.some(({ eodTime, timeZone }) => {
+          const eodTimeUtc = convertLocalTimeToUtcTime(eodTime, timeZone)
+
+          return eodTimeUtc === currentTimeUtc
+        })
+      })
+    },
     teams: async () =>
       await teamsCollection()
         .find()
