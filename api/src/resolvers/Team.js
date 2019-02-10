@@ -1,13 +1,14 @@
 import { ObjectId } from 'mongodb'
+import timeZonesDataByValue from '../time-utils/time-zone-data'
+
+import { entriesCollection, teamsCollection } from '../dbConnection'
+import { convertLocalTimeToUtcTime } from '../time-utils/time-utils'
 
 // Hack alert... serialize mongo ids properly
 // https://github.com/apollographql/apollo-server/issues/1633
 ObjectId.prototype.valueOf = function() {
   return this.toString()
 }
-
-import { entriesCollection, teamsCollection } from '../dbConnection'
-import { convertLocalTimeToUtcTime } from '../time-utils/time-utils'
 
 const resolvers = {
   Team: {
@@ -26,7 +27,8 @@ const resolvers = {
 
       return allTeams.filter(team => {
         return team.locations.some(({ eodTime, timeZone }) => {
-          const eodTimeUtc = convertLocalTimeToUtcTime(eodTime, timeZone)
+          const utcTimezone = timeZonesDataByValue[timeZone].utc[0]
+          const eodTimeUtc = convertLocalTimeToUtcTime(eodTime, utcTimezone)
 
           return eodTimeUtc === currentTimeUtc
         })

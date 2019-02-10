@@ -145,7 +145,7 @@ it('gets teams in which one of its locations has reached its EOD time', async ()
     locations: [
       aLocation({
         name: 'New York',
-        timeZone: 'America/New_York',
+        timeZone: 'Eastern Standard Time',
         eodTime: '6:00 PM',
       }),
     ],
@@ -157,7 +157,7 @@ it('gets teams in which one of its locations has reached its EOD time', async ()
     locations: [
       aLocation({
         name: 'Pune',
-        timeZone: 'Asia/Kolkata',
+        timeZone: 'India Standard Time',
         eodTime: '6:00 PM',
       }),
     ],
@@ -177,5 +177,4 @@ it('gets teams in which one of its locations has reached its EOD time', async ()
   })
 })
 
-// TODO: Will need to save the time zone differently
 // TODO: rounding to nearest half hour (check Ruby for how much, I think 5 minutes) -- this goes in the emailer...
