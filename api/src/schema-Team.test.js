@@ -140,18 +140,29 @@ it('creates and edits teams', async () => {
 })
 
 it('gets teams in which one of its locations has reached its EOD time', async () => {
-  const team = someTeamInput({
-    name: 'The team',
+  const teamAtDeliveryTime = someTeamInput({
+    name: 'The team at delivery time',
     locations: [
       aLocation({
-        name: 'The city',
+        name: 'New York',
         timeZone: 'America/New_York',
         eodTime: '6:00 PM',
       }),
     ],
   })
+  await executeMutation(CREATE_TEAM, { team: teamAtDeliveryTime })
 
-  await executeMutation(CREATE_TEAM, { team })
+  const teamNotAtDeliveryTime = someTeamInput({
+    name: 'The team NOT at delivery time',
+    locations: [
+      aLocation({
+        name: 'Pune',
+        timeZone: 'Asia/Kolkata',
+        eodTime: '6:00 PM',
+      }),
+    ],
+  })
+  await executeMutation(CREATE_TEAM, { team: teamNotAtDeliveryTime })
 
   const currentTimeUtc = convertLocalTimeToUtcTime(
     '6:00 PM',
@@ -162,9 +173,9 @@ it('gets teams in which one of its locations has reached its EOD time', async ()
   })
 
   expect(result).toEqual({
-    teamsReadyForAnEodDelivery: [{ name: 'The team' }],
+    teamsReadyForAnEodDelivery: [{ name: 'The team at delivery time' }],
   })
 })
 
-// TODO: include a team that is NOT at delivery time
-// TODO: rounding to nearest half hour (check Ruby for how much, I think 5 minutes)
+// TODO: Will need to save the time zone differently
+// TODO: rounding to nearest half hour (check Ruby for how much, I think 5 minutes) -- this goes in the emailer...
