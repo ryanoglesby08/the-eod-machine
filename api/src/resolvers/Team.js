@@ -1,8 +1,8 @@
 import { ObjectId } from 'mongodb'
-import timeZonesDataByValue from '../time-utils/time-zone-data'
 
-import { entriesCollection, teamsCollection } from '../dbConnection'
+import timeZonesDataByValue from '../time-utils/time-zone-data'
 import { convertLocalTimeToUtcTime } from '../time-utils/time-utils'
+import { entriesCollection, teamsCollection } from '../dbConnection'
 
 // Hack alert... serialize mongo ids properly
 // https://github.com/apollographql/apollo-server/issues/1633

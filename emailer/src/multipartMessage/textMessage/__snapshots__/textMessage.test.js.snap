@@ -2,7 +2,7 @@
 
 exports[`is an EOD message as plain text 1`] = `
 "
-EOD Updates
+EOD updates from Chicago for Mar 10, 2019
 
 ---------------------------------------------------------------------
 Category 1
@@ -22,7 +22,7 @@ Category 2
 
 exports[`is an empty EOD message when there are no entries 1`] = `
 "
-EOD Updates
+EOD updates from Chicago for Mar 10, 2019
 
 No updates this time.
 

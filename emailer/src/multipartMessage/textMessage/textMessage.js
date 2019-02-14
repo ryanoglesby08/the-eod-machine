@@ -1,5 +1,7 @@
 import groupBy from 'lodash/groupBy'
 
+import { toLongDate } from '../../time-utils/format'
+
 const NEW_LINE = '\r\n'
 const BLANK_LINE = NEW_LINE + NEW_LINE
 
@@ -26,8 +28,8 @@ const body = entries => {
     .join(BLANK_LINE)
 }
 
-const textMessage = entries => `
-EOD Updates
+const textMessage = (entries, eodLocation, eodLocationDate) => `
+EOD updates from ${eodLocation.name} for ${toLongDate(eodLocationDate)}
 
 ${entries.length === 0 ? EMPTY_MESSAGE : body(entries)}
 

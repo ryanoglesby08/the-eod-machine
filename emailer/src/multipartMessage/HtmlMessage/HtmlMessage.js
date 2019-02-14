@@ -1,6 +1,9 @@
 import React from 'react'
+import { renderToStaticMarkup } from 'react-dom/server'
 
 import groupBy from 'lodash/groupBy'
+
+import { toLongDate } from '../../time-utils/format'
 
 const Entries = ({ entries }) => {
   if (entries.length === 0) {
@@ -26,14 +29,25 @@ const Entries = ({ entries }) => {
   )
 }
 
-const HtmlMessage = ({ entries }) => (
+const HtmlMessage = ({ entries, eodLocation, eodLocationDate }) => (
   <>
-    <h1>EOD Updates</h1>
+    <h1>
+      EOD updates from {eodLocation.name} for {toLongDate(eodLocationDate)}
+    </h1>
 
     <Entries entries={entries} />
 
     <div>Delivered by The EOD Machine</div>
   </>
 )
+
+export const renderHtmlMessage = (entries, eodLocation, eodLocationDate) =>
+  renderToStaticMarkup(
+    <HtmlMessage
+      entries={entries}
+      eodLocation={eodLocation}
+      eodLocationDate={eodLocationDate}
+    />
+  )
 
 export default HtmlMessage

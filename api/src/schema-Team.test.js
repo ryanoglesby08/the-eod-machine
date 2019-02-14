@@ -176,5 +176,3 @@ it('gets teams in which one of its locations has reached its EOD time', async ()
     teamsReadyForAnEodDelivery: [{ name: 'The team at delivery time' }],
   })
 })
-
-// TODO: rounding to nearest half hour (check Ruby for how much, I think 5 minutes) -- this goes in the emailer...

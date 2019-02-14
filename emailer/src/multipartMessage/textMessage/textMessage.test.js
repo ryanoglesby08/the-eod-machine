@@ -1,13 +1,9 @@
-import React from 'react'
-
-import { render } from 'react-testing-library'
-
 import { anAuthoredEntry } from '../../../../__test-utils__/entry-mother'
 import { aLocation } from '../../../../__test-utils__/location-mother'
 
-import HtmlMessage from './HtmlMessage'
+import textMessage from './textMessage'
 
-it('is an EOD message', () => {
+it('is an EOD message as plain text', () => {
   const currentEod = [
     anAuthoredEntry({
       author: 'Some author',
@@ -28,28 +24,16 @@ it('is an EOD message', () => {
   const eodLocation = aLocation({ name: 'Chicago' })
   const eodLocationDate = new Date(2019, 2, 10)
 
-  const { container } = render(
-    <HtmlMessage
-      entries={currentEod}
-      eodLocation={eodLocation}
-      eodLocationDate={eodLocationDate}
-    />
-  )
+  const message = textMessage(currentEod, eodLocation, eodLocationDate)
 
-  expect(container).toMatchSnapshot()
+  expect(message).toMatchSnapshot()
 })
 
 it('is an empty EOD message when there are no entries', () => {
   const eodLocation = aLocation({ name: 'Chicago' })
   const eodLocationDate = new Date(2019, 2, 10)
 
-  const { container } = render(
-    <HtmlMessage
-      entries={[]}
-      eodLocation={eodLocation}
-      eodLocationDate={eodLocationDate}
-    />
-  )
+  const message = textMessage([], eodLocation, eodLocationDate)
 
-  expect(container).toMatchSnapshot()
+  expect(message).toMatchSnapshot()
 })

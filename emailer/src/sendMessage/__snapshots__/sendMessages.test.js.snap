@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`sends a message to teams that are ready for an EOD 1`] = `
+"
+EOD updates from Denver for Feb 03, 2019
+
+---------------------------------------------------------------------
+Test category
+
+* some content (Some author)
+
+
+- Delivered by The EOD Machine
+"
+`;
+
+exports[`sends a message to teams that are ready for an EOD 2`] = `"<h1>EOD updates from Denver for Feb 03, 2019</h1><div><h2>Test category</h2><ul><li>some content (Some author)</li></ul></div><div>Delivered by The EOD Machine</div>"`;

@@ -13,13 +13,16 @@
     "apollo-cache-inmemory": "^1.2.5",
     "apollo-client": "^2.3.5",
     "apollo-link-http": "^1.5.4",
+    "date-fns": "^2.0.0-alpha.27",
+    "date-fns-tz": "^1.0.7",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.9.2",
     "lodash": "^4.17.10",
     "node-fetch": "^2.1.2",
     "nodemailer": "^4.6.7",
     "react": "^16.4.2",
-    "react-dom": "^16.4.2"
+    "react-dom": "^16.4.2",
+    "timezones.json": "^1.4.7"
   },
   "devDependencies": {
     "@babel/core": "^7.1.2",

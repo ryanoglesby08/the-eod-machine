@@ -1,7 +1,5 @@
 import nodemailer from 'nodemailer'
 
-import renderHtmlMessage from './multipartMessage/renderHtmlMessage'
-import renderTextMessage from './multipartMessage/renderTextMessage'
 import sendMessages from './sendMessage/sendMessages'
 import markEodAsSent from './markEodAsSent'
 
@@ -22,26 +20,22 @@ const execute = async () => {
 
     // send mail with defined transport object
     try {
-      console.log('sending...')
-      const messages = await sendMessages(
-        transporter,
-        renderTextMessage,
-        renderHtmlMessage
-      )
+      console.log('sending...') // eslint-disable-line
+      const messages = await sendMessages(transporter)
 
-      console.log('marking as sent...')
+      console.log('marking as sent...') // eslint-disable-line
       await markEodAsSent()
 
       messages.forEach(message => {
-        console.log('Message sent: %s', message.messageId)
+        console.log('Message sent: %s', message.messageId) // eslint-disable-line
         // Preview only available when sending through an Ethereal account
-        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message))
+        console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message)) // eslint-disable-line
 
         // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
         // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
       })
     } catch (error) {
-      console.log(error)
+      console.log(error) // eslint-disable-line
     }
   })
 }
