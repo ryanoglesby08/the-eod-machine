@@ -41,20 +41,15 @@ beforeEach(() => {
   })
 
   stubApiClient.__stubQuery(GET_TEAMS_READY_FOR_EOD_DELIVERY, {
-    teams: [team],
+    teamsReadyForAnEodDelivery: [team],
   })
 })
 
 it('sends a message to teams that are ready for an EOD', async () => {
-  const currentDate = new Date(2019, 1, 3, 12) // Feb 3, 2019 @ 12pm UTC
+  const currentDate = new Date(2019, 1, 3, 12) // Feb 3, 2019 @ 12pm
   const currentTimeUtc = convertLocalTimeToUtcTime('5:00 PM', 'America/Denver')
 
-  const messages = await sendMessages(
-    // TODO: don't pass transporter as a param, just use module mocking
-    transporter,
-    currentDate,
-    currentTimeUtc
-  )
+  const messages = await sendMessages(transporter, currentDate, currentTimeUtc)
 
   expect(messages).toHaveLength(1)
 
@@ -79,15 +74,10 @@ it('sends a message to teams that are ready for an EOD', async () => {
 })
 
 it('rounds to the nearest half hour to account for small time differences when the emailer runs', async () => {
-  const currentDate = new Date(2019, 1, 3, 12) // Feb 3, 2019 @ 12pm UTC
+  const currentDate = new Date(2019, 1, 3, 12) // Feb 3, 2019 @ 12pm
   const currentTimeUtc = convertLocalTimeToUtcTime('5:02 PM', 'America/Denver')
 
-  const messages = await sendMessages(
-    // TODO: don't pass transporter as a param, just use module mocking
-    transporter,
-    currentDate,
-    currentTimeUtc
-  )
+  const messages = await sendMessages(transporter, currentDate, currentTimeUtc)
 
   expect(messages).toHaveLength(1)
 

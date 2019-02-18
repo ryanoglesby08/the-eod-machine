@@ -49,14 +49,14 @@ const sendMessages = async (transporter, currentDate, currentTimeUtc) => {
   const currentTimeUtcRounded = roundToNearestHalfHour(currentTimeUtc)
 
   const {
-    data: { teams },
+    data: { teamsReadyForAnEodDelivery },
   } = await apiClient.query({
     query: GET_TEAMS_READY_FOR_EOD_DELIVERY,
     variables: { currentTimeUtc: currentTimeUtcRounded },
   })
 
   return await Promise.all(
-    teams.map(async team => {
+    teamsReadyForAnEodDelivery.map(async team => {
       const eodLocation = getLocationAtEod(
         team.locations,
         currentTimeUtcRounded
