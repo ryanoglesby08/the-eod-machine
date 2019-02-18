@@ -6,7 +6,7 @@ exports[`is an EOD message 1`] = `
     EOD updates from 
     Chicago
      for 
-    Mar 10, 2019
+    Feb 10, 2019
   </h1>
   <div>
     <h2>
@@ -43,7 +43,7 @@ exports[`is an empty EOD message when there are no entries 1`] = `
     EOD updates from 
     Chicago
      for 
-    Mar 10, 2019
+    Feb 10, 2019
   </h1>
   <div>
     No updates this time.

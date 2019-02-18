@@ -22,7 +22,7 @@ it('is an EOD message as plain text', () => {
     }),
   ]
   const eodLocation = aLocation({ name: 'Chicago' })
-  const eodLocationDate = new Date(2019, 2, 10)
+  const eodLocationDate = 'Feb 10, 2019'
 
   const message = textMessage(currentEod, eodLocation, eodLocationDate)
 
@@ -31,7 +31,7 @@ it('is an EOD message as plain text', () => {
 
 it('is an empty EOD message when there are no entries', () => {
   const eodLocation = aLocation({ name: 'Chicago' })
-  const eodLocationDate = new Date(2019, 2, 10)
+  const eodLocationDate = 'Feb 10, 2019'
 
   const message = textMessage([], eodLocation, eodLocationDate)
 

@@ -26,7 +26,7 @@ it('is an EOD message', () => {
     }),
   ]
   const eodLocation = aLocation({ name: 'Chicago' })
-  const eodLocationDate = new Date(2019, 2, 10)
+  const eodLocationDate = 'Feb 10, 2019'
 
   const { container } = render(
     <HtmlMessage
@@ -41,7 +41,7 @@ it('is an EOD message', () => {
 
 it('is an empty EOD message when there are no entries', () => {
   const eodLocation = aLocation({ name: 'Chicago' })
-  const eodLocationDate = new Date(2019, 2, 10)
+  const eodLocationDate = 'Feb 10, 2019'
 
   const { container } = render(
     <HtmlMessage

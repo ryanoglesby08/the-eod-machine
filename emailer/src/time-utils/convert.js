@@ -2,10 +2,7 @@ import { zonedTimeToUtc } from 'date-fns-tz'
 
 export const to24HourTime = ampmTime => {
   const [time, ampm] = ampmTime.split(' ')
-  let [hours, minutes] = time.split(':')
-
-  hours = parseInt(hours)
-  minutes = parseInt(minutes)
+  let [hours, minutes] = time.split(':').map(t => parseInt(t))
 
   if (hours === 12 && ampm === 'AM') {
     hours = 0
@@ -33,4 +30,19 @@ export const convertLocalTimeToUtcTime = (localTime, localTimeZone) => {
   })
 
   return utcTime
+}
+
+export const roundToNearestHalfHour = utcTimeString => {
+  const [hours, minutes] = utcTimeString.split(':').map(t => parseInt(t))
+
+  const roundedMinutes = Math.round(minutes / 30) * 30
+
+  const time = new Date()
+  time.setHours(hours, roundedMinutes, 0, 0)
+
+  return time.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: false,
+  })
 }

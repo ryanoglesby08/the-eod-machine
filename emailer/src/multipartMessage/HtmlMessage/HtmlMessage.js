@@ -3,8 +3,6 @@ import { renderToStaticMarkup } from 'react-dom/server'
 
 import groupBy from 'lodash/groupBy'
 
-import { toLongDate } from '../../time-utils/format'
-
 const Entries = ({ entries }) => {
   if (entries.length === 0) {
     return <div>No updates this time.</div>
@@ -32,7 +30,7 @@ const Entries = ({ entries }) => {
 const HtmlMessage = ({ entries, eodLocation, eodLocationDate }) => (
   <>
     <h1>
-      EOD updates from {eodLocation.name} for {toLongDate(eodLocationDate)}
+      EOD updates from {eodLocation.name} for {eodLocationDate}
     </h1>
 
     <Entries entries={entries} />

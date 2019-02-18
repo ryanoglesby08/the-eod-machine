@@ -1,11 +1,13 @@
 import gql from 'graphql-tag'
-import { utcToZonedTime } from 'date-fns-tz'
 
 import apiClient from '../apiClient'
 
 import { getUtcTimezone } from '../time-utils/time-zone-data'
-import { convertLocalTimeToUtcTime } from '../time-utils/convert'
-import { toShortDate } from '../time-utils/format'
+import {
+  convertLocalTimeToUtcTime,
+  roundToNearestHalfHour,
+} from '../time-utils/convert'
+import { toShortDate, toLongDate } from '../time-utils/format'
 
 import { renderHtmlMessage } from '../multipartMessage/HtmlMessage/HtmlMessage'
 import textMessage from '../multipartMessage/textMessage/textMessage'
@@ -40,20 +42,31 @@ const getLocationAtEod = (locations, currentTimeUtc) => {
   })
 }
 
-const subject = (team, eodLocation, eodLocationDate) =>
-  [`[EOD] ${team.name}`, eodLocation.name, toShortDate(eodLocationDate)].join(
-    ' | '
-  )
+const subject = (team, eodLocation, shortDateString) =>
+  [`[EOD] ${team.name}`, eodLocation.name, shortDateString].join(' | ')
 
 const sendMessages = async (transporter, currentDate, currentTimeUtc) => {
+  const currentTimeUtcRounded = roundToNearestHalfHour(currentTimeUtc)
+
   const {
     data: { teams },
-  } = await apiClient.query({ query: GET_TEAMS_READY_FOR_EOD_DELIVERY })
+  } = await apiClient.query({
+    query: GET_TEAMS_READY_FOR_EOD_DELIVERY,
+    variables: { currentTimeUtc: currentTimeUtcRounded },
+  })
 
   return await Promise.all(
     teams.map(async team => {
-      const eodLocation = getLocationAtEod(team.locations, currentTimeUtc)
-      const eodLocationDate = utcToZonedTime(
+      const eodLocation = getLocationAtEod(
+        team.locations,
+        currentTimeUtcRounded
+      )
+
+      const shortDateString = toShortDate(
+        currentDate,
+        getUtcTimezone(eodLocation.timeZone)
+      )
+      const longDateString = toLongDate(
         currentDate,
         getUtcTimezone(eodLocation.timeZone)
       )
@@ -64,9 +77,9 @@ const sendMessages = async (transporter, currentDate, currentTimeUtc) => {
           name: 'EOD Machine',
         },
         to: team.mailingList,
-        subject: subject(team, eodLocation, eodLocationDate),
-        text: textMessage(team.currentEod, eodLocation, eodLocationDate),
-        html: renderHtmlMessage(team.currentEod, eodLocation, eodLocationDate),
+        subject: subject(team, eodLocation, shortDateString),
+        text: textMessage(team.currentEod, eodLocation, longDateString),
+        html: renderHtmlMessage(team.currentEod, eodLocation, longDateString),
       })
     })
   )

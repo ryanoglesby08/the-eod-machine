@@ -22,7 +22,7 @@ beforeEach(() => {
   })
 })
 
-it('sends a message to teams that are ready for an EOD', async () => {
+beforeEach(() => {
   const team = aTeamWithItsEod({
     name: 'The Team',
     mailingList: ['team1@example.com', 'team2@example.com'],
@@ -43,7 +43,9 @@ it('sends a message to teams that are ready for an EOD', async () => {
   stubApiClient.__stubQuery(GET_TEAMS_READY_FOR_EOD_DELIVERY, {
     teams: [team],
   })
+})
 
+it('sends a message to teams that are ready for an EOD', async () => {
   const currentDate = new Date(2019, 1, 3, 12) // Feb 3, 2019 @ 12pm UTC
   const currentTimeUtc = convertLocalTimeToUtcTime('5:00 PM', 'America/Denver')
 
@@ -76,6 +78,23 @@ it('sends a message to teams that are ready for an EOD', async () => {
   expect(eodMessage.html).toMatchSnapshot()
 })
 
-// TODO: Next test
-//it('rounds to the nearest half hour to account for small time differences when the emailer runs', () => {})
-// round to nearest half hour => (Math.round(<current minutes> / 30) * 30) % 60
+it('rounds to the nearest half hour to account for small time differences when the emailer runs', async () => {
+  const currentDate = new Date(2019, 1, 3, 12) // Feb 3, 2019 @ 12pm UTC
+  const currentTimeUtc = convertLocalTimeToUtcTime('5:02 PM', 'America/Denver')
+
+  const messages = await sendMessages(
+    // TODO: don't pass transporter as a param, just use module mocking
+    transporter,
+    currentDate,
+    currentTimeUtc
+  )
+
+  expect(messages).toHaveLength(1)
+
+  const eodMessage = JSON.parse(messages[0].message)
+
+  expect(eodMessage).toHaveProperty(
+    'subject',
+    '[EOD] The Team | Denver | Feb 03'
+  )
+})
