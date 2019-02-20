@@ -1,9 +1,6 @@
 import { gql } from 'apollo-server'
 
-import {
-  someEntryInput,
-  someEntryInputAndAuthoredEntry,
-} from '../../__test-utils__/entry-mother'
+import { someEntryInputAndAuthoredEntry } from '../../__test-utils__/entry-mother'
 import { createTeamMother } from '../../__test-utils__/team-mother'
 import { executeQuery, executeMutation } from './__test-utils__/executeQuery'
 
@@ -59,8 +56,8 @@ const ADD_TO_EOD = gql`
 `
 
 const SEND_EOD = gql`
-  mutation SendEod {
-    sendEod {
+  mutation SendEod($teamIds: [String]!) {
+    sendEod(teamIds: $teamIds) {
       success
     }
   }
@@ -116,7 +113,7 @@ it("adds entries to a team's current eod", async () => {
   })
 })
 
-it('marks all eod entries as sent regardless of team', async () => {
+it('marks eod entries as sent', async () => {
   const teamId1 = (await executeMutation(CREATE_TEAM, {
     team: someTeamInput(),
   })).createTeam._id
@@ -125,7 +122,7 @@ it('marks all eod entries as sent regardless of team', async () => {
   })).createTeam._id
 
   const team1Entry = someEntryInputAndAuthoredEntry({ author: 'team 1' })
-  const team2EntryInput = someEntryInput({ author: 'team 2' })
+  const team2Entry = someEntryInputAndAuthoredEntry({ author: 'team 2' })
 
   await executeMutation(ADD_TO_EOD, {
     author: 'team 1',
@@ -134,7 +131,7 @@ it('marks all eod entries as sent regardless of team', async () => {
   })
   await executeMutation(ADD_TO_EOD, {
     author: 'team 2',
-    entries: [team2EntryInput],
+    entries: [team2Entry.entryInput],
     teamId: teamId2,
   })
 
@@ -145,7 +142,7 @@ it('marks all eod entries as sent regardless of team', async () => {
     },
   })
 
-  await executeMutation(SEND_EOD)
+  await executeMutation(SEND_EOD, { teamIds: [teamId1] })
 
   eodQueryResult = await executeQuery(GET_TEAM_WITH_EOD, { id: teamId1 })
   expect(eodQueryResult).toEqual({
@@ -154,11 +151,10 @@ it('marks all eod entries as sent regardless of team', async () => {
     },
   })
 
-  // TODO. this will change when sendEod works with teams
   eodQueryResult = await executeQuery(GET_TEAM_WITH_EOD, { id: teamId2 })
   expect(eodQueryResult).toEqual({
     team: {
-      currentEod: [], // [team2Entry]
+      currentEod: [team2Entry.authoredEntry],
     },
   })
 })

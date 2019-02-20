@@ -11,7 +11,7 @@ type Query {
 
 type Mutation {
   addToEod(author: String!, entries: [EntryInput]!, teamId: String!): [Entry]
-  sendEod: MutationResponse
+  sendEod(teamIds: [String]!): MutationResponse
 
   createTeam(team: TeamInput!): Team
   editTeam(id: String!, team: TeamInput!): Team

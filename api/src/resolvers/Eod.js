@@ -21,9 +21,9 @@ const resolvers = {
 
       return ops
     },
-    sendEod: async () => {
+    sendEod: async (_, { teamIds }) => {
       const { result } = await entriesCollection().updateMany(
-        { sent: false },
+        { teamId: { $in: teamIds }, sent: false },
         { $set: { sent: true } }
       )
 

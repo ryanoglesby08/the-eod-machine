@@ -14,6 +14,7 @@ jest.mock('../apiClient')
 const aTeamWithItsEod = createMother(GET_TEAMS_READY_FOR_EOD_DELIVERY, baseTeam)
 const aLocation = createLocationMother(['name', 'timeZone', 'eodTime'])
 
+let teamWithEod
 let transporter
 
 beforeEach(() => {
@@ -23,7 +24,7 @@ beforeEach(() => {
 })
 
 beforeEach(() => {
-  const team = aTeamWithItsEod({
+  teamWithEod = aTeamWithItsEod({
     name: 'The Team',
     mailingList: ['team1@example.com', 'team2@example.com'],
     locations: [
@@ -41,7 +42,7 @@ beforeEach(() => {
   })
 
   stubApiClient.__stubQuery(GET_TEAMS_READY_FOR_EOD_DELIVERY, {
-    teamsReadyForAnEodDelivery: [team],
+    teamsReadyForAnEodDelivery: [teamWithEod],
   })
 })
 
@@ -49,7 +50,11 @@ it('sends a message to teams that are ready for an EOD', async () => {
   const currentDate = new Date(2019, 1, 3, 12) // Feb 3, 2019 @ 12pm
   const currentTimeUtc = convertLocalTimeToUtcTime('5:00 PM', 'America/Denver')
 
-  const messages = await sendMessages(transporter, currentDate, currentTimeUtc)
+  const { messages } = await sendMessages(
+    transporter,
+    currentDate,
+    currentTimeUtc
+  )
 
   expect(messages).toHaveLength(1)
 
@@ -77,7 +82,11 @@ it('rounds to the nearest half hour to account for small time differences when t
   const currentDate = new Date(2019, 1, 3, 12) // Feb 3, 2019 @ 12pm
   const currentTimeUtc = convertLocalTimeToUtcTime('5:02 PM', 'America/Denver')
 
-  const messages = await sendMessages(transporter, currentDate, currentTimeUtc)
+  const { messages } = await sendMessages(
+    transporter,
+    currentDate,
+    currentTimeUtc
+  )
 
   expect(messages).toHaveLength(1)
 
@@ -87,4 +96,11 @@ it('rounds to the nearest half hour to account for small time differences when t
     'subject',
     '[EOD] The Team | Denver | Feb 03'
   )
+})
+
+it('gives teams that received a message back', async () => {
+  const currentTimeUtc = convertLocalTimeToUtcTime('5:00 PM', 'America/Denver')
+  const { teams } = await sendMessages(transporter, new Date(), currentTimeUtc)
+
+  expect(teams).toEqual([teamWithEod])
 })

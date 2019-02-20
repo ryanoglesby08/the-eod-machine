@@ -28,11 +28,15 @@ const execute = async () => {
   })
 
   console.log('sending...') // eslint-disable-line
-  const messages = await sendMessages(transporter, currentDate, currentTimeUtc)
+  const { teams, messages } = await sendMessages(
+    transporter,
+    currentDate,
+    currentTimeUtc
+  )
 
   // TODO: Only mark as sent based on the teams that were delivered to
   console.log('marking as sent...') // eslint-disable-line
-  await markEodAsSent()
+  await markEodAsSent(teams)
 
   messages.forEach(message => {
     console.log('Message sent: %s', message.messageId) // eslint-disable-line

@@ -15,6 +15,7 @@ import textMessage from '../multipartMessage/textMessage/textMessage'
 export const GET_TEAMS_READY_FOR_EOD_DELIVERY = gql`
   query GetTeamsReadyForEodDelivery($currentTimeUtc: String!) {
     teamsReadyForAnEodDelivery(currentTimeUtc: $currentTimeUtc) {
+      _id
       name
       mailingList
       currentEod {
@@ -55,7 +56,7 @@ const sendMessages = async (transporter, currentDate, currentTimeUtc) => {
     variables: { currentTimeUtc: currentTimeUtcRounded },
   })
 
-  return await Promise.all(
+  const messages = await Promise.all(
     teamsReadyForAnEodDelivery.map(async team => {
       const eodLocation = getLocationAtEod(
         team.locations,
@@ -83,6 +84,8 @@ const sendMessages = async (transporter, currentDate, currentTimeUtc) => {
       })
     })
   )
+
+  return { messages, teams: teamsReadyForAnEodDelivery }
 }
 
 export default sendMessages
