@@ -90,7 +90,7 @@ it('shows the all teams list after creating a new team', async () => {
   })
 
   await wait(() => {
-    expect(container).toHaveTextContent('All teams')
+    expect(container).toHaveTextContent('Manage teams')
   })
 })
 
@@ -100,6 +100,6 @@ it('returns to the teams list on cancel', async () => {
   fireEvent.click(getByText('Cancel'))
 
   await wait(() => {
-    expect(container).toHaveTextContent('All teams')
+    expect(container).toHaveTextContent('Manage teams')
   })
 })

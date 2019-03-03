@@ -89,7 +89,7 @@ it('shows the all teams list after editing a team', async () => {
   fireEvent.click(getByText('Save'))
 
   await wait(() => {
-    expect(container).toHaveTextContent('All teams')
+    expect(container).toHaveTextContent('Manage teams')
     expect(container).toHaveTextContent('New team name')
   })
 })
@@ -106,6 +106,6 @@ it('returns to the teams list on cancel', async () => {
   fireEvent.click(getByText('Cancel'))
 
   await wait(() => {
-    expect(container).toHaveTextContent('All teams')
+    expect(container).toHaveTextContent('Manage teams')
   })
 })

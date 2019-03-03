@@ -30,7 +30,7 @@ const Teams = ({ match }) => {
 
         return (
           <div>
-            <Heading>All teams</Heading>
+            <Heading>Manage teams</Heading>
             <TabularList>
               {teams.map(({ _id, name }) => (
                 <Link to={`${teamsUrl}/${_id}/edit`} key={_id}>
