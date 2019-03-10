@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Redirect } from 'react-router-dom'
+import { Redirect, Link } from 'react-router-dom'
 import { withCookies } from 'react-cookie'
 
 import { Heading, Text, Box, Message } from 'rebass/emotion'
@@ -29,6 +29,10 @@ const TeamSelector = ({ teams, chooseTeam }) => (
         </TabularList.ClickableRow>
       ))}
     </TabularList>
+
+    <Box>
+      Or <Link to="teams/new">create a team</Link>
+    </Box>
   </>
 )
 TeamSelector.propTypes = {

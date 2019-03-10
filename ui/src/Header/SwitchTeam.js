@@ -5,7 +5,7 @@ import NavLink from './NavLink'
 const SwitchTeam = () => (
   <>
     <span> | </span>
-    <NavLink to="/select-team">Switch teams</NavLink>
+    <NavLink to="/select-team">Switch team</NavLink>
   </>
 )
 

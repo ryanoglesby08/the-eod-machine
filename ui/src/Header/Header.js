@@ -21,7 +21,15 @@ const Header = ({ nav }) => (
     <PageCenter>
       <Flex alignItems="center">
         <Text fontSize={3}>
-          <LogoLink to="/">✉️ 🌏 The Eod Machine</LogoLink>
+          <LogoLink to="/">
+            <span role="img" aria-label="Envelope">
+              ✉️
+            </span>{' '}
+            <span role="img" aria-label="Globe">
+              🌏
+            </span>{' '}
+            The Eod Machine
+          </LogoLink>
         </Text>
 
         <Box ml="auto">
