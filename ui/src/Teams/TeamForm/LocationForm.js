@@ -3,9 +3,10 @@ import PropTypes from 'prop-types'
 
 import Select from 'react-select'
 
-import { Box, ButtonOutline, Flex, Input } from 'rebass/emotion'
+import { Box, Flex, Input } from 'rebass/emotion'
 
 import LabeledField from '../../ui-components/LabeledField/LabeledField'
+import ButtonOutline from '../../ui-components/ButtonOutline/ButtonOutline'
 
 import timeZonesOptions from './timezoneOptions'
 import eodTimesOptions from './eodTimesOptions'

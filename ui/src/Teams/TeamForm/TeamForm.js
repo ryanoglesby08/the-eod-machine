@@ -1,9 +1,10 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Button, ButtonOutline, Box, Flex, Input } from 'rebass/emotion'
+import { Button, Box, Flex, Input } from 'rebass/emotion'
 
 import LabeledField from '../../ui-components/LabeledField/LabeledField'
+import ButtonOutline from '../../ui-components/ButtonOutline/ButtonOutline'
 import LocationForm from './LocationForm'
 
 const EMPTY_LOCATION = { name: '', timeZone: '', eodTime: '' }
