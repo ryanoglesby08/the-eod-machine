@@ -60,29 +60,32 @@ const EodForm = ({
             onSubmit(author, entriesByCategory, teamId, addToEod)
           }}
         >
-          <Box mb={4}>
-            <LabeledField label="Author">
-              {id => (
-                <Input
-                  id={id}
-                  value={author}
-                  onChange={e => onAuthorChange(e.target.value)}
+          <LabeledField label="Author">
+            {id => (
+              <Input
+                id={id}
+                value={author}
+                onChange={e => onAuthorChange(e.target.value)}
+              />
+            )}
+          </LabeledField>
+
+          <Box mt={3}>
+            {CATEGORIES.map(category => (
+              <Box mb={3} key={category}>
+                <CategoryEntry
+                  category={category}
+                  entry={entriesByCategory[category]}
+                  savedEntries={savedEntriesByCategory[category]}
+                  onChange={onEntryChange}
                 />
-              )}
-            </LabeledField>
+              </Box>
+            ))}
           </Box>
 
-          {CATEGORIES.map(category => (
-            <CategoryEntry
-              key={category}
-              category={category}
-              entry={entriesByCategory[category]}
-              savedEntries={savedEntriesByCategory[category]}
-              onChange={onEntryChange}
-            />
-          ))}
-
-          <Button type="submit">Submit</Button>
+          <Box mt={3}>
+            <Button type="submit">Submit</Button>
+          </Box>
         </form>
       </>
     )}

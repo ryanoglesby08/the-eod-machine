@@ -50,19 +50,19 @@ class EnterEod extends Component {
 
           return (
             <>
-              <Box mb={3}>
-                <Heading>Enter your EOD update for {team.name}</Heading>
-              </Box>
+              <Heading>Enter your EOD update for {team.name}</Heading>
 
-              <EodForm
-                author={author}
-                onAuthorChange={this.onAuthorChange}
-                entriesByCategory={entriesByCategory}
-                savedEntriesByCategory={savedEntriesByCategory}
-                onEntryChange={this.onEntryChange}
-                teamId={teamId}
-                onSubmitComplete={this.clearEntries}
-              />
+              <Box mt={3}>
+                <EodForm
+                  author={author}
+                  onAuthorChange={this.onAuthorChange}
+                  entriesByCategory={entriesByCategory}
+                  savedEntriesByCategory={savedEntriesByCategory}
+                  onEntryChange={this.onEntryChange}
+                  teamId={teamId}
+                  onSubmitComplete={this.clearEntries}
+                />
+              </Box>
             </>
           )
         }}

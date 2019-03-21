@@ -125,36 +125,40 @@ class TeamForm extends Component {
             />
           )}
         </LabeledField>
-        <LabeledField label="Mailing list">
-          {id => (
-            <Input
-              id={id}
-              value={mailingList}
-              onChange={e =>
-                this.dispatch({
-                  type: 'CHANGE_MAILING_LIST',
-                  payload: e.target.value,
-                })
-              }
-            />
-          )}
-        </LabeledField>
+
+        <Box mt={2}>
+          <LabeledField label="Mailing list">
+            {id => (
+              <Input
+                id={id}
+                value={mailingList}
+                onChange={e =>
+                  this.dispatch({
+                    type: 'CHANGE_MAILING_LIST',
+                    payload: e.target.value,
+                  })
+                }
+              />
+            )}
+          </LabeledField>
+        </Box>
 
         {locations.map(({ name, timeZone, eodTime }, index) => (
-          <LocationForm
-            key={index}
-            index={index}
-            name={name}
-            onNameChange={this.changeLocationName}
-            timeZone={timeZone}
-            onTimeZoneChange={this.changeLocationTimeZone}
-            eodTime={eodTime}
-            onEodTimeChange={this.changeLocationEodTime}
-            onRemove={this.removeLocation}
-          />
+          <Box mt={2} key={index}>
+            <LocationForm
+              index={index}
+              name={name}
+              onNameChange={this.changeLocationName}
+              timeZone={timeZone}
+              onTimeZoneChange={this.changeLocationTimeZone}
+              eodTime={eodTime}
+              onEodTimeChange={this.changeLocationEodTime}
+              onRemove={this.removeLocation}
+            />
+          </Box>
         ))}
 
-        <Flex flexDirection="column" mb={2}>
+        <Flex flexDirection="column" mt={2}>
           <Button
             border={'1px dashed'}
             bg="white"
@@ -166,14 +170,14 @@ class TeamForm extends Component {
           </Button>
         </Flex>
 
-        <Flex>
-          <Box mr={1}>
-            <Button type="submit">Save</Button>
-          </Box>
+        <Flex mt={3}>
+          <Button type="submit">Save</Button>
 
-          <ButtonOutline type="button" onClick={onCancel}>
-            Cancel
-          </ButtonOutline>
+          <Box ml={1}>
+            <ButtonOutline type="button" onClick={onCancel}>
+              Cancel
+            </ButtonOutline>
+          </Box>
         </Flex>
       </form>
     )

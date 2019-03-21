@@ -137,7 +137,7 @@ it('can have more than 2 locations', () => {
   )
 
   const location1 = within(getByTestId('location-1'))
-  fireEvent.click(location1.getByText('Remove'))
+  fireEvent.click(location1.getByText('🗑Remove'))
 
   fireEvent.click(getByText('Save'))
 

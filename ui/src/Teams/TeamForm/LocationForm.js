@@ -3,7 +3,7 @@ import PropTypes from 'prop-types'
 
 import Select from 'react-select'
 
-import { ButtonOutline, Flex, Input } from 'rebass/emotion'
+import { Box, ButtonOutline, Flex, Input } from 'rebass/emotion'
 
 import LabeledField from '../../ui-components/LabeledField/LabeledField'
 
@@ -33,31 +33,35 @@ const LocationForm = ({
       )}
     </LabeledField>
 
-    <LabeledField label="Time zone" id={`location-${index}-timezone`}>
-      {id => (
-        <Select
-          inputId={id}
-          options={timeZonesOptions}
-          value={timeZonesOptions.find(option => option.value === timeZone)}
-          onChange={option => onTimeZoneChange(option.value, index)}
-        />
-      )}
-    </LabeledField>
+    <Box mt={2}>
+      <LabeledField label="Time zone" id={`location-${index}-timezone`}>
+        {id => (
+          <Select
+            inputId={id}
+            options={timeZonesOptions}
+            value={timeZonesOptions.find(option => option.value === timeZone)}
+            onChange={option => onTimeZoneChange(option.value, index)}
+          />
+        )}
+      </LabeledField>
+    </Box>
 
-    <LabeledField label="EOD time" id={`location-${index}-eodtime`}>
-      {id => (
-        <Select
-          inputId={id}
-          options={eodTimesOptions}
-          value={eodTimesOptions.find(option => option.value === eodTime)}
-          onChange={option => onEodTimeChange(option.value, index)}
-        />
-      )}
-    </LabeledField>
+    <Box mt={2}>
+      <LabeledField label="EOD time" id={`location-${index}-eodtime`}>
+        {id => (
+          <Select
+            inputId={id}
+            options={eodTimesOptions}
+            value={eodTimesOptions.find(option => option.value === eodTime)}
+            onChange={option => onEodTimeChange(option.value, index)}
+          />
+        )}
+      </LabeledField>
+    </Box>
 
-    <Flex flexDirection="column" alignItems="flex-end">
+    <Flex flexDirection="column" alignItems="flex-end" mt={2}>
       <ButtonOutline type="button" onClick={() => onRemove(index)}>
-        Remove
+        🗑Remove
       </ButtonOutline>
     </Flex>
   </fieldset>

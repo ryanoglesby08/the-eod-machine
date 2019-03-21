@@ -17,7 +17,7 @@ const LogoLink = styled(Link)({
 })
 
 const Header = ({ nav }) => (
-  <Box is="header" bg="blue" p={3} color="white">
+  <Box is="header" bg="blue" p={2} color="white">
     <PageCenter>
       <Flex alignItems="center">
         <Text fontSize={3}>

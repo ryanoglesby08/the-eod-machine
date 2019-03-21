@@ -3,7 +3,7 @@ import React from 'react'
 import { Mutation } from 'react-apollo'
 import gql from 'graphql-tag'
 
-import { Heading } from 'rebass/emotion'
+import { Box, Heading } from 'rebass/emotion'
 
 import { toGraphQlSchema } from '../team'
 
@@ -45,15 +45,18 @@ const NewTeam = () => (
         >
           {createTeam => {
             return (
-              <div>
+              <>
                 <Heading>Create a new team</Heading>
-                <TeamForm
-                  onSubmit={teamData => {
-                    doCreateTeam(teamData, createTeam)
-                  }}
-                  onCancel={doRedirect}
-                />
-              </div>
+
+                <Box mt={3}>
+                  <TeamForm
+                    onSubmit={teamData => {
+                      doCreateTeam(teamData, createTeam)
+                    }}
+                    onCancel={doRedirect}
+                  />
+                </Box>
+              </>
             )
           }}
         </Mutation>

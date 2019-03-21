@@ -7,31 +7,42 @@ import { withCookies } from 'react-cookie'
 import { Heading, Text, Box, Message } from 'rebass/emotion'
 
 import TabularList from '../../ui-components/TabularList/TabularList'
+import ShowCreateATeamFallback from '../../ShowCreateATeamFallback/ShowCreateATeamFallback'
 import FetchTeams from './FetchTeams'
 
 const NonExistentTeamMessage = () => (
   <Message bg="red">
-    That's odd... the team you've selected doesn't exist. Try picking a
-    different one.
+    <span role="img" aria-label="thinking face">
+      🤔
+    </span>
+    That's odd... the team you've selected doesn't exist. It may have been
+    deleted. Try choosing a new one.
   </Message>
 )
 
 const TeamSelector = ({ teams, chooseTeam }) => (
   <>
-    <Box mb={3}>
-      <Heading>Choose a team to receive your EOD update</Heading>
+    <Heading>Choose a team to receive your EOD update</Heading>
+
+    <Box mt={3}>
+      <ShowCreateATeamFallback teams={teams}>
+        {teams => (
+          <TabularList>
+            {teams.map(({ _id, name }) => (
+              <TabularList.ClickableRow
+                onClick={() => chooseTeam(_id)}
+                key={_id}
+              >
+                <Text textAlign="left">{name}</Text>
+              </TabularList.ClickableRow>
+            ))}
+          </TabularList>
+        )}
+      </ShowCreateATeamFallback>
     </Box>
 
-    <TabularList>
-      {teams.map(({ _id, name }) => (
-        <TabularList.ClickableRow onClick={() => chooseTeam(_id)} key={_id}>
-          <Text textAlign="left">{name}</Text>
-        </TabularList.ClickableRow>
-      ))}
-    </TabularList>
-
-    <Box>
-      Or <Link to="teams/new">create a team</Link>
+    <Box mt={3}>
+      <Link to="/teams/new">Create a team →</Link>
     </Box>
   </>
 )

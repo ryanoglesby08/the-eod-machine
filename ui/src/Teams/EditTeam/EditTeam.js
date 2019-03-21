@@ -5,7 +5,7 @@ import gql from 'graphql-tag'
 
 import omit from 'lodash/omit'
 
-import { Heading } from 'rebass/emotion'
+import { Box, Heading } from 'rebass/emotion'
 
 import { toGraphQlSchema } from '../team'
 
@@ -74,18 +74,21 @@ const EditTeam = ({ match }) => {
                 <Mutation mutation={EDIT_TEAM} onCompleted={doRedirect}>
                   {editTeam => {
                     return (
-                      <div>
-                        <Heading>Editing team "{name}"</Heading>
-                        <TeamForm
-                          name={name}
-                          mailingList={mailingList}
-                          locations={removeTypename(locations)}
-                          onSubmit={teamData =>
-                            doEditTeam(_id, teamData, editTeam)
-                          }
-                          onCancel={doRedirect}
-                        />
-                      </div>
+                      <>
+                        <Heading>Editing team {name}</Heading>
+
+                        <Box mt={3}>
+                          <TeamForm
+                            name={name}
+                            mailingList={mailingList}
+                            locations={removeTypename(locations)}
+                            onSubmit={teamData =>
+                              doEditTeam(_id, teamData, editTeam)
+                            }
+                            onCancel={doRedirect}
+                          />
+                        </Box>
+                      </>
                     )
                   }}
                 </Mutation>
