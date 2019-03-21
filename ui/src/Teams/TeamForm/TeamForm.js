@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 
-import { Button, Box, Flex, Input } from 'rebass/emotion'
+import { Box, Flex, Input } from 'rebass/emotion'
 
 import LabeledField from '../../ui-components/LabeledField/LabeledField'
-import ButtonOutline from '../../ui-components/ButtonOutline/ButtonOutline'
+import ButtonOutline from '../../ui-components/Buttons/ButtonOutline'
+import Button from '../../ui-components/Buttons/Button'
+import DashedButton from '../../ui-components/Buttons/DashedButton'
 import LocationForm from './LocationForm'
 
 const EMPTY_LOCATION = { name: '', timeZone: '', eodTime: '' }
@@ -160,15 +162,9 @@ class TeamForm extends Component {
         ))}
 
         <Flex flexDirection="column" mt={2}>
-          <Button
-            border={'1px dashed'}
-            bg="white"
-            color="black"
-            type="button"
-            onClick={this.addLocation}
-          >
+          <DashedButton type="button" onClick={this.addLocation}>
             + Add a location
-          </Button>
+          </DashedButton>
         </Flex>
 
         <Flex mt={3}>

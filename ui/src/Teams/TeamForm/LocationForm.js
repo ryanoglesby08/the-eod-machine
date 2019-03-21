@@ -6,7 +6,7 @@ import Select from 'react-select'
 import { Box, Flex, Input } from 'rebass/emotion'
 
 import LabeledField from '../../ui-components/LabeledField/LabeledField'
-import ButtonOutline from '../../ui-components/ButtonOutline/ButtonOutline'
+import ButtonOutline from '../../ui-components/Buttons/ButtonOutline'
 
 import timeZonesOptions from './timezoneOptions'
 import eodTimesOptions from './eodTimesOptions'

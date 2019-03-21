@@ -4,9 +4,10 @@ import PropTypes from 'prop-types'
 import gql from 'graphql-tag'
 import { Mutation } from 'react-apollo'
 
-import { Box, Button, Input } from 'rebass/emotion'
+import { Box, Input } from 'rebass/emotion'
 
 import LabeledField from '../../ui-components/LabeledField/LabeledField'
+import Button from '../../ui-components/Buttons/Button'
 import CATEGORIES from './categories'
 import { updateGetTeamWithEodQuery } from './FetchTeamWithEod'
 import CategoryEntry from './CategoryEntry'
