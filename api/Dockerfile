@@ -2,10 +2,11 @@ FROM node:10-alpine
 
 WORKDIR /usr/src/app
 
-COPY api/package.json yarn.lock ./
-RUN yarn install --pure-lockfile
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
 
-COPY api .
+COPY ./ .
+RUN yarn build
 
 EXPOSE 4000
 ENTRYPOINT ["yarn"]

@@ -1,17 +1,16 @@
 version: '3'
 services:
   ui:
-    build:
-      context: ./
-      dockerfile: Dockerfile.ui
+    build: ./ui
     ports:
-      - "3000:3000"
+      - '3000:3000'
+    environment:
+      - API_HOST=api
+      - API_PORT=4000
   api:
-    build:
-      context: ./
-      dockerfile: Dockerfile.api
+    build: ./api
     ports:
-      - "4000:4000"
+      - '4000:4000'
     environment:
       - DB_HOST=db
   emailer:

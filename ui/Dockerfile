@@ -2,10 +2,12 @@ FROM node:10-alpine
 
 WORKDIR /usr/src/app
 
-COPY ui/package.json yarn.lock ./
-RUN yarn install --pure-lockfile
+ENV NODE_ENV production
 
-COPY ui .
+COPY package.json yarn.lock ./
+RUN yarn install --frozen-lockfile
+
+COPY ./ .
 RUN yarn build
 
 EXPOSE 3000

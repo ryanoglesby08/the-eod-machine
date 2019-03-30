@@ -4,11 +4,13 @@
   "private": true,
   "main": "src/index.js",
   "scripts": {
+    "build": "babel src --out-dir build --ignore 'src/**/*.test.js','src/__test-utils__/**/*' --copy-files",
     "db:start": "brew services start mongo",
     "db:stop": "brew services stop mongo",
+    "dev": "babel-node src/index.js",
     "lint": "eslint 'src/**/*.js'",
     "precommit:test": "jest --runInBand --color ; # ignore changed files, just run all the tests",
-    "start": "babel-node src/index.js",
+    "start": "node build/index.js",
     "test": "jest --runInBand --watch"
   },
   "dependencies": {
@@ -21,15 +23,15 @@
     "timezones.json": "^1.4.7"
   },
   "devDependencies": {
-    "@babel/core": "^7.1.2",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.4.0",
     "@babel/node": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "apollo-server-testing": "^2.2.2",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^24.5.0",
     "eslint": "^5.9.0",
     "eslint-plugin-graphql": "^3.0.1",
-    "jest": "^23.6.0",
+    "jest": "^24.5.0",
     "mongodb-memory-server": "^2.6.0",
     "regenerator-runtime": "^0.12.1"
   },

@@ -22,7 +22,9 @@ import NewTeam from './Teams/NewTeam/NewTeam'
 
 import registerServiceWorker from './registerServiceWorker'
 
-const apiClient = new ApolloClient({ uri: 'http://localhost:4000' })
+const API_HOST = process.env.API_HOST || 'localhost'
+const API_PORT = process.env.API_PORT || '4000'
+const apiClient = new ApolloClient({ uri: `http://${API_HOST}:${API_PORT}` })
 
 ReactDOM.render(
   <Router>

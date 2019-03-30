@@ -12,6 +12,6 @@ describe('to24HourTime', () => {
 describe('convertLocalTimeToUtcTime', () => {
   it('converts a time to UTC time', () => {
     const utcTime = convertLocalTimeToUtcTime('5:00 PM', 'America/Los_Angeles')
-    expect(utcTime).toEqual('01:00')
+    expect(utcTime).toEqual('00:00')
   })
 })
