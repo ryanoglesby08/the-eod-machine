@@ -14,12 +14,10 @@ services:
     environment:
       - DB_HOST=db
   emailer:
-    build:
-      context: ./
-      dockerfile: Dockerfile.emailer
+    build: ./emailer
     environment:
-      - APP_ENV=production
       - API_HOST=api
+      - API_PORT=4000
   db:
     image: mongo
   db-admin:
