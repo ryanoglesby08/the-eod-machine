@@ -2,11 +2,13 @@
   "name": "@the-eod-machine/emailer",
   "version": "1.0.0",
   "private": true,
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
+    "build": "babel src --out-dir build --ignore 'src/**/*.test.js','src/__mocks__/**/*'",
+    "dev": "babel-node src/index.js",
     "lint": "eslint 'src/**/*.js'",
     "precommit:test": "jest --color ; # ignore changed files, just run all the tests",
-    "start": "babel-node src/index.js",
+    "start": "node build/index.js",
     "test": "jest --watch"
   },
   "dependencies": {
@@ -25,17 +27,17 @@
     "timezones.json": "^1.4.7"
   },
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
     "@babel/core": "^7.1.2",
     "@babel/node": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@babel/preset-react": "^7.0.0",
-    "babel-core": "^7.0.0-bridge.0",
-    "babel-jest": "^23.6.0",
+    "babel-jest": "^24.5.0",
     "eslint": "^5.9.0",
     "eslint-plugin-graphql": "^3.0.1",
     "eslint-plugin-react": "^7.11.1",
     "graphql-import": "^0.7.1",
-    "jest": "^23.6.0",
+    "jest": "^24.5.0",
     "react-testing-library": "^5.0.0",
     "regenerator-runtime": "^0.12.1"
   },
