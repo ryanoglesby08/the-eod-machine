@@ -1,7 +1,13 @@
+/* eslint-disable no-console */
+
 import nodemailer from 'nodemailer'
 
 import sendMessages from './sendMessage/sendMessages'
 import markEodAsSent from './markEodAsSent'
+
+const { SMTP_HOST, SMTP_PORT, SMTP_USERNAME, SMTP_PASSWORD } = process.env
+
+const useRealSMTPServer = SMTP_HOST !== undefined
 
 const execute = async () => {
   const currentDate = new Date()
@@ -12,40 +18,47 @@ const execute = async () => {
     hour12: false,
   })
 
-  // Generate test SMTP service account from ethereal.email
-  // Only needed if you don't have a real mail account for testing
-  const account = await nodemailer.createTestAccount()
+  let transporter
+  if (useRealSMTPServer) {
+    transporter = nodemailer.createTransport({
+      host: SMTP_HOST,
+      port: Number(SMTP_PORT),
+      secure: Number(SMTP_PORT) === 465,
+      auth: {
+        user: SMTP_USERNAME,
+        pass: SMTP_PASSWORD,
+      },
+    })
+  } else {
+    const account = await nodemailer.createTestAccount()
+    transporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false,
+      auth: {
+        user: account.user,
+        pass: account.pass,
+      },
+    })
+  }
 
-  // create reusable transporter object using the default SMTP transport
-  const transporter = nodemailer.createTransport({
-    host: 'smtp.ethereal.email',
-    port: 587,
-    secure: false, // true for 465, false for other ports
-    auth: {
-      user: account.user, // generated ethereal user
-      pass: account.pass, // generated ethereal password
-    },
-  })
-
-  console.log('sending...') // eslint-disable-line
+  console.log('Sending messages...')
   const { teams, messages } = await sendMessages(
     transporter,
     currentDate,
     currentTimeUtc
   )
 
-  // TODO: Only mark as sent based on the teams that were delivered to
-  console.log('marking as sent...') // eslint-disable-line
+  console.log('Marking messages as sent...')
   await markEodAsSent(teams)
 
-  messages.forEach(message => {
-    console.log('Message sent: %s', message.messageId) // eslint-disable-line
-    // Preview only available when sending through an Ethereal account
-    console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message)) // eslint-disable-line
-
-    // Message sent: <b658f8ca-6296-ccf4-8306-87d57a0b4321@example.com>
-    // Preview URL: https://ethereal.email/message/WaQKMgKddxQDoou...
-  })
+  if (!useRealSMTPServer) {
+    messages.forEach(message => {
+      console.log('Message sent: %s', message.messageId)
+      // Preview only available when sending through an Ethereal account
+      console.log('Preview URL: %s', nodemailer.getTestMessageUrl(message))
+    })
+  }
 }
 
-execute().catch(console.error) // eslint-disable-line no-console
+execute().catch(console.error)

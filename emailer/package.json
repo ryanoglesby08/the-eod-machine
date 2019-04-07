@@ -21,7 +21,7 @@
     "graphql-tag": "^2.9.2",
     "lodash": "^4.17.10",
     "node-fetch": "^2.1.2",
-    "nodemailer": "^5.1.1",
+    "nodemailer": "^6.1.0",
     "react": "^16.4.2",
     "react-dom": "^16.4.2",
     "timezones.json": "^1.4.7"

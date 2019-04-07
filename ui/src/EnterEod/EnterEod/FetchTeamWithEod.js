@@ -37,12 +37,12 @@ export const updateGetTeamWithEodQuery = id => (
 
 const FetchTeamWithEod = ({ id, children }) => (
   <Query query={GET_TEAM_WITH_EOD} variables={{ id }}>
-    {({ loading, data: { team } }) => {
+    {({ loading, data }) => {
       if (loading) {
         return null
       }
 
-      return children(team)
+      return children(data.team)
     }}
   </Query>
 )

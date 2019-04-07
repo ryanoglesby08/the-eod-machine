@@ -72,7 +72,7 @@ const sendMessages = async (transporter, currentDate, currentTimeUtc) => {
         getUtcTimezone(eodLocation.timeZone)
       )
 
-      return await transporter.sendMail({
+      const message = {
         from: {
           address: 'eod-machine@theeodmachine.local',
           name: 'EOD Machine',
@@ -81,7 +81,9 @@ const sendMessages = async (transporter, currentDate, currentTimeUtc) => {
         subject: subject(team, eodLocation, shortDateString),
         text: textMessage(team.currentEod, eodLocation, longDateString),
         html: renderHtmlMessage(team.currentEod, eodLocation, longDateString),
-      })
+      }
+
+      return await transporter.sendMail(message)
     })
   )
 
