@@ -39,7 +39,7 @@ Alternatively, you can run everything locally with `docker-compose`.
 
 ```bash
 # Start the database first
-docker-compose up --detach mongo
+docker-compose up --detach db
 
 # Start the API and UI. Then open your browser to http://localhost:3000
 docker-compose up --detach api ui
