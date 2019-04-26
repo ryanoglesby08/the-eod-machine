@@ -1,5 +1,5 @@
 {
-  "name": "eod-machine",
+  "name": "the-eod-machine",
   "private": true,
   "scripts": {
     "lint:queries": "QUERIES_ONLY=true lerna run --concurrency 1 --stream lint",
