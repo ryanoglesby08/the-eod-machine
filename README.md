@@ -17,18 +17,27 @@ The EOD Machine is a web application with an email scheduler, distributed as a D
 
 ### Deployment
 
-Pull [the Docker image](https://hub.docker.com/r/ryanoglesby08/eod-machine/), configure it with your SMTP server settings, and run it!
+The EOD Machine application is composed of [3 docker images](https://hub.docker.com/r/ryanoglesby08/eod-machine/): a UI app server, an API, and a single-run emailer.
 
-```sh
-docker run \
-  --env SECRET_KEY_BASE=<A token that the web app will use to encrypt its session information> \
-  --env SMTP_ADDRESS=<An SMTP server. e.g. smtp.gmail.com> \
-  --env SMTP_PORT=<SMTP server port. e.g. 587> \
-  --env SMTP_DOMAIN=<A domain to use when sending the emails. e.g. mycompany.com> \
-  --env SMTP_USERNAME=<SMTP username> \
-  --env SMTP_PASSWORD=<SMTP password> \
-  --publish <Port to publish the app to. e.g. 80>:3000 \
-  ryanoglesby08/eod-machine
+The easiest way of running everything is through the public `docker-compose` file, available on Github.
+
+```bash
+# Start mongo
+docker-compose --file docker-compose.public.yml up --detach db
+
+# Start the API on port 4000 and the UI on port 80
+docker-compose --file docker-compose.public.yml up --detach ui api
+```
+
+The emailer is a single-run task, and should be run on a schedule using something like `cron`. Every 30 minutes is recommended.
+
+```bash
+0,30 * * * * /bin/bash -l -c docker-compose --file docker-compose.public.yml run \
+  --env SMTP_HOST=<A SMTP server. e.g. smtp.gmail.com> \
+  --env SMTP_PORT=<SMTP server port. e.g. 465> \
+  --env SMTP_USERNAME='<SMTP username e.g. your-gmail@gmail.com' \
+  --env SMTP_PASSWORD='<SMTP password>' \
+  emailer
 ```
 
 ## Local development
