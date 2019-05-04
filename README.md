@@ -19,7 +19,7 @@ The EOD Machine is a web application with an email scheduler, distributed as a D
 
 The EOD Machine application is composed of [3 docker images](https://hub.docker.com/r/ryanoglesby08/eod-machine/): a UI app server, an API, and a single-run emailer.
 
-The easiest way of running everything is through the public `docker-compose` file, available on Github.
+The easiest way of running everything is through the public `docker-compose` file, [available on Github](https://github.com/ryanoglesby08/the-eod-machine/blob/master/docker-compose.public.yml).
 
 ```bash
 # Start mongo
