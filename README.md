@@ -35,7 +35,7 @@ The emailer is a single-run task, and should be run on a schedule using somethin
 0,30 * * * * /bin/bash -l -c docker-compose --file docker-compose.public.yml run \
   --env SMTP_HOST=<A SMTP server. e.g. smtp.gmail.com> \
   --env SMTP_PORT=<SMTP server port. e.g. 465> \
-  --env SMTP_USERNAME='<SMTP username e.g. your-gmail@gmail.com' \
+  --env SMTP_USERNAME='<SMTP username e.g. your-gmail@gmail.com>' \
   --env SMTP_PASSWORD='<SMTP password>' \
   emailer
 ```
